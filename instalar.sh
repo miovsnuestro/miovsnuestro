@@ -67,7 +67,7 @@ chown -R $USUARIO:$USUARIO $DIR
 chmod 600 $DIR/.env
 
 echo "== 6/7 Servicios (se reinician solos si se caen) =="
-for s in motor bot; do
+for s in motor bot entrevistas; do
   sed -e "s#@DIR@#$DIR#g" -e "s#@USUARIO@#$USUARIO#g" $DIR/despliegue/miovsnuestro-$s.service > /etc/systemd/system/miovsnuestro-$s.service
 done
 echo "$USUARIO ALL=(root) NOPASSWD: /usr/bin/systemctl restart miovsnuestro-motor" > /etc/sudoers.d/miovsnuestro
@@ -75,7 +75,7 @@ chmod 440 /etc/sudoers.d/miovsnuestro
 sed -e "s#@DOMINIO@#$DOMINIO#g" -e "s#@DIR@#$DIR#g" $DIR/despliegue/Caddyfile > /etc/caddy/Caddyfile
 sed -e "s#@DIR@#$DIR#g" $DIR/despliegue/cron > /etc/cron.d/miovsnuestro
 systemctl daemon-reload
-systemctl enable --now miovsnuestro-motor miovsnuestro-bot >/dev/null
+systemctl enable --now miovsnuestro-motor miovsnuestro-bot miovsnuestro-entrevistas >/dev/null
 systemctl reload caddy || systemctl restart caddy
 
 sudo -u $USUARIO $DIR/copia.sh || true
@@ -83,5 +83,6 @@ echo "== 7/7 Comprobación =="
 sleep 5
 systemctl is-active --quiet miovsnuestro-motor && echo "  Motor: en marcha" || echo "  Motor: ERROR (journalctl -u miovsnuestro-motor)"
 systemctl is-active --quiet miovsnuestro-bot && echo "  Bot: en marcha" || echo "  Bot: ERROR (journalctl -u miovsnuestro-bot)"
+systemctl is-active --quiet miovsnuestro-entrevistas && echo "  Entrevistas: en marcha" || echo "  Entrevistas: ERROR (journalctl -u miovsnuestro-entrevistas)"
 curl -fsS "https://api.telegram.org/bot${TGTOKEN}/sendMessage" -d chat_id=$CHAT -d text="✅ Mío vs Nuestro instalado. Mundo «$MUNDO» en marcha. Escribe /estado cuando quieras." >/dev/null
 echo "Listo. Web: https://$DOMINIO (puede tardar unos minutos en tener certificado)."

@@ -42,6 +42,11 @@ def main():
         sim = Simulacion(MUNDO, usar_ia=usar_ia, ruta_bd=RUTA_BD)
         print(f"Mundo '{MUNDO}' creado desde cero", flush=True)
     (config.RAIZ / ".mundo").write_text(MUNDO)
+    try:
+        escribir_json(config.WEB / "estado.json", sim.estado_publico())
+        escribir_json(config.DATOS / "entrevistas.json", sim.fichas_entrevista())
+    except Exception as err:
+        print("Aviso al escribir el estado inicial:", err, flush=True)
     while True:
         if (config.DATOS / "PAUSA").exists():
             escribir_json(config.DATOS / "latido.json", {"hora": time.time(), "dia": sim.dia, "estado": "en pausa"})
@@ -52,6 +57,10 @@ def main():
         sim.cronica()
         sim.guardar(RUTA_PKL)
         escribir_json(config.WEB / "estado.json", sim.estado_publico())
+        try:
+            escribir_json(config.DATOS / "entrevistas.json", sim.fichas_entrevista())
+        except Exception as err:  # las entrevistas nunca deben parar el mundo
+            print("No pude escribir las fichas de entrevista:", err, flush=True)
         escribir_json(config.DATOS / "latido.json", {
             "hora": time.time(), "fecha": datetime.now(timezone.utc).isoformat(), "dia": sim.dia, "estado": "en marcha",
             "ia": usar_ia, "llamadas": Gasto.llamadas, "fallos": Gasto.fallos, "gasto_usd_sesion": round(Gasto.dolares, 4),

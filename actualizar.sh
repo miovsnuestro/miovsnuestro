@@ -17,18 +17,19 @@ if [ -z "$DOMINIO" ]; then
 fi
 
 echo "== Servicios, web y tareas programadas =="
-for s in motor bot; do
+for s in motor bot entrevistas; do
   sed -e "s#@DIR@#$DIR#g" -e "s#@USUARIO@#$USUARIO#g" $DIR/despliegue/miovsnuestro-$s.service > /etc/systemd/system/miovsnuestro-$s.service
 done
 [ -n "$DOMINIO" ] && sed -e "s#@DOMINIO@#$DOMINIO#g" -e "s#@DIR@#$DIR#g" $DIR/despliegue/Caddyfile > /etc/caddy/Caddyfile
 sed -e "s#@DIR@#$DIR#g" $DIR/despliegue/cron > /etc/cron.d/miovsnuestro
 chown -R $USUARIO:$USUARIO $DIR
 systemctl daemon-reload
-systemctl enable miovsnuestro-motor miovsnuestro-bot >/dev/null 2>&1
-systemctl restart miovsnuestro-motor miovsnuestro-bot
+systemctl enable miovsnuestro-motor miovsnuestro-bot miovsnuestro-entrevistas >/dev/null 2>&1
+systemctl restart miovsnuestro-motor miovsnuestro-bot miovsnuestro-entrevistas
 systemctl reload caddy || systemctl restart caddy
 sleep 3
 systemctl is-active --quiet miovsnuestro-motor && echo "  Motor: en marcha" || echo "  Motor: ERROR (journalctl -u miovsnuestro-motor -n 50)"
 systemctl is-active --quiet miovsnuestro-bot && echo "  Bot: en marcha" || echo "  Bot: ERROR (journalctl -u miovsnuestro-bot -n 50)"
+systemctl is-active --quiet miovsnuestro-entrevistas && echo "  Entrevistas: en marcha" || echo "  Entrevistas: ERROR (journalctl -u miovsnuestro-entrevistas -n 50)"
 [ -f $DIR/datos/PAUSA ] && echo "  El mundo sigue EN PAUSA (escribe /reanudar en Telegram cuando quieras que avance)."
 echo "Listo."

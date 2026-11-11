@@ -1,0 +1,14 @@
+[Unit]
+Description=Mío vs Nuestro · entrevistas del público (solo lectura)
+After=network-online.target
+
+[Service]
+User=@USUARIO@
+WorkingDirectory=@DIR@
+EnvironmentFile=@DIR@/.env
+ExecStart=@DIR@/.venv/bin/python entrevistas.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

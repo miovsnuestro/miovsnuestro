@@ -7,7 +7,8 @@ from .agente import Agente, crear
 from .cerebro import CerebroIA, CerebroReglas, Gasto, llamar_llm
 from .mundo import Mundo, ACTIVIDAD_TERRENO
 
-IMPORTANCIA = {"primer_contacto": 10, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
+EPOCAS = ["prehistoria", "aldeas", "metal", "industrial", "moderna", "espacial"]
+IMPORTANCIA = {"primer_contacto": 10, "mundo_nuevo": 10, "horizonte": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
                "enseñanza": 4, "regalo": 3, "trueque": 3, "invento_fallido": 2, "trueque_rechazado": 2, "almacén": 2, "habla": 1}
 ACTIVIDADES_LIBRES = {"recolectar", "talar", "picar_piedra", "cazar"}
 
@@ -85,8 +86,11 @@ class Simulacion:
                                              "inventor": d.get("inventor"), "origen": d.get("origen")}
                                             for n, d in self.inventos[l].items()]} for l in "AB"},
             "mapa": {"ancho": m.w, "alto": m.h,
-                     "tipo": ["".join("pbarfmg"[["pradera", "bosque", "agua", "roca", "fertil", "montana", "rio"].index(m.tipo[y][x])]
+                     "tipo": ["".join("pbarfmgco"[["pradera", "bosque", "agua", "roca", "fertil", "montana", "rio", "cordillera", "mar"].index(m.tipo[y][x])]
                                       for x in range(m.w)) for y in range(m.h)],
+                     "zona": ["".join("v" if z.startswith("valle") else "f" if z.startswith("frontera") else "n" if z == "nadie"
+                                      else "x" if z == "barrera" else "r" for z in fila) for fila in m.zona],
+                     "ampliaciones": dict(getattr(self, "ampliaciones", {})),
                      "dueno": ["".join((m.dueno[y][x] or "-") for x in range(m.w)) for y in range(m.h)],
                      "explorado": ["".join("1" if (x, y) in explorado else "0" for x in range(m.w)) for y in range(m.h)]},
             "agentes": [self._ficha_publica(a) for a in self.agentes.values() if a.vivo],
@@ -191,6 +195,9 @@ class Simulacion:
         dueno = self.mundo.dueno[a.y][a.x]
         lugar = {"nadie": "tierras sin dueño" if dueno is None else ("tierras que tu gente ha reclamado" if dueno == a.lado else "tierras reclamadas por la otra gente")}.get(
             zona, "el valle donde nació tu gente" if zona.startswith("valle") else "tierras lejanas de tu gente")
+        if zona.startswith("region"):
+            lugar = "tierras recién descubiertas" + ("" if dueno is None else (", reclamadas por tu gente" if dueno == a.lado else ", reclamadas por la otra gente"))
+        lugar += self._horizonte(a)
         sobre_otros = ("Sabéis que existe otra gente que se hace llamar «" + config.NOMBRE_SOCIEDAD["B" if a.lado == "A" else "A"] + "»."
                        if self.contacto else "No sabéis si hay más gente en el mundo.")
         reg = self.inventos[a.lado]
@@ -271,7 +278,7 @@ class Simulacion:
         if acc in ACTIVIDAD_TERRENO and acc in puede:
             tipos, rec, base = ACTIVIDAD_TERRENO[acc]
             alcance = 12 + self.maximo(a, "alcance")
-            c = self.mundo.mas_cercana(a.lado, a.x, a.y, tipos, rec, alcance, cruzar=self.puede_cruzar_rio(a))
+            c = self.mundo.mas_cercana(a.lado, a.x, a.y, tipos, rec, alcance, cruzar=self.pasos(a))
             if not c:
                 a.recordar(f"Día {self.dia}: no encontré {rec} cerca.")
                 return
@@ -282,7 +289,7 @@ class Simulacion:
                 a.dar("fibra", self.mundo.extraer(*c, "fibra", 1))
         elif acc == "cazar":
             c = self.mundo.mas_cercana(a.lado, a.x, a.y, ("pradera", "bosque"), "animales", 12 + self.maximo(a, "alcance"),
-                                       cruzar=self.puede_cruzar_rio(a))
+                                       cruzar=self.pasos(a))
             if not c:
                 return
             a.x, a.y = c
@@ -299,8 +306,7 @@ class Simulacion:
         elif acc == "explorar":
             self._explorar(a, fase)
         elif acc == "asentarse":
-            z = self.mundo.zona[a.y][a.x]
-            if z == "nadie" and self.mundo.dueno[a.y][a.x] is None:
+            if self.mundo.reclamable(a.x, a.y) and self.mundo.dueno[a.y][a.x] is None:
                 n = self.mundo.reclamar(a.lado, a.x, a.y)
                 if n:
                     a.recordar(f"Día {self.dia}: reclamé tierras sin dueño para mi gente.")
@@ -431,14 +437,98 @@ class Simulacion:
                 return True
         return False
 
+    # ---------- barreras y mundo sin límite ----------
+    CAT_MONTANA = ("camino_o_puente", "vehiculo_tierra", "animal_domestico", "transporte_aereo")
+
+    def _categorias(self, a):
+        return {self.inventos[a.lado].get(n, {}).get("categoria") for n in a.conocimientos}
+
+    def puede_cruzar_montana(self, a):
+        """La cordillera se cruza con caminos, vehículos o animales de carga, y ropa de abrigo."""
+        cats = self._categorias(a)
+        return "transporte_aereo" in cats or (bool(cats & set(self.CAT_MONTANA)) and self.maximo(a, "abrigo") >= 0.4)
+
+    def puede_navegar(self, a):
+        """El mar abierto no se cruza en balsa: hace falta barco y saber orientarse (época del metal en adelante)."""
+        cats = self._categorias(a)
+        if "transporte_aereo" in cats:
+            return True
+        return "barco" in cats and EPOCAS.index(self.epoca()) >= EPOCAS.index("metal")
+
+    def pasos(self, a):
+        p = set()
+        if self.puede_cruzar_rio(a):
+            p.add("rio")
+        if self.puede_cruzar_montana(a):
+            p.add("cordillera")
+        if self.puede_navegar(a):
+            p.add("mar")
+        return p
+
+    BARRERA_DE = {"exterior": "cordillera", "norte": "cordillera", "sur": "mar"}
+    EPOCA_MINIMA = {"exterior": 0, "norte": 1, "sur": 2}   # cada ampliación siguiente pide una época más
+
+    def _ampliar_mundo(self):
+        """Si una sociedad llega a un borde y sabe cruzar lo que hay detrás, el mundo crece (en espejo)."""
+        if not hasattr(self, "ampliaciones"):
+            self.ampliaciones = {"exterior": 0, "sur": 0, "norte": 0}
+        ep = EPOCAS.index(self.epoca())
+        for direccion in ("exterior", "norte", "sur"):
+            n = self.ampliaciones[direccion]
+            if ep < min(self.EPOCA_MINIMA[direccion] + n, len(EPOCAS) - 1):
+                continue
+            barrera = self.BARRERA_DE[direccion]
+            for lado in self.rnd.sample("AB", 2):  # orden al azar: nadie tiene ventaja por ser «el primero»
+                if not self.mundo.borde_cercano(lado, direccion):
+                    continue
+                quien = [a for a in self.vivos(lado) if a.adulto and barrera in self.pasos(a)]
+                if not quien:
+                    continue
+                dx, dy, bioma = self.mundo.ampliar(direccion, n, config.SEMILLA)
+                for o in self.agentes.values():
+                    o.x += dx; o.y += dy
+                    if getattr(o, "casa", None):
+                        o.casa = (o.casa[0] + dx, o.casa[1] + dy)
+                self.ampliaciones[direccion] += 1
+                a = self.rnd.choice(quien)
+                donde = {"exterior": "al otro lado de las montañas", "norte": "más allá de la cordillera del norte",
+                         "sur": "al otro lado del mar"}[direccion]
+                texto = f"MUNDO NUEVO: {a.nombre} descubre que {donde} hay más tierra ({bioma}). El mundo se hace más grande."
+                self.suceso("noche", a, "mundo_nuevo", texto)
+                for o in self.vivos(lado):
+                    o.recordar(f"Día {self.dia}: {a.nombre} ha visto que {donde} hay tierras nuevas ({bioma}).")
+                self.frenar("mundo nuevo")
+                from . import avisos
+                avisos.telegram(f"🌍 Mundo nuevo en '{self.nombre}' (día {self.dia}): «{config.NOMBRE_SOCIEDAD[lado]}» ha llegado "
+                                f"{donde}. Aparece una región de {bioma}, igual en los dos lados. Gran momento para un reel.")
+                break
+
+    def _horizonte(self, a):
+        """Lo que ve en el horizonte si está cerca de un borde o de una barrera: motivo para inventar."""
+        m, pasos = self.mundo, self.pasos(a)
+        avisos = []
+        exterior = (a.x <= 4) if a.lado == "B" else (a.x >= m.w - 5)
+        if exterior and "cordillera" not in pasos:
+            avisos.append("muy cerca se alzan montañas altas y heladas que nadie ha cruzado")
+        if a.y >= m.h - 5 and "mar" not in pasos:
+            avisos.append("al sur se extiende un mar sin fin")
+        if a.y <= 4 and "cordillera" not in pasos:
+            avisos.append("al norte se levanta una cordillera nevada")
+        for dx, dy in ((2, 0), (-2, 0), (0, 2), (0, -2)):
+            x, y = a.x + dx, a.y + dy
+            if 0 <= x < m.w and 0 <= y < m.h and m.tipo[y][x] in ("cordillera", "mar") and m.tipo[y][x] not in pasos:
+                avisos.append("cerca hay " + ("una cordillera que no sabéis cruzar" if m.tipo[y][x] == "cordillera" else "un mar que no sabéis navegar"))
+                break
+        return (" Desde aquí ves que " + " y ".join(dict.fromkeys(avisos)) + ".") if avisos else ""
+
     def _explorar(self, a, fase):
-        destino = self.mundo.borde_niebla(a.lado, a.x, a.y, self.rnd, cruzar=self.puede_cruzar_rio(a))
+        destino = self.mundo.borde_niebla(a.lado, a.x, a.y, self.rnd, cruzar=self.pasos(a))
         if not destino:
             return
         a.x, a.y = destino
         a.energia = max(0, a.energia - 6)
         radio = config.RADIO_EXPLORAR + int(self.maximo(a, "alcance") // 2)
-        nuevas = self.mundo.revelar(a.lado, a.x, a.y, radio, cruzar=self.puede_cruzar_rio(a))
+        nuevas = self.mundo.revelar(a.lado, a.x, a.y, radio, cruzar=self.pasos(a))
         if any(self.mundo.tipo[y][x] == "rio" for x, y in nuevas) and not getattr(self, f"rio_visto_{a.lado}", False):
             setattr(self, f"rio_visto_{a.lado}", True)
             self.suceso(fase, a, "exploración", f"{a.nombre} llega a la orilla de un gran río imposible de cruzar a nado.")
@@ -557,6 +647,7 @@ class Simulacion:
 
     def _fin_de_dia(self):
         self._comprobar_contacto("noche")
+        self._ampliar_mundo()
         self.mundo.regenerar()
         self._estropear_comida()
         dpa = self.dias_por_ano()
@@ -645,6 +736,25 @@ class Simulacion:
         self.bd.execute("INSERT OR REPLACE INTO fotos VALUES(?,?,?)", (self.nombre, self.dia, json.dumps(estado, ensure_ascii=False)))
         self.bd.commit()
         self.metricas_dia = {"A": self._metricas_vacias(), "B": self._metricas_vacias()}
+
+    def fichas_entrevista(self):
+        """Lo que cada habitante sabe de sí mismo, para las entrevistas del público (solo lectura)."""
+        res = {}
+        for a in self.vivos():
+            if not a.adulto:
+                continue
+            f = {"accion": getattr(a, "ultima_accion", ""), "creencias": moderacion.revisar(a.creencias)[0]}
+            pareja = self.agentes.get(a.pareja) if a.pareja else None
+            z = self.mundo.zona[a.y][a.x]
+            memoria = [moderacion.revisar(m)[0] for m in a.memoria[-14:]]
+            res[str(a.id)] = {
+                "nombre": a.nombre, "lado": a.lado, "edad": a.edad, "accion": f.get("accion"), "creencias": f.get("creencias"),
+                "conocimientos": sorted(a.conocimientos), "pareja": pareja.nombre if pareja else None, "hijos": len(a.hijos),
+                "casa": bool(a.refugio), "inventario": {k: int(v) for k, v in a.inventario.items() if v >= 1},
+                "lugar": "el valle donde nació" if z.startswith("valle") else "tierras recién descubiertas" if z.startswith("region")
+                         else "la tierra de nadie" if z == "nadie" else "las tierras de su gente",
+                "memoria": memoria, "conoce_otros": bool(self.contacto)}
+        return res
 
     def _ficha_publica(self, a):
         """La ficha que se enseña en la web: lo que dice, piensa y cree pasa por el filtro."""

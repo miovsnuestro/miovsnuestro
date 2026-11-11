@@ -1,4 +1,4 @@
-# Mío vs Nuestro — motor, web, bot, reels y vigilancia (v0.8)
+# Mío vs Nuestro — motor, web, bot, reels y vigilancia (v0.9)
 
 **Mío vs Nuestro** — _Dos sociedades de IA. Mismo mundo. Valores opuestos._ Dos sociedades, «Los del Mío» (derecha del mapa) y «Los del Nuestro» (izquierda), en un mismo territorio en espejo. Empiezan sin nada en plena naturaleza, con los mismos recursos, las mismas reglas físicas y los mismos rasgos de personalidad. Lo único que cambia son los valores con los que nacen (`sim/doctrinas/A.md` y `B.md`).
 
@@ -115,3 +115,13 @@ Música: copia pistas libres de derechos en `reels/musica/` y se mezclarán baja
 - **Reels fotograma a fotograma**: la web tiene un modo reel en el que el tiempo lo pone `reels/fabrica.py` (1/25 s por fotograma), así el vídeo sale fluido aunque el servidor no tenga tarjeta gráfica. Escenas variadas sin frases repetidas, planos distintos (apertura con marcador, personaje, aldea, río), la escena dura lo que dure la voz, y una revisión automática avisa en Telegram si detecta imagen congelada. Un reel diario tarda unos 10-15 minutos en montarse. Prueba sin enviar: `python -m reels.fabrica prueba`.
 - **Vigilancia ampliada**: el vigilante comprueba también los servicios y que se generen reels, y publica `https://dominio/salud.txt` (OK o FALLO) para UptimeRobot. El informe diario a la rama `estado` incluye reels y versión.
 - **Actualizar el servidor** sin tocar el mundo ni las claves: `bash /srv/miovsnuestro/actualizar.sh` (como root).
+
+## Novedades de la v0.9
+
+- **El mundo no tiene límite.** Detrás de cada sociedad hay montañas, al norte una cordillera y al sur el mar. Cuando una sociedad llega a un borde y sabe cruzar lo que hay detrás, el mapa crece por ese lado: aparece una barrera (cordillera o mar) y una región nueva (altiplano, bosque frío, valle fértil, costa o estepa), siempre en espejo e igual para las dos.
+  - Cordillera: invento de camino o puente, vehículo, animales de carga o transporte aéreo, y ropa de abrigo (abrigo ≥ 0,4).
+  - Mar: barco y época del metal en adelante (o transporte aéreo).
+  - Cada ampliación siguiente en la misma dirección pide una época más (exterior desde la prehistoria, norte desde las aldeas, sur desde el metal; tope en la espacial, y a partir de ahí sin límite).
+  - La exploración ya no atraviesa barreras: se ve la barrera, pero no lo que hay detrás. Los habitantes ven en el horizonte lo que no saben cruzar, y eso entra en su contexto.
+  - Las regiones nuevas se reclaman igual que la tierra de nadie. Cada ampliación genera el suceso «mundo nuevo», un aviso en Telegram y frena el tiempo como los grandes momentos.
+- **Entrevistas del público** (`entrevistas.py`, servicio `miovsnuestro-entrevistas`, `/api/entrevistas/*` por Caddy): desde la ficha de un adulto se le puede preguntar. Responde con sus recuerdos, creencias y vida. **Es de solo lectura:** la pregunta no entra en su memoria ni cambia sus decisiones. Tope de 2 €/mes repartido por días, 3 preguntas por visitante al día (la IP no se guarda, solo una huella), preguntas de 200 caracteres, filtro de política real y de intentos de sacarlos del personaje, moderación de la respuesta. Ajustes en `datos/ajustes.json`: `PRESUPUESTO_ENTREVISTAS_EUR`, `PREGUNTAS_POR_VISITANTE_DIA`, `ENTREVISTAS_ACTIVAS`. Gasto del mes: `python entrevistas.py resumen`.

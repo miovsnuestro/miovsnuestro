@@ -3,7 +3,9 @@
 Material para los reels de lanzamiento del proyecto. La fábrica de reels lo usará el día del lanzamiento, junto con las tomas reales del mundo oficial.
 
 - **Escena visual:** `mundo3d.html`, con la misma interfaz que tendrá la web (barra superior, marcador de las dos sociedades, ficha de personaje, bocadillos y crónica). Admite parámetros en la URL: `?plano=general|personaje|frontera|noche|marcador`, `dia`, `pA`, `pB`, `kA`, `kB`, `wA`, `wB` y `cronica`.
-- **Capturas de referencia** (1080×1920, formato reel), en `capturas/`:
+- **Desde la v0.8 la escena buena es la web real** (`web/index.html`) en modo reel: `?reel=1&plano=marcador|general|personaje|aldea|rio&lado=A|B&foco=ID&hora=0.3&titular=...`. La fábrica de reels la graba fotograma a fotograma. `mundo3d.html` queda como referencia antigua.
+- **Capturas del visor nuevo** (mundo de prueba sin IA, solo de referencia; las cifras no valen): `06_visor3d_general.png`, `07_visor3d_siguiendo.png`, `08_visor3d_aldea.png`, `09_visor3d_anochecer.png`, `10_mundo_ampliado.png` (mundo tras crecer: cordilleras y regiones nuevas).
+- **Capturas antiguas** (1080×1920, formato reel), en `capturas/`:
   - `01_vista_general.png`: el valle entero, las dos mitades y el marcador en el día 1.
   - `02_personaje.png`: primer plano de Lúa con su ficha y lo que piensa.
   - `03_frontera.png`: dos habitantes, uno a cada lado de la frontera.
@@ -112,3 +114,51 @@ Ficha de un habitante de cada sociedad: nombre, edad, oficio, lo que piensa y su
 - **Decidido:** el proyecto se llama **Mío vs Nuestro** (dominio miovsnuestro.com, @miovsnuestro en todas las redes; en inglés, Mine vs Ours). Se pronuncia siempre "Mío versus Nuestro". Lema: "Dos sociedades de IA. Mismo mundo. Valores opuestos." Hashtags: #MíoVsNuestro y #MioVsNuestro. Se quitó el "Lo" porque "Lo Nuestro" es el nombre de un partido y de una marca registrada de premios. Las sociedades son **Los del Mío** (verde azulado, "propiedad privada y libre intercambio") y **Los del Nuestro** (coral, "propiedad común y reparto según necesidad"). Son colores que en España no se asocian a ningún partido. Siempre aparecen el nombre y su subtítulo. En el mapa y en el marcador, **Los del Mío (verde) están a la derecha** y **Los del Nuestro (coral) a la izquierda**.
 - **Tono político:** dentro del mundo y en el marcador, nombres neutrales. Las etiquetas políticas solo en el gancho de títulos y portadas (por ejemplo: "¿Derecha o izquierda? Lo hemos simulado con IA"), sin decir nunca cuál es mejor.
 - **Pendiente:** voz del narrador.
+
+---
+
+## 6. Lo implementado hasta el 11-nov-2026 (para contarlo en los reels)
+
+Todo esto ya existe y se puede enseñar. Las frases entre comillas son ideas de texto o de voz; no hay que usarlas todas.
+
+### Un mundo 3D de verdad (v0.8)
+- Ya no es un mapa de casillas: relieve real con montañas nevadas, lagos, el gran río, playas, mar y bosques que siguen más allá del horizonte. "Un mundo entero, en 3D, que puedes recorrer."
+- Lo que nadie ha explorado se ve bajo una bruma: "Ellos no saben lo que hay ahí. Tú sí lo ves."
+- Vida alrededor: ciervos, pájaros, nubes, agua que se mueve.
+- Día y noche reales: un día en el mundo dura 48 minutos. De noche se encienden las hogueras y las ventanas. Plano bonito para el tráiler: anochecer en la aldea.
+- Los habitantes tienen cuerpo y se mueven según lo que hacen: talan, pican piedra, recolectan, pescan, cazan, se sientan a descansar, hablan entre ellos, se paran a pensar un invento. Los niños son más pequeños.
+- Las casas cambian con la época: tiendas de piel en la prehistoria, cabañas con tejado de paja en las aldeas y casas de piedra después. Cada tejado lleva el color de su sociedad.
+- Los inventos se ven en el pueblo: hoguera, huerto, corral con ovejas, taller con su fragua, carro, balsa en la orilla del río. Cada pueblo tiene su bandera.
+- **Cualquiera puede entrar y mirar como en los Sims:** moverse, girar, acercarse hasta ver la cara de alguien, tocarlo y seguirlo (los árboles que lo tapan se apartan). Su ficha dice qué hace, si tiene casa, pareja e hijos, qué sabe, qué lleva y qué piensa o dice. "Toca a cualquiera y descubre su vida."
+
+### El mundo no tiene límite (v0.9)
+- El mapa crece cuando ellos lo consiguen. Detrás de cada sociedad hay montañas; al norte, una cordillera nevada; al sur, el mar.
+  - **Las montañas** se cruzan con caminos, carros o animales de carga, y ropa de abrigo.
+  - **El mar** no se cruza en balsa: hace falta un barco de verdad y saber orientarse (desde la edad del metal).
+  - **Cada ampliación siguiente en la misma dirección pide una época más avanzada.** No hay final: pueden descubrir regiones, mares y continentes nuevos indefinidamente.
+- Detrás de cada barrera aparece una región nueva (altiplano, bosque frío, valle fértil, costa o estepa) con sus recursos, que se puede reclamar y poblar.
+- **Neutralidad:** el mundo nuevo aparece a los dos lados a la vez y es idéntico en espejo. Lo que cambia es quién es capaz de llegar antes.
+- Los habitantes saben lo que ven en el horizonte ("al sur se extiende un mar sin fin"), y eso les empuja a inventar para cruzarlo.
+- "¿Qué hay detrás de las montañas? Ni ellos lo saben… hasta que alguien invente cómo cruzarlas."
+- Gran momento para un reel especial (llega aviso por Telegram): **"Mundo nuevo"**, cuando alguien cruza por primera vez una cordillera o un mar.
+
+### Puedes entrevistar a los habitantes (v0.9)
+- En la web, al tocar a un adulto aparece «🎤 Entrevistar». Le preguntas lo que quieras sobre su vida y responde con sus recuerdos, sus creencias y lo que ha hecho, como si le entrevistara un periodista.
+- **No cambia el experimento:** lo que pregunta el público no entra en su memoria ni en sus decisiones. Es de solo lectura. Esto hay que decirlo claro: "Puedes hablar con ellos, pero no puedes influir en ellos."
+- Solo conocen su mundo: si les preguntas por política real, famosos o internet, no saben de qué hablas.
+- Límites: 3 preguntas por persona al día y un tope de gasto de 2 € al mes. Si se llega al tope: "Los habitantes descansan por hoy".
+- Idea de reel nuevo: **"Les hemos preguntado…"** — la misma pregunta a un habitante de cada sociedad ("¿Qué harías si tu vecino pasa hambre?", "¿Qué es lo más valioso que tienes?") y sus respuestas, una al lado de la otra. Mismo tiempo para cada uno y sin decir quién tiene razón.
+
+### Reels automáticos que se ven bien (v0.8)
+- Cada reel se graba fotograma a fotograma dentro del mundo 3D, con planos distintos: apertura con el marcador, primer plano de un personaje, la aldea, el río.
+- Siempre el mismo número de escenas para cada sociedad, frases sin repetir, voz y subtítulo con el color de cada una, etiqueta «Contenido generado con IA» y tarjeta final.
+- Oscar aprueba o pide cambios desde Telegram antes de publicar nada.
+
+### Vigilancia 24/7 (para el reel de transparencia, si interesa)
+- El servidor se vigila solo cada 5 minutos, se reinicia si se atasca, guarda copias diarias y cada mañana Claude revisa el estado y avisa si algo va mal. Una página pública dice si todo está OK.
+
+### Cambios en los guiones de arriba
+- **Reel 1 (tráiler):** sustituir las capturas antiguas por tomas del visor nuevo: vista general al amanecer, primer plano siguiendo a alguien, aldea al anochecer.
+- **Reel 2 (cómo funciona):** añadir al final, en 5 s: "Y puedes entrar, seguir a cualquiera y hasta entrevistarle."
+- **Reel 4 (hasta dónde pueden llegar):** añadir el mundo sin límite: "Y el mundo crece con ellos: detrás de las montañas, al otro lado del mar… no hay final del mapa."
+- **Reel 3 (por qué es justo):** añadir "el mundo nuevo también aparece igual a los dos lados" y "las entrevistas no influyen en ellos".

@@ -1,9 +1,15 @@
 @DOMINIO@, www.@DOMINIO@ {
-	root * @DIR@/web
-	file_server
 	encode gzip
 	@vivo path /estado.json /salud.txt
 	header @vivo Cache-Control "no-cache"
+	# Entrevistas del público (servicio local, con límites de gasto)
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8090
+	}
+	handle {
+		root * @DIR@/web
+		file_server
+	}
 }
 
 # Acceso local para la grabación de reels y la vigilancia

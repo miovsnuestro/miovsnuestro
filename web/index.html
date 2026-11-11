@@ -43,6 +43,10 @@
   #ia{position:absolute;left:10px;bottom:84px;font-size:10px;background:rgba(14,20,24,.55);padding:3px 7px;border-radius:7px}
   #ayuda{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:13px;text-align:center;line-height:1.5;transition:opacity 1s;pointer-events:none}
   .oculto{display:none!important}
+  #entrevista{margin-top:8px;border-top:1px solid rgba(255,255,255,.14);padding-top:8px}
+  #eresp{font-size:14px;line-height:1.45;margin-bottom:6px}#eresp q{font-style:italic}#eresp .yo{opacity:.75;font-size:12px;display:block;margin-top:6px}
+  .epreg{display:flex;gap:6px}.epreg input{flex:1;min-width:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:8px 10px;font-size:14px;outline:none}
+  #eenv{background:#FAC775!important;color:#1b1b1b!important;font-weight:650}#enota{font-size:10.5px;opacity:.65;margin-top:5px}
   #titular{position:absolute;left:24px;right:24px;top:36%;text-align:center;font-size:30px;font-weight:800;line-height:1.2;text-shadow:0 2px 12px rgba(0,0,0,.55);display:none}
   .nombre{position:absolute;transform:translate(-50%,-100%);font-size:11px;font-weight:600;padding:2px 7px;border-radius:8px;background:rgba(14,20,24,.66);white-space:nowrap;border-bottom:2px solid}
   .bocadillo{position:absolute;transform:translate(-50%,-100%);background:#fff;color:#22262A;font-size:13px;line-height:1.35;padding:7px 11px;border-radius:14px;max-width:210px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.2)}
@@ -65,7 +69,8 @@
 <div id="ficha" class="panel"><div class="n"><i id="fc"></i><span id="fn"></span></div><div class="s" id="fs"></div>
   <div class="barras"><div>Hambre<span><b id="bh"></b></span></div><div>Energía<span><b id="be"></b></span></div><div>Salud<span><b id="bs"></b></span></div></div>
   <div class="p" id="fp"></div>
-  <div class="acc"><button id="bseguir">Dejar de seguir</button><button id="bcerrar">Cerrar</button></div></div>
+  <div id="entrevista" class="oculto"><div id="eresp"></div><div class="epreg"><input id="epreg" maxlength="200" placeholder="Pregúntale algo sobre su vida…" autocomplete="off"><button id="eenv">Preguntar</button></div><div id="enota">Responde con sus recuerdos. Tu pregunta no cambia nada en el experimento. Contenido generado con IA.</div></div>
+  <div class="acc"><button id="bentrevistar" style="display:none">🎤 Entrevistar</button><button id="bseguir">Dejar de seguir</button><button id="bcerrar">Cerrar</button></div></div>
 <div id="botones">
   <div class="g"><button data-ir="B">Nuestro</button><button data-ir="C">Río</button><button data-ir="A">Mío</button></div>
   <div class="g"><button class="r" id="girI" title="Girar">⟲</button><button class="r" id="girD" title="Girar">⟳</button><button class="r" id="zMas" title="Acercar">＋</button><button class="r" id="zMenos" title="Alejar">－</button></div>
@@ -110,13 +115,13 @@ function tipo(x,y){return tipos[clamp(y,0,MH-1)][clamp(x,0,MW-1)];}
 function prepararAlturas(m){
   MW=m.ancho;MH=m.alto;tipos=m.tipo;const base=new Float32Array(MW*MH);
   for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const t=tipos[y][x],n=fbm(espejo(x+.5)*.21,(y+.5)*.21);
-    base[y*MW+x]=t==='m'?2.4+n*2.6:t==='r'?.75+n*.55:t==='b'?.45+n*.4:t==='f'?.22+n*.12:t==='a'?-.9:t==='g'?-1.25:.28+n*.38;}
+    base[y*MW+x]=t==='c'?4.6+n*3.6:t==='o'?-1.9:t==='m'?2.4+n*2.6:t==='r'?.75+n*.55:t==='b'?.45+n*.4:t==='f'?.22+n*.12:t==='a'?-.9:t==='g'?-1.25:.28+n*.38;}
   hT=new Float32Array(MW*MH);
   for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const t=tipos[y][x];let s=0,k=0;
     for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const xx=clamp(x+dx,0,MW-1),yy=clamp(y+dy,0,MH-1),w=(dx||dy)?1:2;s+=base[yy*MW+xx]*w;k+=w;}
     let h=.45*base[y*MW+x]+.55*s/k;
-    if(t==='m')h=Math.max(h,base[y*MW+x]*.9);
-    if(t==='a'||t==='g')h=Math.min(h,-.4);else h=Math.max(h,.2);
+    if(t==='m'||t==='c')h=Math.max(h,base[y*MW+x]*.9);
+    if(t==='a'||t==='g'||t==='o')h=Math.min(h,t==='o'?-1.1:-.4);else h=Math.max(h,.2);
     hT[y*MW+x]=h;}
 }
 function alturaMapa(u,v){const fx=u-.5,fy=v-.5,x0=Math.floor(fx),y0=Math.floor(fy),tx=fx-x0,ty=fy-y0;
@@ -133,16 +138,16 @@ function altura(u,v){
   return h+det*(h>2?1:h<-.2?.05:.2);
 }
 // Muestreo rápido del suelo (para personas, árboles, cámara)
-let rejilla=null;const PASO=.5;let NU=0,NV=0;
+let rejilla=null;let PASO=.5;let NU=0,NV=0;
 function suelo(x,z){const u=(U(x)+MX)/PASO,v=(V(z)+MZN)/PASO;if(!rejilla)return 0;
   const i=clamp(Math.floor(u),0,NU-2),k=clamp(Math.floor(v),0,NV-2),a=clamp(u-i,0,1),b=clamp(v-k,0,1);
   const g=(ii,kk)=>rejilla[kk*NU+ii];return lerp(lerp(g(i,k),g(i+1,k),a),lerp(g(i,k+1),g(i+1,k+1),a),b);}
 
-const CT={p:new THREE.Color('#86B24E'),f:new THREE.Color('#AEB85A'),b:new THREE.Color('#4E8638'),r:new THREE.Color('#9D988B'),m:new THREE.Color('#8C857A'),a:new THREE.Color('#C8B98A'),g:new THREE.Color('#B9AD84')};
+const CT={c:new THREE.Color('#8A8378'),o:new THREE.Color('#A99C76'),p:new THREE.Color('#86B24E'),f:new THREE.Color('#AEB85A'),b:new THREE.Color('#4E8638'),r:new THREE.Color('#9D988B'),m:new THREE.Color('#8C857A'),a:new THREE.Color('#C8B98A'),g:new THREE.Color('#B9AD84')};
 const C_ARENA=new THREE.Color('#DCCB94'),C_HIERBA=new THREE.Color('#6F9A45'),C_BOSQ=new THREE.Color('#4B7636'),C_ROCA=new THREE.Color('#8E877B'),C_NIEVE=new THREE.Color('#F1F3F4'),C_NIEBLA=new THREE.Color('#A6B2BA');
 let terreno=null,colBase=null,expV=null;
 function construirTerreno(m){
-  prepararAlturas(m);
+  prepararAlturas(m);PASO=MW*MH>16000?1:.5;
   NU=Math.round((MW+2*MX)/PASO)+1;NV=Math.round((MH+MZN+MZS)/PASO)+1;
   const n=NU*NV,pos=new Float32Array(n*3),col=new Float32Array(n*3);rejilla=new Float32Array(n);colBase=new Float32Array(n*3);
   const c=new THREE.Color(),t2=new THREE.Color();
@@ -179,7 +184,7 @@ function pintarTerreno(m){
     const f=lerp(lerp(e(x0,y0),e(x0+1,y0),tx),lerp(e(x0,y0+1),e(x0+1,y0+1),tx),ty);
     const dentro=u>=0&&u<MW&&v>=0&&v<MH;
     if(dentro){const xi=clamp(Math.round(fx),0,MW-1),yi=clamp(Math.round(fy),0,MH-1),d=du[yi][xi];
-      if(d!=='-'&&xi>=40&&xi<MW-40&&ex[yi][xi]==='1')c.lerp(d==='A'?COLA:COLB,.2);}
+      const zn=m.zona?m.zona[yi][xi]:((xi>=40&&xi<MW-40)?'n':'v');if(d!=='-'&&(zn==='n'||zn==='r')&&ex[yi][xi]==='1')c.lerp(d==='A'?COLA:COLB,.2);}
     const niebla=dentro?(1-f)*.42:.12;const l=c.r*.3+c.g*.55+c.b*.15;gris.setRGB(l*.75+C_NIEBLA.r*.35,l*.75+C_NIEBLA.g*.35,l*.75+C_NIEBLA.b*.38);c.lerp(gris,niebla);
     col[idx*3]=c.r;col[idx*3+1]=c.g;col[idx*3+2]=c.b;expV[idx]=f;}
   terreno.geometry.attributes.color.needsUpdate=true;colocarBrumas(m);
@@ -210,6 +215,7 @@ function plantar(){
     else if(t==='f'){for(let i=0;i<5;i++)add(trigo,x+.1+Rr(20+i)*.8,y+.1+Rr(30+i)*.8,.8+Rr(40+i)*.5,Rr(50+i)*6,Rr(60+i)<.5?'#D9C46A':'#C8B456',0);}
     else if(t==='r'){const n=1+Math.floor(Rr(1)*3);for(let i=0;i<n;i++)add(rocas,x+.15+Rr(10+i)*.7,y+.15+Rr(20+i)*.7,.5+Rr(30+i)*.8,Rr(40+i)*6,'#9A958A',-.05,.7);
       if(Rr(5)<.5)add(pedr,x+Rr(6),y+Rr(7),1,Rr(8)*6,'#8F8A80',0);}
+    else if(t==='c'){if(Rr(1)<.45)add(rocas,x+Rr(2),y+Rr(3),1+Rr(4)*1.2,Rr(5)*6,'#8A847A',-.1,.8);}
     else if(t==='m'){if(Rr(1)<.55)add(rocas,x+Rr(2),y+Rr(3),.9+Rr(4)*1.1,Rr(5)*6,'#8A847A',-.1,.8);if(alturaMapa(x+.5,y+.5)<3.4&&Rr(6)<.35)add(pinos,x+Rr(7),y+Rr(8),.7+Rr(9)*.4,0,VP[2]);}}
   // bosques y peñas fuera del mapa: el mundo no se acaba en el borde
   for(let v=-MZN+1;v<MH+MZS-1;v+=1.8)for(let u=-MX+1;u<MW/2;u+=1.8){
@@ -272,7 +278,7 @@ function crearCiervo(){const g=new THREE.Group(),cu=MF('#9A6B42'),os=MF('#6E4A2C
   const cola=new THREE.Mesh(new THREE.BoxGeometry(.08,.1,.06),MF('#EFE6D8'));cola.position.set(0,.6,-.32);
   g.add(cuerpo,cuello,cab,cola);const patas=[];for(const[px,pz]of[[-.1,.22],[.1,.22],[-.1,-.22],[.1,-.22]]){const p=new THREE.Mesh(new THREE.BoxGeometry(.06,.42,.06),os);p.geometry.translate(0,-.21,0);p.position.set(px,.42,pz);g.add(p);patas.push(p);}
   g.traverse(o=>{if(o.isMesh)o.castShadow=true;});g.userData.patas=patas;g.scale.setScalar(1.1);return g;}
-function poblarFauna(){for(let i=0;i<9;i++){const u=hash(i,51)*(MW/2-8)+4,v=2+hash(i,52)*(MH-4);
+function poblarFauna(){const nF=Math.min(30,Math.round(9*MW*MH/5100));for(let i=0;i<nF;i++){const u=hash(i,51)*(MW/2-8)+4,v=2+hash(i,52)*(MH-4);
   for(const s of[1,-1]){const uu=s>0?u:MW-u;const g=crearCiervo();g.position.set(X(uu),0,Z(v));S.add(g);fauna.push({g,base:[uu,v],dest:null,esp:hash(i,53)*4,fase:hash(i,54)*6});}}}
 function moverFauna(dt){for(const f of fauna){const g=f.g;f.esp-=dt;
   if(!f.dest&&f.esp<=0){for(let k=0;k<6;k++){const u=f.base[0]+(Math.random()-.5)*8,v=clamp(f.base[1]+(Math.random()-.5)*8,1,MH-1),h=altura(u,v);if(h>.25&&h<2.4){f.dest=new THREE.Vector3(X(u),0,Z(v));break;}}if(!f.dest)f.esp=3;}
@@ -383,7 +389,7 @@ function construirPueblos(e){
   if(firma===firmaPueblos)return;firmaPueblos=firma;pueblos.clear();fuegos.length=0;banderas.length=0;obstaculos.length=0;
   setTimeout(()=>{for(const o of obstaculos)talar(o.x,o.z,o.r+.9);for(const l of'AB'){const pl=plazas[l];if(pl)talar(X(pl[0]),Z(pl[1]),2.4);}},0);
   for(const l of'AB'){
-    const valle=l==='B'?30:MW-30;let pu,pv;
+    const valle=VALLE[l];let pu,pv;
     if(casas[l].length){pu=casas[l].reduce((s,c)=>s+c.x+.5,0)/casas[l].length;pv=casas[l].reduce((s,c)=>s+c.y+.5,0)/casas[l].length;}else{pu=valle;pv=MH/2;}
     [pu,pv]=enTierra(pu,pv);plazas[l]=[pu,pv];const sg=l==='B'?1:-1;
     const poner=(obj,du,dv,rot=0,r=0)=>{const[uu,vv]=enTierra(pu+du*sg,pv+dv);obj.position.set(X(uu),Math.max(suelo(X(uu),Z(vv)),0),Z(vv));obj.rotation.y=rot*sg;pueblos.add(obj);if(r)obstaculos.push({x:obj.position.x,z:obj.position.z,r});return obj;};
@@ -401,11 +407,15 @@ function construirPueblos(e){
       const nombres=e.agentes.filter(o=>o.casa&&o.casa.join(',')===c.k&&o.edad>=14).map(o=>o.nombre);ca.userData.casa=nombres;pueblos.add(ca);obstaculos.push({x:ca.position.x,z:ca.position.z,r:ep==='prehistoria'?1.05:1.4});});}
 }
 
+let VALLE={A:120,B:30};
+function calcularValles(m){if(!m.zona){VALLE={A:MW-30,B:30};return;}let sb=0,nb=0;for(let y=0;y<MH;y++)for(let x=0;x<MW/2;x++)if(m.zona[y][x]==='v'){sb+=x+.5;nb++;}
+  const b=nb?sb/nb:30;VALLE={B:b,A:MW-b};}
 // ---------------- estado del mundo ----------------
 let est=null,mapaFirma='';
 function actualizar(e){
   est=e;
-  if(!listoMapa){construirTerreno(e.mapa);construirAgua();plantar();poblarFauna();listoMapa=true;irA(q.get('lado')||'C',true);}
+  if(listoMapa&&(e.mapa.ancho!==MW||e.mapa.alto!==MH)){if(!REEL){location.reload();return;}}
+  if(!listoMapa){calcularValles(e.mapa);construirTerreno(e.mapa);construirAgua();plantar();poblarFauna();listoMapa=true;irA(q.get('lado')||'C',true);}
   const firma=e.mapa.explorado.join('')+e.mapa.dueno.join('');if(firma!==mapaFirma){mapaFirma=firma;pintarTerreno(e.mapa);}
   construirPueblos(e);
   const ico=['🌅','☀️','🌇','🌙'][Math.floor(horaDia()*4)%4];
@@ -427,7 +437,7 @@ async function cargar(){try{const r=await fetch((q.get('estado')||'estado.json')
 // ---------------- cámara (estilo Sims) ----------------
 const cam={x:0,z:0,yaw:0,pitch:.85,dist:70},obj={...cam};let foco=null,usuarioMovio=false;
 function irA(l,inst){foco=null;$('ficha').style.display='none';
-  if(l==='A'){Object.assign(obj,{x:X(MW-30),z:0,dist:34,pitch:.72,yaw:-.35});}else if(l==='B'){Object.assign(obj,{x:X(30),z:0,dist:34,pitch:.72,yaw:.35});}else Object.assign(obj,{x:0,z:0,dist:62,pitch:.62,yaw:0});
+  if(l==='A'){Object.assign(obj,{x:X(VALLE.A),z:0,dist:34,pitch:.72,yaw:-.35});}else if(l==='B'){Object.assign(obj,{x:X(VALLE.B),z:0,dist:34,pitch:.72,yaw:.35});}else Object.assign(obj,{x:0,z:0,dist:62,pitch:.62,yaw:0});
   if(inst)Object.assign(cam,obj);}
 function soltar(){foco=null;anillo.visible=false;$('ficha').style.display='none';$('ia').style.display='';}
 function seguir(g){foco=g;obj.dist=Math.min(obj.dist,9);obj.pitch=Math.min(obj.pitch,.55);mostrarFicha(g.userData.a);}
@@ -448,7 +458,7 @@ el.addEventListener('pointerup',fin);el.addEventListener('pointercancel',e=>{pun
 el.addEventListener('wheel',e=>{e.preventDefault();const f=Math.exp(e.deltaY*.0012);const p=sobreSuelo(e.clientX,e.clientY);
   if(p&&!foco&&f<1){obj.x+=(p.x-obj.x)*(1-f)*.9;obj.z+=(p.z-obj.z)*(1-f)*.9;}obj.dist*=f;limitar();ocultarAyuda();},{passive:false});
 let ultimoToque=0;
-addEventListener('keydown',e=>{const k=e.key.toLowerCase(),p=40;if(k==='w'||k==='arrowup')mover(0,p);if(k==='s'||k==='arrowdown')mover(0,-p);if(k==='a'||k==='arrowleft')mover(p,0);if(k==='d'||k==='arrowright')mover(-p,0);
+addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;const k=e.key.toLowerCase(),p=40;if(k==='w'||k==='arrowup')mover(0,p);if(k==='s'||k==='arrowdown')mover(0,-p);if(k==='a'||k==='arrowleft')mover(p,0);if(k==='d'||k==='arrowright')mover(-p,0);
   if(k==='q')obj.yaw+=.15;if(k==='e')obj.yaw-=.15;if(k==='+'||k==='=')obj.dist*=.85;if(k==='-')obj.dist*=1.18;if(k==='escape')soltar();limitar();});
 const rc=new THREE.Raycaster(),mv=new THREE.Vector2(),plano=new THREE.Plane(new THREE.Vector3(0,1,0),0);
 function sobreSuelo(cx,cy){mv.set(cx/W*2-1,-cy/H*2+1);rc.setFromCamera(mv,C);plano.constant=-Math.max(suelo(cam.x,cam.z),0);const p=new THREE.Vector3();return rc.ray.intersectPlane(plano,p)?p:null;}
@@ -462,14 +472,27 @@ $('girI').onclick=()=>{obj.yaw+=Math.PI/4;};$('girD').onclick=()=>{obj.yaw-=Math
 $('bcerrar').onclick=soltar;$('bseguir').onclick=()=>{if(foco){foco=null;anillo.visible=false;$('bseguir').textContent='Seguir';}else if(ultimaFicha){const g=gente.get(ultimaFicha.id);if(g)seguir(g);}};
 $('marcador').onclick=()=>$('marcador').classList.toggle('min');
 let ultimaFicha=null;
-function mostrarFicha(a){ultimaFicha=a;const s=est.sociedades[a.lado],f=$('ficha');f.style.display='block';$('ia').style.display='none';$('bseguir').textContent=foco?'Dejar de seguir':'Seguir';
+let entrevistas=false,entrevistado=null;
+if(!REEL)fetch('/api/entrevistas/estado').then(r=>r.ok?r.json():null).then(d=>{entrevistas=!!(d&&d.activas);}).catch(()=>{});
+$('bentrevistar').onclick=()=>{$('entrevista').classList.toggle('oculto');setTimeout(()=>$('epreg').focus(),50);};
+async function preguntar(){const t=$('epreg').value.trim();if(!t||!ultimaFicha)return;const a=ultimaFicha;$('eenv').disabled=true;
+  $('eresp').innerHTML='<span class="yo"></span>Pensando…';$('eresp').querySelector('.yo').textContent='Tú: '+t;
+  try{const r=await fetch('/api/entrevistas/preguntar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agente:a.id,pregunta:t})});
+    const d=await r.json();$('eresp').textContent='';const yo=document.createElement('span');yo.className='yo';yo.textContent='Tú: '+t;
+    if(d.respuesta){const qq=document.createElement('q');qq.textContent=d.respuesta;$('eresp').append(a.nombre+': ',qq,yo);
+      $('enota').textContent=(d.quedan>0?'Te quedan '+d.quedan+' preguntas hoy. ':'Has usado tus preguntas de hoy. ')+'Tu pregunta no cambia nada en el experimento. Contenido generado con IA.';$('epreg').value='';}
+    else{$('eresp').append(d.error||'No ha podido contestar.',yo);}}
+  catch(err){$('eresp').textContent='No hay conexión con el mundo ahora mismo.';}
+  $('eenv').disabled=false;}
+$('eenv').onclick=preguntar;$('epreg').addEventListener('keydown',e=>{if(e.key==='Enter')preguntar();});
+function mostrarFicha(a){if(!ultimaFicha||ultimaFicha.id!==a.id){$('entrevista').classList.add('oculto');$('eresp').textContent='';}ultimaFicha=a;$('bentrevistar').style.display=(entrevistas&&a.edad>=14)?'':'none';const s=est.sociedades[a.lado],f=$('ficha');f.style.display='block';$('ia').style.display='none';$('bseguir').textContent=foco?'Dejar de seguir':'Seguir';
   $('fc').style.background=COLOR[a.lado];$('fn').textContent=a.nombre+' · '+a.edad+' años';
   const pareja=a.pareja&&est.agentes.find(o=>o.id===a.pareja),inv=Object.entries(a.inventario||{}).filter(([,v])=>v>=1).map(([k,v])=>Math.floor(v)+' '+k).slice(0,4);
   $('fs').textContent=s.nombre+' · '+(VERBO[a.accion]||'anda por ahí')+(a.casa?' · tiene casa':' · sin casa')+(pareja?' · pareja: '+pareja.nombre:'')+(a.hijos&&a.hijos.length?' · '+a.hijos.length+' hijo'+(a.hijos.length>1?'s':''):'')
     +(a.conocimientos.length?' · sabe: '+a.conocimientos.slice(0,4).join(', '):'')+(inv.length?' · lleva: '+inv.join(', '):'');
   const bar=(id,v,c)=>{$(id).style.width=clamp(v,0,100)+'%';$(id).style.background=c;};bar('bh',a.hambre,'#E8A33A');bar('be',a.energia,'#5DB3E0');bar('bs',a.salud,'#6CC66C');
   $('fp').textContent=a.dice?'Dice: «'+a.dice+'»':(a.piensa?'Piensa: «'+a.piensa+'»':(a.creencias?'Cree: «'+a.creencias+'»':''));}
-function mostrarTexto(t){const f=$('ficha');f.style.display='block';$('ia').style.display='none';$('fc').style.background='#FAC775';$('fn').textContent=t;$('fs').textContent='';$('fp').textContent='';['bh','be','bs'].forEach(i=>$(i).style.width='0');ultimaFicha=null;$('bseguir').textContent='Seguir';}
+function mostrarTexto(t){$('bentrevistar').style.display='none';$('entrevista').classList.add('oculto');const f=$('ficha');f.style.display='block';$('ia').style.display='none';$('fc').style.background='#FAC775';$('fn').textContent=t;$('fs').textContent='';$('fp').textContent='';['bh','be','bs'].forEach(i=>$(i).style.width='0');ultimaFicha=null;$('bseguir').textContent='Seguir';}
 function ocultarAyuda(){$('ayuda').style.opacity=0;}setTimeout(ocultarAyuda,7000);
 
 // ---------------- etiquetas y bocadillos ----------------
@@ -510,9 +533,9 @@ function angDespejado(p){const obst=[...pueblos.children,...S.children.filter(o=
     const fr=foco?Math.abs(Math.atan2(Math.sin(yaw-foco.rotation.y),Math.cos(yaw-foco.rotation.y))):0;n+=fr*.6;
     if(n<menos){menos=n;mejor=yaw;}}return mejor;}
 const PLANO=q.get('plano')||'general',DUR=+(q.get('dur')||6);let tReel=0;
-function camaraReel(dt){tReel+=dt;const k=clamp(tReel/DUR,0,1),e=k*k*(3-2*k),lado=q.get('lado')||'A',sg=lado==='B'?1:-1,valle=X(lado==='B'?30:MW-30);
+function camaraReel(dt){tReel+=dt;const k=clamp(tReel/DUR,0,1),e=k*k*(3-2*k),lado=q.get('lado')||'A',sg=lado==='B'?1:-1,valle=X(VALLE[lado]);
   if(PLANO==='personaje'&&foco){if(yawLibre===null)yawLibre=angDespejado(foco.position);obj.x=foco.position.x;obj.z=foco.position.z;obj.dist=lerp(7.5,5.4,e);obj.pitch=lerp(.45,.34,e);obj.yaw=yawLibre+lerp(-.4,.4,e);}
-  else if(PLANO==='aldea'){const pl=plazas[lado]||[lado==='B'?30:MW-30,MH/2];obj.x=X(pl[0]);obj.z=Z(pl[1]);obj.dist=lerp(19,14,e);obj.pitch=lerp(.62,.5,e);obj.yaw=sg*lerp(.2,.9,e);}
+  else if(PLANO==='aldea'){const pl=plazas[lado]||[VALLE[lado],MH/2];obj.x=X(pl[0]);obj.z=Z(pl[1]);obj.dist=lerp(19,14,e);obj.pitch=lerp(.62,.5,e);obj.yaw=sg*lerp(.2,.9,e);}
   else if(PLANO==='rio'){obj.x=0;obj.z=lerp(-6,6,e);obj.dist=lerp(34,26,e);obj.pitch=lerp(.55,.45,e);obj.yaw=lerp(-.25,.25,e);}
   else if(PLANO==='marcador'){obj.x=0;obj.z=0;obj.dist=lerp(105,92,e);obj.pitch=lerp(.85,.95,e);obj.yaw=lerp(-.08,.08,e);}
   else{obj.x=valle+sg*lerp(-6,6,e)*0;obj.z=0;obj.dist=lerp(46,38,e);obj.pitch=lerp(.75,.62,e);obj.yaw=sg*lerp(.1,.6,e);}

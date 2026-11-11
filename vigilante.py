@@ -59,7 +59,7 @@ def comprobar():
     if not copias or time.time() - copias[-1].stat().st_mtime > 26 * 3600:
         problemas.append(("copia", "No hay copia de seguridad de las últimas 24 horas."))
     # 6. Servicios y reels
-    for servicio in ("miovsnuestro-motor", "miovsnuestro-bot"):
+    for servicio in ("miovsnuestro-motor", "miovsnuestro-bot", "miovsnuestro-entrevistas"):
         try:
             activo = subprocess.run(["systemctl", "is-active", "--quiet", servicio]).returncode == 0
         except FileNotFoundError:

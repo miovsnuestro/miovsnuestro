@@ -118,7 +118,8 @@ def guion(mundo, n_escenas, instruccion=""):
             foco = s["agente"] if s["agente"] in vivos and s["agente"] not in usados else None
             if foco:
                 usados.add(foco)
-            plano = "rio" if s["tipo"] in ("primer_contacto", "emigración") else "personaje" if foco else "aldea"
+            plano = ("rio" if s["tipo"] in ("primer_contacto", "emigración") else "general" if s["tipo"] == "mundo_nuevo"
+                     else "personaje" if foco else "aldea")
             esc = {"lado": lado, "foco": foco, "plano": plano, "texto": s["texto"], "narracion": s["texto"]}
         esc = esc or _escena_persona(ag, lado, usados) or {
             "lado": lado, "foco": None, "plano": "aldea", "texto": f"Un día de trabajo entre {nombres[lado]}.",
