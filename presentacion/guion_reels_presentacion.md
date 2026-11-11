@@ -184,3 +184,15 @@ Todo esto ya existe y se puede enseñar. Las frases entre comillas son ideas de 
 - **Reel 2 (cómo funciona):** añadir al final, en 5 s: "Y puedes entrar, seguir a cualquiera y hasta entrevistarle."
 - **Reel 4 (hasta dónde pueden llegar):** añadir el mundo sin límite: "Y el mundo crece con ellos: detrás de las montañas, al otro lado del mar… no hay final del mapa."
 - **Reel 3 (por qué es justo):** añadir "el mundo nuevo también aparece igual a los dos lados" y "las entrevistas no influyen en ellos".
+
+
+## 7. Pautas del editor automático (acordadas el 11-nov-2026, se completan con la skill de editor)
+
+- **Frecuencia:** publicar cuando haya historia, no por calendario. Objetivo: 4–5 reels cortos (30–45 s) por semana, mínimo 3; un episodio largo semanal (2–4 min, YouTube) y especiales el mismo día de los grandes momentos (primer fuego, primera muerte, primer contacto, mundo nuevo, época nueva, dudas, emigración). Sin historia, no hay reel.
+- **Director automático** (por construir): detecta novedades, las puntúa, sigue a 2–3 protagonistas por sociedad (a partes iguales), arma arcos con planteamiento, giro y consecuencia, y graba el momento cargando el mundo tal como estaba ese día. Oscar aprueba cada reel en Telegram.
+- **Premisa escrita en el primer o segundo segundo**, con formato de serie por días: «Día 12: los del Nuestro tienen más comida».
+- **Colores fijos de siempre:** Los del Nuestro coral (izquierda), Los del Mío verde azulado (derecha) y el río azul en medio. Nunca «rojo» (connotación política). Emojis para comentar: 🟠 Nuestro / 🟢 Mío.
+- **Serie con cliffhanger:** cada vídeo termina con una pregunta abierta que el siguiente responde.
+- **Alternar** el plano del mapa con un habitante con nombre al que se sigue.
+- **Gancho para comentar, nunca votación que decida nada:** «¿Qué crees que pasará? Comenta 🟠 o 🟢», «¿Quién crees que llegará antes al río?». En el siguiente reel se ve quién acertó. Nada de lo que diga el público cambia el experimento.
+- **Cierre:** «Míralo en directo en miovsnuestro.com» y la etiqueta «Contenido generado con IA».
