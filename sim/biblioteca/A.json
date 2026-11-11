@@ -1,0 +1,90 @@
+[
+ {
+  "id": "A01",
+  "tema": "trabajo",
+  "titulo": "Libro del trabajo y su fruto",
+  "critica": false,
+  "idea": "Lo que sacas de la tierra con tus manos lleva tu esfuerzo dentro; por eso es tuyo. Si el fruto del trabajo es de quien trabaja, todos trabajan con ganas.",
+  "texto": "Antes de que nadie lo tocara, el bosque no era de nadie. Pero el que corta la madera, la seca y la convierte en un techo ha puesto en ella su tiempo, su sudor y su ingenio. Ese techo ya no es solo madera: es un trozo de su vida. Quitárselo sería quitarle los días que gastó. Por eso, cuando el fruto pertenece a quien lo trabaja, cada uno cuida lo suyo, trabaja con ganas y piensa en mañana. Donde el esfuerzo no tiene dueño, el esfuerzo se apaga."
+ },
+ {
+  "id": "A02",
+  "tema": "tierra",
+  "titulo": "Libro de la tierra cuidada",
+  "critica": false,
+  "idea": "La tierra que alguien cuida como suya da más que la que es de todos y de nadie. El dueño la abona, la deja descansar y la defiende.",
+  "texto": "Mirad dos campos. En uno, cada familia sabe qué surco es suyo: lo abona, lo deja descansar cuando hace falta y lo defiende de las cabras. En el otro, todos pueden coger y nadie responde: cada cual saca lo que puede antes de que lo saque otro, y al cabo de unos años no queda nada. No es que los del segundo campo sean peores personas. Es que nadie cuida de verdad lo que no es de nadie. Dar a cada tierra un dueño que responda de ella es la mejor manera de que dure."
+ },
+ {
+  "id": "A03",
+  "tema": "familia",
+  "titulo": "Libro de la casa y los hijos",
+  "critica": false,
+  "idea": "La familia es la primera escuela y el primer refugio. Quien cría a sus hijos y responde de ellos les da lo que ningún grupo grande puede dar: amor propio y cercano.",
+  "texto": "Nadie conoce a un niño como su madre y su padre. Ellos saben cuándo tiene miedo, qué le hace reír y qué necesita para crecer fuerte. La familia es la primera escuela y el primer refugio: allí se aprende a trabajar, a respetar y a cuidar de otros. Cuando cada familia responde de los suyos, el pueblo entero está hecho de casas firmes. Un grupo grande puede ayudar, pero nunca querrá a un niño como lo quieren los suyos."
+ },
+ {
+  "id": "A04",
+  "tema": "ayuda",
+  "titulo": "Libro de la mano tendida",
+  "critica": false,
+  "idea": "Ayudar al que sufre es de las cosas más nobles que hay, y vale más cuando sale del corazón de cada uno que cuando se manda. La generosidad libre une; la obligada se resiente.",
+  "texto": "Cuando el vecino pierde su cosecha, la gente buena le lleva grano sin que nadie se lo pida. Esa ayuda une a las familias, porque el que da lo hace de corazón y el que recibe lo agradece. Las cofradías de vecinos que se juntan para socorrer al que lo pasa mal son una de las mejores cosas que existen. Pero si la ayuda se manda, el que da lo siente como un robo y el que recibe como un derecho, y los dos se alejan. La generosidad crece cuando es libre."
+ },
+ {
+  "id": "A05",
+  "tema": "decidir",
+  "titulo": "Libro de las pocas normas",
+  "critica": false,
+  "idea": "Las normas deben ser pocas, claras e iguales para todos, y proteger a cada uno incluso del grupo. Cuanto más se decide por los demás, más fácil es equivocarse por todos.",
+  "texto": "Una buena norma cabe en una frase: no tomes lo que no es tuyo, cumple lo que prometes, no hagas daño. Si las normas son pocas, claras e iguales para todos, cada uno sabe a qué atenerse y puede hacer su vida sin pedir permiso. Ni siquiera la mayoría debe poder quitarle a uno lo suyo. Cuando un grupo decide demasiadas cosas por los demás, se equivoca por todos a la vez; cuando cada familia decide lo suyo, los errores son pequeños y los aciertos se copian."
+ },
+ {
+  "id": "A06",
+  "tema": "intercambio",
+  "titulo": "Libro del trato justo",
+  "critica": false,
+  "idea": "Cuando dos cambian algo porque los dos quieren, los dos salen ganando. Comerciar deja que cada uno haga lo que mejor sabe y que todos tengan más.",
+  "texto": "El pescador tiene peces de sobra y le falta madera; el leñador tiene madera y le falta comida. Si cambian, los dos salen ganando, y nadie ha tenido que mandarles. Así, poco a poco, cada uno se dedica a lo que mejor sabe hacer, y entre todos se produce mucho más que si cada cual tuviera que hacerlo todo. El trato libre es justo porque nadie lo acepta si no le conviene. Cuanto más se comercia, más se conocen los pueblos y menos se pelean."
+ },
+ {
+  "id": "A07",
+  "tema": "conocimiento",
+  "titulo": "Libro de lo que nadie sabe del todo",
+  "critica": false,
+  "idea": "Nadie sabe lo que saben todos juntos. Cada uno conoce bien su trozo del mundo; dejándole decidir y comerciar, ese saber repartido se aprovecha mejor que si uno solo mandara.",
+  "texto": "El pescador sabe dónde se esconden los peces, la tejedora qué fibra aguanta y el pastor cuándo va a helar. Ningún jefe, por sabio que sea, puede saber todo eso a la vez. Cuando cada uno decide sobre lo que conoce y comercia con los demás, ese saber repartido se aprovecha sin que nadie tenga que reunirlo. Y quien prueba una idea nueva y le sale bien, merece quedarse con parte del premio: así hay más gente dispuesta a arriesgarse a inventar."
+ },
+ {
+  "id": "A08",
+  "tema": "riqueza",
+  "titulo": "Libro de la escalera",
+  "critica": false,
+  "idea": "Que unos tengan más no es malo si lo han ganado sin quitar a nadie: su éxito enseña el camino y su ahorro sirve para construir lo que antes no existía.",
+  "texto": "En todo pueblo hay quien tiene más y quien tiene menos. Lo que importa no es que todos tengan lo mismo, sino que cualquiera pueda subir por su esfuerzo. El que ahorra puede construir un molino que antes no existía, y ese molino da pan a muchos. El éxito del vecino no es una injusticia: es una señal de que se puede. Repartir a la fuerza lo de quien prosperó desanima al que trabaja y no hace más rico a nadie por mucho tiempo."
+ },
+ {
+  "id": "A09",
+  "tema": "justicia",
+  "titulo": "Libro de lo mío y lo tuyo",
+  "critica": false,
+  "idea": "La paz empieza por respetar lo que es de cada uno y cumplir la palabra dada. Quien roba o engaña debe reparar el daño, sea quien sea.",
+  "texto": "La mayoría de las peleas empiezan por lo mismo: alguien tomó lo que no era suyo o no cumplió lo prometido. Si todos respetan lo de los demás y cumplen su palabra, hay pocas razones para pelear. Y cuando alguien roba o engaña, lo justo es que repare el daño, sea fuerte o débil, rico o pobre. Una justicia que trata a todos igual protege sobre todo al pequeño, porque el grande siempre sabe defenderse solo."
+ },
+ {
+  "id": "A10",
+  "tema": "duda",
+  "titulo": "Las dudas del que heredó",
+  "critica": true,
+  "idea": "¿Y el que nace sin nada? Si los hijos de los que tienen heredan cada vez más, la escalera puede quedarse sin peldaños para los de abajo, por mucho que se esfuercen.",
+  "texto": "Este libro lo escribió uno de los nuestros que creía en todo lo anterior, y aun así tenía dudas. Si cada familia guarda lo suyo y lo deja a sus hijos, al cabo de muchas generaciones unos nacerán con campos y molinos, y otros con nada. ¿Es justo que el hijo del rico empiece tan arriba sin haber hecho nada? ¿Cuántos peldaños le quedan al que nace abajo, por mucho que trabaje? Quizá la libertad necesita que todos tengan al menos un punto de partida."
+ },
+ {
+  "id": "A11",
+  "tema": "duda",
+  "titulo": "Cuando el trato no es libre",
+  "critica": true,
+  "idea": "Un trato solo es libre si los dos pueden decir que no. El que tiene hambre acepta cualquier cosa, y el que controla el único pozo pone el precio que quiere.",
+  "texto": "Decimos que si dos aceptan un trato, los dos ganan. Pero, ¿y si uno tiene tanta hambre que aceptaría cualquier cosa? ¿Y si el único pozo del valle es de una sola familia, que pone el precio que quiere? Entonces el trato tiene forma de libre, pero no lo es. El que escribió esto seguía creyendo en el comercio, pero advertía: vigilad que nadie llegue a tener tanto poder que los demás no puedan decirle que no."
+ }
+]

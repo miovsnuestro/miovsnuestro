@@ -8,7 +8,10 @@ from .cerebro import CerebroIA, CerebroReglas, Gasto, llamar_llm
 from .mundo import Mundo, ACTIVIDAD_TERRENO
 
 EPOCAS = ["prehistoria", "aldeas", "metal", "industrial", "moderna", "espacial"]
-IMPORTANCIA = {"primer_contacto": 10, "mundo_nuevo": 10, "horizonte": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
+from pathlib import Path as _Path
+# Libros de los fundadores: mismos temas, mismo orden y extensión parecida para las dos sociedades.
+BIBLIOTECA = {l: json.loads((_Path(__file__).parent / "biblioteca" / f"{l}.json").read_text(encoding="utf-8")) for l in "AB"}
+IMPORTANCIA = {"primer_contacto": 10, "mundo_nuevo": 10, "horizonte": 7, "lectura": 5, "duda": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
                "enseñanza": 4, "regalo": 3, "trueque": 3, "invento_fallido": 2, "trueque_rechazado": 2, "almacén": 2, "habla": 1}
 ACTIVIDADES_LIBRES = {"recolectar", "talar", "picar_piedra", "cazar"}
 
@@ -84,7 +87,9 @@ class Simulacion:
                                "color": config.COLOR_SOCIEDAD[l], "metricas": self.metricas(l), "cronica": cron[l],
                                "inventos": [{"nombre": n, "categoria": d.get("categoria"), "dia": d.get("dia"),
                                              "inventor": d.get("inventor"), "origen": d.get("origen")}
-                                            for n, d in self.inventos[l].items()]} for l in "AB"},
+                                            for n, d in self.inventos[l].items()],
+                               "libros_leidos": len(getattr(self, "libros_leidos", {}).get(l, ())),
+                               "libros_total": len([b for b in BIBLIOTECA[l] if config.LIBROS_CON_CRITICAS or not b["critica"]])} for l in "AB"},
             "mapa": {"ancho": m.w, "alto": m.h,
                      "tipo": ["".join("pbarfmgco"[["pradera", "bosque", "agua", "roca", "fertil", "montana", "rio", "cordillera", "mar"].index(m.tipo[y][x])]
                                       for x in range(m.w)) for y in range(m.h)],
@@ -141,7 +146,38 @@ class Simulacion:
         for e in self._efectos(a):
             if e["tipo"] == "habilita":
                 p.add(e["objetivo"])
+        if self.sabe_leer(a) and self.libros_pendientes(a):
+            p.add("leer")
         return p
+
+    # ---------- libros de los fundadores ----------
+    def sabe_leer(self, a):
+        """Se lee sabiendo un invento de escritura (marcas, letras, tablillas…)."""
+        return "escritura_y_conocimiento" in self._categorias(a)
+
+    def libros_pendientes(self, a):
+        leidos = getattr(a, "libros", set())
+        return [b for b in BIBLIOTECA[a.lado] if b["id"] not in leidos and (config.LIBROS_CON_CRITICAS or not b["critica"])]
+
+    def _leer(self, a, d, fase):
+        pendientes = self.libros_pendientes(a)
+        if not pendientes:
+            return
+        pedido = (d.get("recurso") or "").strip("«» ").lower()
+        libro = next((b for b in pendientes if b["titulo"].lower() == pedido), None) or pendientes[0]
+        if not hasattr(a, "libros"):
+            a.libros = set()
+        a.libros.add(libro["id"])
+        a.energia = max(0, a.energia - 2)
+        a.recordar(f"Día {self.dia}: leí «{libro['titulo']}». {libro['idea']}")
+        if not hasattr(self, "libros_leidos"):
+            self.libros_leidos = {"A": set(), "B": set()}
+        if libro["id"] not in self.libros_leidos[a.lado]:
+            self.libros_leidos[a.lado].add(libro["id"])
+            if libro["critica"]:
+                self.suceso(fase, a, "duda", f"{a.nombre} lee «{libro['titulo']}» y se queda pensando: {libro['idea']}")
+            else:
+                self.suceso(fase, a, "lectura", f"{a.nombre} es la primera persona de su gente que lee «{libro['titulo']}».")
 
     def sabe_refugio(self, a):
         return any(e["tipo"] == "refugio" for e in self._efectos(a))
@@ -206,6 +242,7 @@ class Simulacion:
             "dia": self.dia, "fase": fase, "vecinos": vecinos[:8], "almacen": self.mundo.almacen[a.lado],
             "zona": zona, "dueno": dueno, "lugar": lugar, "sobre_otros": sobre_otros,
             "puede": self.puede(a), "sabe_refugio": self.sabe_refugio(a), "inventos_sociedad": sociedad,
+            "libros": [b["titulo"] for b in self.libros_pendientes(a)][:6] if self.sabe_leer(a) else [],
             "descripciones": {n: d.get("descripcion_visual", "") for n, d in reg.items()},
             # solo lo usa el cerebro de reglas (pruebas sin IA)
             "ideas_prueba": [(inventos.IDEAS_PRUEBA[i][0], inventos.IDEAS_PRUEBA[i][2])
@@ -323,6 +360,8 @@ class Simulacion:
             if a.pareja:
                 self.agentes[a.pareja].refugio = True
             self.suceso(fase, a, "refugio", f"{a.nombre} construye una vivienda para su familia.")
+        elif acc == "leer" and "leer" in puede:
+            self._leer(a, d, fase)
         elif acc == "inventar":
             self._inventar(a, d, fase)
         elif acc == "hablar" and otro:
@@ -765,6 +804,7 @@ class Simulacion:
             pareja = self.agentes.get(a.pareja) if a.pareja else None
             a.casa = getattr(pareja, "casa", None) or (a.x, a.y)
         f["casa"] = list(a.casa) if a.refugio and getattr(a, "casa", None) else None
+        f["libros"] = [b["titulo"] for b in BIBLIOTECA[a.lado] if b["id"] in getattr(a, "libros", set())]
         for campo in ("dice", "piensa", "creencias"):
             f[campo], _ = moderacion.publicable(self, a, campo, f[campo])
         return f

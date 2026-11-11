@@ -1,0 +1,90 @@
+[
+ {
+  "id": "B01",
+  "tema": "trabajo",
+  "titulo": "Libro del trabajo de muchas manos",
+  "critica": false,
+  "idea": "Nada se hace solo: el pan lleva el trabajo del que siembra, del que muele y del que enseñó a hacerlo. Por eso lo que se produce juntos es de todos.",
+  "texto": "Mira un pan. Lo sembró alguien, otro lo segó, otro lo molió, y el fuego que lo coció lo descubrió alguien que ya murió. Nadie hace nada completamente solo: cada fruto lleva dentro el trabajo de muchas manos, de hoy y de antes. Por eso lo que se produce juntos es de todos los que lo hicieron posible. Cuando el trabajo se comparte, nadie se queda atrás por estar enfermo un invierno, y todos pueden poner lo mejor de sí sin miedo."
+ },
+ {
+  "id": "B02",
+  "tema": "tierra",
+  "titulo": "Libro de la tierra de todos",
+  "critica": false,
+  "idea": "Nadie hizo la tierra, el agua ni el bosque. El primero que cercó un campo y dijo «esto es mío» empezó la desigualdad. Lo que nadie hizo debe ser de todos.",
+  "texto": "Nadie hizo la tierra, ni el río, ni el bosque. Estaban aquí antes que nosotros y seguirán cuando no estemos. Un día alguien cercó un trozo y dijo «esto es mío», y los demás tuvieron que pedirle permiso para coger lo que antes cogían todos. Ahí empezó la diferencia entre el que tiene y el que no. Una tierra que es de todos y se cuida entre todos, con normas que el grupo decide y vigila, dura y alimenta a todos."
+ },
+ {
+  "id": "B03",
+  "tema": "familia",
+  "titulo": "Libro de los niños de todos",
+  "critica": false,
+  "idea": "Todos los niños son hijos del pueblo. Si un niño solo depende de su casa, su suerte depende de dónde nació; si lo cuida la comunidad, ninguno queda atrás.",
+  "texto": "Un niño no elige dónde nace. Si su suerte depende solo de su casa, el que nace en una familia fuerte crecerá bien y el que nace en una débil pasará hambre sin tener culpa de nada. Cuando la comunidad entera cuida de todos los niños, cada uno tiene muchos padres y muchas madres, y ninguno queda abandonado si a su familia le va mal. La familia sigue siendo querida, pero no está sola: detrás tiene a todo el pueblo."
+ },
+ {
+  "id": "B04",
+  "tema": "ayuda",
+  "titulo": "Libro del apoyo mutuo",
+  "critica": false,
+  "idea": "Los que sobreviven no son los más fuertes, sino los que mejor se ayudan. Ayudar no es un favor: es lo que hace que el grupo entero siga vivo.",
+  "texto": "Mirad a los animales: los lobos cazan en manada, las abejas guardan miel para todas y los ciervos se turnan para vigilar. No sobreviven los más fuertes, sino los que mejor se ayudan. A las personas nos pasa lo mismo. Ayudar al que lo pasa mal no es un favor ni una limosna: es lo que hace que el grupo entero siga vivo, porque mañana el que necesita ayuda puedes ser tú. Quien ayuda no pierde: está guardando para todos."
+ },
+ {
+  "id": "B05",
+  "tema": "decidir",
+  "titulo": "Libro de la asamblea",
+  "critica": false,
+  "idea": "Las decisiones que tocan a todos se toman entre todos, hablando y escuchando, y cada voz vale lo mismo. Así nadie puede mandar sobre los demás.",
+  "texto": "Cuando algo afecta a todos, todos deben poder hablar. En la asamblea, el anciano y el joven, el fuerte y el débil, valen lo mismo. Se escucha, se discute y se busca lo que mejor sirve al grupo. Así nadie puede imponerse a los demás por ser más rico o más fuerte, y lo que se decide se cumple de buena gana, porque todos han tenido su voz. Puede ir más despacio, pero cuando el grupo camina junto, llega más lejos."
+ },
+ {
+  "id": "B06",
+  "tema": "intercambio",
+  "titulo": "Libro del almacén común",
+  "critica": false,
+  "idea": "De cada cual según lo que puede dar, a cada cual según lo que necesita. Un almacén compartido protege a todos mejor que lo que pueda guardar cada uno.",
+  "texto": "Si cada uno guarda lo suyo, el que tuvo un mal año pasa hambre aunque al vecino le sobre. Si todos aportan al almacén común lo que les sobra y cogen lo que necesitan, las malas rachas se reparten y nadie se hunde. De cada cual según lo que puede dar, a cada cual según lo que necesita. No hace falta regatear ni llevar cuentas de cada grano: basta con confiar en que todos aportan y todos cuidan del almacén."
+ },
+ {
+  "id": "B07",
+  "tema": "conocimiento",
+  "titulo": "Libro del saber abierto",
+  "critica": false,
+  "idea": "Lo que aprende uno debe saberlo todo el grupo. El saber compartido crece más rápido que el saber guardado, y nadie tiene que inventar dos veces lo mismo.",
+  "texto": "Si quien descubre cómo hacer fuego lo guarda en secreto para venderlo, los demás seguirán pasando frío o tendrán que descubrirlo otra vez. Si lo enseña a todos, al día siguiente todo el pueblo tiene fuego y alguien, a partir de él, inventa el horno. El saber compartido crece más rápido que el saber guardado. Quien inventa algo lo hace sobre lo que otros pensaron antes, así que lo justo es devolverlo al grupo para que siga creciendo."
+ },
+ {
+  "id": "B08",
+  "tema": "riqueza",
+  "titulo": "Libro de la balanza",
+  "critica": false,
+  "idea": "Cuando unos acumulan mucho, acaban mandando sobre los demás. Las diferencias de riqueza deben ser pequeñas para que todos sigan siendo iguales.",
+  "texto": "Al principio, que uno tenga un poco más que otro parece poca cosa. Pero el que tiene más puede prestar y cobrar, contratar a otros y comprar su tiempo, y al cabo de unos años manda sobre los que tienen menos, aunque nadie lo haya votado. Por eso la balanza tiene que estar equilibrada: no por envidia, sino para que nadie tenga que obedecer a otro solo porque tiene hambre. Donde todos tienen lo necesario, todos son libres de verdad."
+ },
+ {
+  "id": "B09",
+  "tema": "justicia",
+  "titulo": "Libro de la paz entre iguales",
+  "critica": false,
+  "idea": "La mayoría de los robos nacen de la necesidad. Donde nadie pasa hambre hay pocas razones para pelear, y los conflictos se resuelven entre todos.",
+  "texto": "Casi nadie roba si tiene lo que necesita. La mayoría de las peleas nacen de que unos tienen de sobra y otros no tienen bastante. Donde el grupo se asegura de que nadie pase hambre, hay pocas razones para robar o pelear. Y cuando alguien hace daño, se le escucha delante de todos, se repara lo que rompió y se busca la manera de que vuelva a formar parte del grupo, porque castigar sin entender no cura nada."
+ },
+ {
+  "id": "B10",
+  "tema": "duda",
+  "titulo": "Las dudas del que trabaja de más",
+  "critica": true,
+  "idea": "¿Y si unos ponen todo su esfuerzo y otros casi nada, y cogen lo mismo? Si el que trabaja de más se cansa de cargar con el que no trabaja, el almacén se vacía.",
+  "texto": "Este libro lo escribió uno de los nuestros que creía en todo lo anterior, y aun así tenía dudas. Si todos cogen del almacén según su necesidad, ¿qué pasa con el que podría trabajar y no lo hace? El que trabaja de más acaba cansándose de cargar con él, y entonces todos aportan un poco menos, y el almacén se vacía. Quizá compartir necesita también que cada uno sienta que su esfuerzo se ve y se reconoce."
+ },
+ {
+  "id": "B11",
+  "tema": "duda",
+  "titulo": "Cuando la asamblea manda demasiado",
+  "critica": true,
+  "idea": "La asamblea protege de los poderosos, pero también puede aplastar al que piensa distinto. Y quien guarda el almacén y lleva la palabra puede acabar mandando sin que nadie lo vote.",
+  "texto": "Decimos que en la asamblea cada voz vale lo mismo. Pero, ¿y si la mayoría decide algo injusto contra uno solo? ¿Y quién guarda las llaves del almacén y quién habla siempre el primero? A veces el que organiza acaba mandando sin que nadie lo haya elegido, y las decisiones tardan tanto que llega el invierno antes que el acuerdo. El que escribió esto seguía creyendo en decidir juntos, pero advertía: vigilad que la asamblea no se convierta en un amo."
+ }
+]

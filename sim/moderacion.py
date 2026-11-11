@@ -62,10 +62,11 @@ def revisar_con_ia(texto, llamar_llm):
     """Segunda capa opcional para textos que van a publicarse en redes (crónica, guiones de reels)."""
     if not config.MODERACION_IA or not texto:
         return True, ""
-    d = json.loads(llamar_llm([
+    from .cerebro import llamar_json
+    d = llamar_json([
         {"role": "system", "content": "Eres moderador de contenido para TikTok, Instagram y YouTube. Neutral y estricto."},
         {"role": "user", "content": "¿Este texto se puede publicar sin infringir normas de comunidad (odio, violencia gráfica, "
          "contenido sexual, acoso) y sin parecer propaganda de un partido real? Responde SOLO JSON "
          '{"publicable": true/false, "motivo": "..."}\n\nTEXTO: ' + texto}],
-        modelo=config.LLM_MODELO, max_tokens=80, temperatura=0))
+        modelo=config.LLM_MODELO, max_tokens=80, temperatura=0)
     return bool(d.get("publicable")), d.get("motivo", "")

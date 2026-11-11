@@ -78,6 +78,7 @@ LLAMADAS_POR_CEREBRO_DIA_SIM = len(FASES_CON_IA)
 TOKENS_POR_LLAMADA = (2000, 300)    # entrada, salida (estimación; se sustituye por lo medido)
 FRACCION_EN_CACHE = 0.6             # instrucciones y doctrina se repiten al principio de cada llamada
 PRECIO_CACHE = {LLM_MODELO: 0.003, LLM_MODELO_LISTO: 0.0036}  # $ por millón de tokens de entrada en caché
+LIBROS_CON_CRITICAS = True   # las bibliotecas incluyen las dudas sobre las propias ideas (igual en los dos lados)
 USD_A_EUR = 0.92
 
 # --- Base de datos ---
@@ -90,6 +91,7 @@ if AJUSTES.exists():
     MAX_CEREBROS_POR_LADO = int(_a.get("MAX_CEREBROS_POR_LADO", MAX_CEREBROS_POR_LADO))
     PRESUPUESTO_MENSUAL_EUR = float(_a.get("PRESUPUESTO_IA_EUR", PRESUPUESTO_MENSUAL_EUR))
     FRACCION_MODELO_LISTO = float(_a.get("FRACCION_MODELO_LISTO", 0.0))
+    LIBROS_CON_CRITICAS = bool(_a.get("LIBROS_CON_CRITICAS", True))
     ACELERACION = float(_a.get("ACELERACION", 1.0))
     ACELERACION_HASTA_DIA = int(_a.get("ACELERACION_HASTA_DIA", 0))
 else:

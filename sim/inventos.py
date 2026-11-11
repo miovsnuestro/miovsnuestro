@@ -85,9 +85,10 @@ def arbitrar_ia(idea, inventario, conocidos, llamar_llm):
                                     actividades=", ".join(ACTIVIDADES), categorias=", ".join(CATEGORIAS))
     usuario = (f"Idea del habitante: {idea}\nSu inventario: {inventario}\n"
                f"Inventos que ya existen en su sociedad: {', '.join(conocidos) or 'ninguno'}")
-    texto = llamar_llm([{"role": "system", "content": sistema}, {"role": "user", "content": usuario}],
-                       modelo=config.LLM_MODELO_LISTO, max_tokens=400, temperatura=0.3)
-    return _limpiar(json.loads(texto), conocidos)
+    from .cerebro import llamar_json
+    res = llamar_json([{"role": "system", "content": sistema}, {"role": "user", "content": usuario}],
+                      modelo=config.LLM_MODELO_LISTO, max_tokens=500, temperatura=0.3)
+    return _limpiar(res, conocidos)
 
 
 # ---------------------------------------------------------------------------------------------

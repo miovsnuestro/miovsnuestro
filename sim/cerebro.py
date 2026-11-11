@@ -38,6 +38,7 @@ ACCIONES = {
     "tomar": "coger recursos del almacén común (recurso, cantidad)",
     "cortejar": "proponer ser pareja (objetivo = id)",
     "robar": "quitarle algo a alguien sin permiso (objetivo = id, recurso)",
+    "leer": "leer uno de los libros de tu gente (solo si sabéis escribir; recurso = título del libro)",
 }
 
 
@@ -94,6 +95,35 @@ def llamar_llm(mensajes, modelo=None, json_mode=True, max_tokens=300, temperatur
     return datos["choices"][0]["message"]["content"]
 
 
+def extraer_json(texto):
+    """Lee el JSON aunque venga con ```json, texto alrededor o espacios. Lanza ValueError si no hay."""
+    t = (texto or "").strip()
+    if t.startswith("```"):
+        t = t.strip("`")
+        t = t[4:] if t.lower().startswith("json") else t
+    i, j = t.find("{"), t.rfind("}")
+    if i < 0 or j <= i:
+        raise ValueError("la IA no devolvió JSON: " + repr((texto or "")[:120]))
+    return json.loads(t[i:j + 1])
+
+
+def llamar_json(mensajes, modelo=None, max_tokens=300, temperatura=0.9):
+    """Pide JSON a la IA. Si el modelo devuelve algo vacío o roto (pasa a veces con el modelo listo),
+    lo intenta una vez más con más margen y, si vuelve a fallar, con el modelo rápido."""
+    modelo = modelo or config.LLM_MODELO
+    intentos = [(modelo, max_tokens), (modelo, max_tokens * 2)]
+    if modelo != config.LLM_MODELO:
+        intentos.append((config.LLM_MODELO, max_tokens * 2))
+    error = None
+    for m, mt in intentos:
+        try:
+            return extraer_json(llamar_llm(mensajes, modelo=m, json_mode=True, max_tokens=mt, temperatura=temperatura))
+        except Exception as e:
+            error = e
+            Gasto.fallos += 1
+    raise ValueError(f"sin JSON válido tras {len(intentos)} intentos: {error}")
+
+
 class CerebroReglas:
     def __init__(self, rnd):
         self.rnd = rnd
@@ -140,6 +170,8 @@ class CerebroReglas:
             return {"accion": "asentarse"}
         if r() < 0.008 + rs["curiosidad"] * 0.015:
             return {"accion": "explorar"}
+        if ctx.get("libros") and "leer" in ctx["puede"] and r() < 0.04 + rs["curiosidad"] * 0.06:
+            return {"accion": "leer", "recurso": self.rnd.choice(ctx["libros"])}
         if ctx["sabe_refugio"] and not a.refugio:
             if a.inventario.get("madera", 0) >= 4:
                 return {"accion": "construir_refugio"}
@@ -215,6 +247,7 @@ class CerebroIA:
             f"Tienes: {dict((k, v) for k, v in a.inventario.items() if v) or 'nada'}. Refugio: {'sí' if a.refugio else 'no'}.\n"
             f"Inventos que sabes usar:\n{sabe}\nOtros inventos de tu gente que podrías aprender de alguien: {sociedad}.\n"
             f"Puedes hacer estas actividades: {', '.join(sorted(ctx['puede']))}.\n"
+            + (f"Libros de tu gente que aún no has leído: {', '.join('«' + t + '»' for t in ctx['libros'])}.\n" if ctx.get("libros") else "") +
             f"Estás en: {ctx['lugar']}. {ctx['sobre_otros']}\n"
             f"Tu gente se hace llamar «{config.NOMBRE_SOCIEDAD[a.lado]}». Almacén común de tu gente: {dict((k, v) for k, v in ctx['almacen'].items() if v) or 'vacío'}.\n"
             f"Lo que crees: {a.creencias or 'aún no lo tienes claro'}\n"
@@ -225,7 +258,7 @@ class CerebroIA:
         try:
             modelo = config.LLM_MODELO_LISTO if self.rnd.random() < config.FRACCION_MODELO_LISTO else config.LLM_MODELO
             texto = llamar_llm([{"role": "system", "content": sistema}, {"role": "user", "content": usuario}], modelo=modelo)
-            d = json.loads(texto)
+            d = extraer_json(texto)
             if d.get("accion") not in ACCIONES:
                 raise ValueError("acción no válida")
             return d

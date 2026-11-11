@@ -150,7 +150,8 @@ def guion(mundo, n_escenas, instruccion=""):
             'Responde SOLO JSON: {"titular": "máx 8 palabras", "escenas": [{"texto": "texto en pantalla, máx 12 palabras", '
             '"narracion": "1-2 frases para la voz, máx 30 palabras"}], "cierre": "1 frase con pregunta al público", '
             '"descripcion": "texto para publicar", "hashtags": "5-8 hashtags"}')
-        g = json.loads(llamar_llm([{"role": "user", "content": pedido}], modelo=config.LLM_MODELO_LISTO, max_tokens=1400, temperatura=0.7))
+        from sim.cerebro import llamar_json
+        g = llamar_json([{"role": "user", "content": pedido}], modelo=config.LLM_MODELO_LISTO, max_tokens=1400, temperatura=0.7)
         if len(g.get("escenas", [])) == len(base["escenas"]) and len({x.get("texto") for x in g["escenas"]}) == len(g["escenas"]):
             for nueva, b in zip(g["escenas"], base["escenas"]):
                 for k in ("lado", "foco", "plano"):

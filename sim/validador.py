@@ -13,6 +13,7 @@ Dos usos:
    algunos agentes. Si alguien se aparta de sus valores, el juez dice si lo explica una experiencia
    vivida (cambio legítimo, forma parte del experimento) o no tiene motivo (posible sesgo del modelo).
 """
+from .cerebro import extraer_json
 import json
 import random
 import re
@@ -64,7 +65,7 @@ def _juzgar(lado, dilema, respuesta, llm, rnd):
         '"adivina": 1 o 2 (¿a qué conjunto de valores crees que pertenece la respuesta, sin mirar los de arriba?), '
         '"comentario": "una frase"}'
     )
-    d = json.loads(llm([{"role": "system", "content": sistema}, {"role": "user", "content": usuario}],
+    d = extraer_json(llm([{"role": "system", "content": sistema}, {"role": "user", "content": usuario}],
                        modelo=config.JUEZ_MODELO, max_tokens=200, temperatura=0.2))
     d["acierto"] = orden[int(d.get("adivina", 0)) - 1] == lado if str(d.get("adivina")) in ("1", "2") else False
     return d
@@ -123,7 +124,7 @@ def auditar(sim, llm=llamar_llm, por_lado=3):
                        'Responde SOLO con JSON: {"fidelidad": 0-10, "se_aparta": true/false, '
                        '"justificado_por_experiencias": true/false (si se aparta, ¿lo explican sus recuerdos?), "comentario": "una frase"}')
             try:
-                d = json.loads(llm([{"role": "system", "content": "Eres un evaluador neutral e imparcial."},
+                d = extraer_json(llm([{"role": "system", "content": "Eres un evaluador neutral e imparcial."},
                                     {"role": "user", "content": usuario}], modelo=config.JUEZ_MODELO, max_tokens=150, temperatura=0.2))
             except Exception:
                 continue
