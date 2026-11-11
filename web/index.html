@@ -445,7 +445,7 @@ function actualizar(e){
   const firma=e.mapa.explorado.join('')+e.mapa.dueno.join('');if(firma!==mapaFirma){mapaFirma=firma;pintarTerreno(e.mapa);}
   construirPueblos(e);
   const ico=['🌅','☀️','🌇','🌙'][Math.floor(horaDia()*4)%4];
-  $('dia').innerHTML='Año '+e.ano+' · día '+e.dia+' '+ico+'<small>'+(e.epoca||'')+(e.contacto?' · en contacto':' · aún no se conocen')+'</small>';
+  $('dia').innerHTML='Año '+e.ano+' · día '+e.dia+' '+(e.pausa?'⏸️':ico)+'<small>'+(e.pausa?'en pausa · ':'')+(e.epoca||'')+(e.contacto?' · en contacto':' · aún no se conocen')+'</small>';
   for(const l of'AB'){const s=e.sociedades[l],m=s.metricas;$('n'+l).textContent=s.nombre;$('s'+l).textContent=s.subtitulo;
     $('p'+l).textContent=m.poblacion;$('i'+l).textContent=m.inventos;$('w'+l).textContent=m.bienestar;$('t'+l).textContent=m.en_tierra_de_nadie+' casillas';}
   const c=[e.sociedades.B.cronica,e.sociedades.A.cronica].filter(Boolean).join(' · ');$('ct').textContent=q.get('cronica')||c||'Un día tranquilo.';
@@ -538,7 +538,10 @@ function etiquetar(){
 
 // ---------------- día y noche ----------------
 const DIA_REAL=86400/30; // un día simulado = 48 minutos reales
-function horaDia(){return q.get('hora')?+q.get('hora'):((Date.now()/1000)%DIA_REAL)/DIA_REAL;}
+function horaDia(){if(q.get('hora'))return +q.get('hora');
+  if(est&&est.pausa)return .32;                       // mundo en pausa: el cielo se queda a media mañana
+  if(est&&est.inicio_dia){const d=est.segundos_dia||DIA_REAL;return clamp((Date.now()/1000-est.inicio_dia)/d,0,.999);} // mismo ritmo que el mundo
+  return ((Date.now()/1000)%DIA_REAL)/DIA_REAL;}
 const cNoche=new THREE.Color('#16233B'),cDia=new THREE.Color('#A9D3EE'),cOcaso=new THREE.Color('#F2B48A'),tmp=new THREE.Color();
 function luzDelDia(){const p=horaDia(),FD=.74;const elev=p<FD?Math.sin(Math.PI*p/FD):-Math.sin(Math.PI*(p-FD)/(1-FD))*.6;
   const d=suave(-.12,.3,elev),oc=clamp(1-Math.abs(elev-.06)/.22,0,1);

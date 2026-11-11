@@ -47,16 +47,21 @@ def main():
         escribir_json(config.DATOS / "entrevistas.json", sim.fichas_entrevista())
     except Exception as err:
         print("Aviso al escribir el estado inicial:", err, flush=True)
+    en_pausa = False
     while True:
         if (config.DATOS / "PAUSA").exists():
             escribir_json(config.DATOS / "latido.json", {"hora": time.time(), "dia": sim.dia, "estado": "en pausa"})
+            if not en_pausa:  # la web congela el cielo y lo dice
+                en_pausa = True
+                escribir_json(config.WEB / "estado.json", {**sim.estado_publico(), "pausa": True})
             time.sleep(30)
             continue
+        en_pausa = False
         t0 = time.time()
         sim.avanzar_dia()
         sim.cronica()
         sim.guardar(RUTA_PKL)
-        escribir_json(config.WEB / "estado.json", sim.estado_publico())
+        escribir_json(config.WEB / "estado.json", {**sim.estado_publico(), "inicio_dia": time.time(), "segundos_dia": SEGUNDOS_POR_DIA})
         try:
             escribir_json(config.DATOS / "entrevistas.json", sim.fichas_entrevista())
         except Exception as err:  # las entrevistas nunca deben parar el mundo
