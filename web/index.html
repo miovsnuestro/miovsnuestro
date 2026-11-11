@@ -60,6 +60,38 @@
   .bocadillo{position:absolute;transform:translate(-50%,-100%);background:#fff;color:#22262A;font-size:13px;line-height:1.35;padding:7px 11px;border-radius:14px;max-width:210px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.2)}
   .bocadillo:after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-top-color:#fff;border-bottom:0}
   @media (min-width:900px){#marcador{left:auto;width:520px}#ficha{left:10px;right:auto;width:420px}}
+  .lado h3{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+  .res{display:none;font-size:11px;font-weight:500;opacity:.92;white-space:nowrap}
+  #marcador.min .res{display:inline}
+  #ficha{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .toca{display:none;font-size:10px;opacity:.6;margin-left:6px}
+  /* ---------- MÓVIL EN VERTICAL ---------- */
+  @media (max-width:700px) and (orientation:portrait){
+    #top{padding:6px 10px}#top .t{font-size:14px}#top .d{font-size:11.5px}
+    #marcador{top:50px;padding:4px;gap:4px}.lado{padding:5px 8px}.lado h3{font-size:12.5px}
+    #cronica{font-size:12px;padding:6px 10px;cursor:pointer}#cronica .toca{display:inline}
+    #cronica:not(.abierta) #ct{-webkit-line-clamp:1}
+    #ct{display:-webkit-inline-box;vertical-align:top;max-width:calc(100% - 90px)}
+    #ficha{font-size:12px;padding:9px 12px}#ficha .n{font-size:15px}#ficha .p{font-size:13px}
+    #botones button{padding:7px 9px;font-size:12px}#botones button.r{width:34px}
+    body.con-ficha #botones,body.con-ficha #ia{display:none}
+  }
+  /* ---------- MÓVIL EN HORIZONTAL: todo compacto y translúcido ---------- */
+  @media (max-height:500px) and (orientation:landscape){
+    .panel{background:rgba(14,20,24,.42);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+    #top{top:6px;left:8px;right:auto;max-width:46%;padding:4px 10px}#top .t{font-size:13px}#top .d{font-size:11px}
+    #marcador{top:6px;left:auto;right:8px;width:50%;padding:3px;gap:3px;grid-template-columns:1fr 1fr}
+    .lado{padding:3px 7px;background-color:transparent!important}.lado h3{font-size:11.5px}
+    #cronica{left:8px;right:auto;bottom:6px;width:46%;font-size:11px;padding:4px 9px;cursor:pointer}#cronica .toca{display:inline}
+    #cronica:not(.abierta) #ct{-webkit-line-clamp:1}
+    #ficha{left:auto!important;right:8px;bottom:6px;top:auto;width:42%;max-width:none;max-height:62vh;font-size:11.5px;padding:8px 11px}
+    #ficha .n{font-size:14px}#ficha .p{font-size:12px}#ficha .barras{margin:2px 0 4px}
+    #botones{right:8px;bottom:6px;gap:4px}#botones button{padding:5px 8px;font-size:11px;background:rgba(14,20,24,.45)}#botones button.r{width:30px}
+    body.con-ficha #botones{display:none}
+    #nA,#nB{font-size:0}#nB:after{content:'Nuestro';font-size:11.5px}#nA:after{content:'Mío';font-size:11.5px}
+    .res{font-size:10.5px}#marcador{width:auto;min-width:300px}
+    #ia{display:none}
+  }
 </style>
 </head>
 <body>
@@ -67,10 +99,10 @@
 <div id="capa"></div>
 <div id="top" class="panel"><span class="t"><img src="icono-192.png" alt="" style="width:22px;height:22px;vertical-align:-5px;margin-right:7px">Mío vs Nuestro</span><span class="d" id="dia">Cargando…</span></div>
 <div id="marcador" class="panel" title="Toca para plegar">
-  <div class="lado" style="background:rgba(216,90,48,.28);border:1.5px solid var(--B)"><h3 id="nB">Los del Nuestro</h3><div class="sub" id="sB"></div>
+  <div class="lado" style="background:rgba(216,90,48,.28);border:1.5px solid var(--B)"><h3><span id="nB">Los del Nuestro</span><span class="res" id="rB"></span></h3><div class="sub" id="sB"></div>
     <div class="fila"><span>Población</span><span id="pB">-</span></div><div class="fila"><span>Inventos</span><span id="iB">-</span></div>
     <div class="fila"><span>Bienestar</span><span id="wB">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tB">-</span></div></div>
-  <div class="lado" style="background:rgba(29,158,117,.28);border:1.5px solid var(--A)"><h3 id="nA">Los del Mío</h3><div class="sub" id="sA"></div>
+  <div class="lado" style="background:rgba(29,158,117,.28);border:1.5px solid var(--A)"><h3><span id="nA">Los del Mío</span><span class="res" id="rA"></span></h3><div class="sub" id="sA"></div>
     <div class="fila"><span>Población</span><span id="pA">-</span></div><div class="fila"><span>Inventos</span><span id="iA">-</span></div>
     <div class="fila"><span>Bienestar</span><span id="wA">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tA">-</span></div></div>
 </div>
@@ -86,7 +118,7 @@
 <div id="ia">Contenido generado con IA</div>
 <div id="ayuda" class="panel">Arrastra para moverte · rueda o pellizca para acercarte<br>clic derecho o dos dedos para girar · toca a alguien para seguirle</div>
 <div id="titular"></div>
-<div id="cronica" class="panel"><b>Crónica · </b><span id="ct">Cargando el mundo…</span></div>
+<div id="cronica" class="panel"><b>Crónica · </b><span id="ct">Cargando el mundo…</span><span class="toca">▾</span></div>
 <script src="three.min.js"></script>
 <script>
 "use strict";
@@ -447,7 +479,7 @@ function actualizar(e){
   const ico=['🌅','☀️','🌇','🌙'][Math.floor(horaDia()*4)%4];
   $('dia').innerHTML='Año '+e.ano+' · día '+e.dia+' '+(e.pausa?'⏸️':ico)+'<small>'+(e.pausa?'en pausa · ':'')+(e.epoca||'')+(e.contacto?' · en contacto':' · aún no se conocen')+'</small>';
   for(const l of'AB'){const s=e.sociedades[l],m=s.metricas;$('n'+l).textContent=s.nombre;$('s'+l).textContent=s.subtitulo;
-    $('p'+l).textContent=m.poblacion;$('i'+l).textContent=m.inventos;$('w'+l).textContent=m.bienestar;$('t'+l).textContent=m.en_tierra_de_nadie+' casillas';}
+    $('p'+l).textContent=m.poblacion;$('i'+l).textContent=m.inventos;$('w'+l).textContent=m.bienestar;$('t'+l).textContent=m.en_tierra_de_nadie+' casillas';$('r'+l).textContent='👥'+m.poblacion+' · 💡'+m.inventos+' · ❤️'+m.bienestar;}
   const c=[e.sociedades.B.cronica,e.sociedades.A.cronica].filter(Boolean).join(' · ');$('ct').textContent=q.get('cronica')||c||'Un día tranquilo.';
   const vivos=new Set();
   for(const a of e.agentes){vivos.add(a.id);let g=gente.get(a.id);const b=puntoBase(a);
@@ -465,7 +497,7 @@ const cam={x:0,z:0,yaw:0,pitch:.85,dist:70},obj={...cam};let foco=null,usuarioMo
 function irA(l,inst){foco=null;$('ficha').style.display='none';
   if(l==='A'){Object.assign(obj,{x:X(VALLE.A),z:0,dist:34,pitch:.72,yaw:-.35});}else if(l==='B'){Object.assign(obj,{x:X(VALLE.B),z:0,dist:34,pitch:.72,yaw:.35});}else Object.assign(obj,{x:0,z:0,dist:62,pitch:.62,yaw:0});
   if(inst)Object.assign(cam,obj);}
-function soltar(){foco=null;anillo.visible=false;$('ficha').style.display='none';$('ia').style.display='';}
+function soltar(){foco=null;anillo.visible=false;$('ficha').style.display='none';$('ia').style.display='';recolocar();}
 function seguir(g){foco=g;obj.dist=Math.min(obj.dist,9);obj.pitch=Math.min(obj.pitch,.55);mostrarFicha(g.userData.a);}
 function limitar(){obj.dist=clamp(obj.dist,2.5,150);obj.pitch=clamp(obj.pitch,.1,1.45);obj.x=clamp(obj.x,-MW/2-8,MW/2+8);obj.z=clamp(obj.z,-MH/2-10,MH/2+10);}
 function mover(dx,dy){const k=obj.dist/H*1.15,s=Math.sin(obj.yaw),c=Math.cos(obj.yaw);obj.x-=(dx*c+dy*s)*k;obj.z-=(-dx*s+dy*c)*k;usuarioMovio=true;if(foco){foco=null;anillo.visible=false;}limitar();}
@@ -496,11 +528,20 @@ function tocar(e){mv.set(e.clientX/W*2-1,-e.clientY/H*2+1);rc.setFromCamera(mv,C
 document.querySelectorAll('#botones [data-ir]').forEach(b=>b.onclick=()=>irA(b.dataset.ir));
 $('girI').onclick=()=>{obj.yaw+=Math.PI/4;};$('girD').onclick=()=>{obj.yaw-=Math.PI/4;};$('zMas').onclick=()=>{obj.dist*=.65;limitar();};$('zMenos').onclick=()=>{obj.dist*=1.5;limitar();};
 $('bcerrar').onclick=soltar;$('bseguir').onclick=()=>{if(foco){foco=null;anillo.visible=false;$('bseguir').textContent='Seguir';}else if(ultimaFicha){const g=gente.get(ultimaFicha.id);if(g)seguir(g);}};
-$('marcador').onclick=()=>$('marcador').classList.toggle('min');
+$('marcador').onclick=()=>{$('marcador').classList.toggle('min');setTimeout(recolocar,30);};
 let ultimaFicha=null;
+const movil=()=>Math.min(innerWidth,innerHeight)<=700;
+const horizontal=()=>innerHeight<=500&&innerWidth>innerHeight;
+function recolocar(){if(REEL)return;const cr=$('cronica').getBoundingClientRect(),f=$('ficha'),b=$('botones'),mk=$('marcador').getBoundingClientRect();
+  const abierta=f.style.display==='block';document.body.classList.toggle('con-ficha',abierta);
+  if(horizontal()){f.style.bottom='6px';f.style.maxHeight=(innerHeight-mk.bottom-14)+'px';b.style.bottom='6px';}
+  else{const base=innerHeight-cr.top+8;f.style.bottom=base+'px';f.style.maxHeight=Math.max(120,cr.top-mk.bottom-16)+'px';b.style.bottom=base+'px';$('ia').style.bottom=base+'px';}}
+addEventListener('resize',()=>setTimeout(recolocar,60));addEventListener('orientationchange',()=>setTimeout(recolocar,250));
+$('cronica').onclick=()=>{$('cronica').classList.toggle('abierta');setTimeout(recolocar,30);};
+if(movil())$('marcador').classList.add('min');
 let entrevistas=false,entrevistado=null;
 if(!REEL)fetch('/api/entrevistas/estado').then(r=>r.ok?r.json():null).then(d=>{entrevistas=!!(d&&d.activas);}).catch(()=>{});
-$('bentrevistar').onclick=()=>{$('entrevista').classList.toggle('oculto');setTimeout(()=>$('epreg').focus(),50);};
+$('bentrevistar').onclick=()=>{$('entrevista').classList.toggle('oculto');recolocar();setTimeout(()=>$('epreg').focus(),50);};
 async function preguntar(){const t=$('epreg').value.trim();if(!t||!ultimaFicha)return;const a=ultimaFicha;$('eenv').disabled=true;
   $('eresp').innerHTML='<span class="yo"></span>Pensando…';$('eresp').querySelector('.yo').textContent='Tú: '+t;
   try{const r=await fetch('/api/entrevistas/preguntar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agente:a.id,pregunta:t})});
@@ -517,8 +558,8 @@ function mostrarFicha(a){if(!ultimaFicha||ultimaFicha.id!==a.id){$('entrevista')
   $('fs').textContent=s.nombre+' · '+(VERBO[a.accion]||'anda por ahí')+(a.casa?' · tiene casa':' · sin casa')+(pareja?' · pareja: '+pareja.nombre:'')+(a.hijos&&a.hijos.length?' · '+a.hijos.length+' hijo'+(a.hijos.length>1?'s':''):'')
     +(a.conocimientos.length?' · sabe: '+a.conocimientos.slice(0,4).join(', '):'')+(inv.length?' · lleva: '+inv.join(', '):'');
   const bar=(id,v,c)=>{$(id).style.width=clamp(v,0,100)+'%';$(id).style.background=c;};bar('bh',a.hambre,'#E8A33A');bar('be',a.energia,'#5DB3E0');bar('bs',a.salud,'#6CC66C');
-  $('fp').textContent=a.dice?'Dice: «'+a.dice+'»':(a.piensa?'Piensa: «'+a.piensa+'»':(a.creencias?'Cree: «'+a.creencias+'»':''));}
-function mostrarTexto(t){$('bentrevistar').style.display='none';$('entrevista').classList.add('oculto');const f=$('ficha');f.style.display='block';$('ia').style.display='none';$('fc').style.background='#FAC775';$('fn').textContent=t;$('fs').textContent='';$('fp').textContent='';['bh','be','bs'].forEach(i=>$(i).style.width='0');ultimaFicha=null;$('bseguir').textContent='Seguir';}
+  $('fp').textContent=a.dice?'Dice: «'+a.dice+'»':(a.piensa?'Piensa: «'+a.piensa+'»':(a.creencias?'Cree: «'+a.creencias+'»':''));recolocar();}
+function mostrarTexto(t){setTimeout(recolocar,0);$('bentrevistar').style.display='none';$('entrevista').classList.add('oculto');const f=$('ficha');f.style.display='block';$('ia').style.display='none';$('fc').style.background='#FAC775';$('fn').textContent=t;$('fs').textContent='';$('fp').textContent='';['bh','be','bs'].forEach(i=>$(i).style.width='0');ultimaFicha=null;$('bseguir').textContent='Seguir';}
 function ocultarAyuda(){$('ayuda').style.opacity=0;}setTimeout(ocultarAyuda,7000);
 
 // ---------------- etiquetas y bocadillos ----------------
@@ -601,7 +642,7 @@ if(REEL){['top','marcador','titular','cronica','ficha'].forEach(id=>$(id).style.
 addEventListener('resize',()=>{W=innerWidth;H=innerHeight;R.setSize(W,H);C.aspect=W/H;C.updateProjectionMatrix();});
 let tPrevio=performance.now();
 function bucle(){const ahora=performance.now(),dt=Math.min(.1,(ahora-tPrevio)/1000);tPrevio=ahora;paso(dt);requestAnimationFrame(bucle);}
-cargar().then(()=>{if(REEL){for(let i=0;i<3;i++)paso(1/25);tReel=0;}window.listo=true;if(!REEL)bucle();});
+cargar().then(()=>{recolocar();if(REEL){for(let i=0;i<3;i++)paso(1/25);tReel=0;}window.listo=true;if(!REEL)bucle();});
 if(!REEL)setInterval(cargar,30000);
 </script>
 </body>
