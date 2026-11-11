@@ -1,0 +1,14 @@
+[Unit]
+Description=Mío vs Nuestro · motor de simulación
+After=network-online.target
+
+[Service]
+User=@USUARIO@
+WorkingDirectory=@DIR@
+EnvironmentFile=@DIR@/.env
+ExecStart=@DIR@/.venv/bin/python servicio.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

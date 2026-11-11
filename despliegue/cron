@@ -1,0 +1,8 @@
+# Mío vs Nuestro
+SHELL=/bin/bash
+*/5 * * * * mvn cd @DIR@ && .venv/bin/python vigilante.py >> datos/vigilante.log 2>&1
+0 4 * * *   mvn cd @DIR@ && ./copia.sh >> datos/copia.log 2>&1
+30 9 * * *  mvn cd @DIR@ && .venv/bin/python -m reels.fabrica diario >> datos/reels.log 2>&1
+30 18 * * 1,3,5 mvn cd @DIR@ && .venv/bin/python -m reels.fabrica episodio >> datos/reels.log 2>&1
+0 23 * * *  mvn cd @DIR@ && ./informe_estado.sh >> datos/informe.log 2>&1
+*/10 * * * * mvn cd @DIR@ && .venv/bin/python -m reels.fabrica rehacer >> datos/reels.log 2>&1

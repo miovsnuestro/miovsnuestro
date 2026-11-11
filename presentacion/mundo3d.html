@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mío vs Nuestro — escena de presentación</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#BFDCEB;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  #escena{position:absolute;inset:0}
+  .panel{position:absolute;background:rgba(18,24,28,.72);color:#fff;border-radius:18px;padding:14px 16px}
+  #top{top:18px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center}
+  #top .t{font-weight:600;font-size:17px;letter-spacing:.2px}
+  #top .d{font-size:14px;opacity:.85}
+  #marcador{top:82px;left:18px;right:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+  .lado{border-radius:12px;padding:10px 12px}
+  .A{background:rgba(29,158,117,.28);border:1.5px solid #1D9E75}
+  .B{background:rgba(216,90,48,.28);border:1.5px solid #D85A30}
+  .lado h3{margin:0;font-size:15px;font-weight:600}.sub{font-size:11.5px;opacity:.8;margin:0 0 6px}
+  .fila{display:flex;justify-content:space-between;font-size:13px;line-height:1.7;opacity:.95}
+  .barra{height:6px;border-radius:3px;background:rgba(255,255,255,.18);margin:2px 0 6px;overflow:hidden}
+  .barra i{display:block;height:100%}
+  #ficha{left:18px;right:18px;bottom:96px}
+  #ficha .n{font-weight:600;font-size:17px}
+  #ficha .s{font-size:13px;opacity:.8;margin:2px 0 8px}
+  #ficha .p{font-size:15px;font-style:italic;line-height:1.4}
+  #cronica{left:18px;right:18px;bottom:18px;font-size:13.5px;line-height:1.4;padding:12px 16px}
+  #cronica b{color:#FAC775;font-weight:600}
+  .bocadillo{position:absolute;transform:translate(-50%,-100%);background:#fff;color:#2C2C2A;font-size:14px;padding:8px 12px;border-radius:14px;max-width:220px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+  .bocadillo:after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-top-color:#fff;border-bottom:0}
+  .etiqueta{position:absolute;white-space:nowrap;transform:translate(-50%,-50%);color:#fff;font-weight:700;font-size:20px;padding:6px 14px;border-radius:12px}
+  .oculto{display:none!important}
+</style>
+</head>
+<body>
+<div id="escena"></div>
+<div id="top" class="panel"><span class="t">Mío vs Nuestro</span><span class="d" id="dia">Año 1 · día 1</span></div>
+<div id="marcador" class="panel">
+  <div class="lado B"><h3>Los del Nuestro</h3><div class="sub">propiedad común</div>
+    <div class="fila"><span>Población</span><span id="pB">20</span></div>
+    <div class="fila"><span>Inventos</span><span id="kB">0</span></div><div class="barra"><i id="bkB" style="background:#F0997B;width:0%"></i></div>
+    <div class="fila"><span>Bienestar</span><span id="wB">80</span></div><div class="barra"><i id="bwB" style="background:#F0997B;width:80%"></i></div>
+  </div>
+  <div class="lado A"><h3>Los del Mío</h3><div class="sub">propiedad privada</div>
+    <div class="fila"><span>Población</span><span id="pA">20</span></div>
+    <div class="fila"><span>Inventos</span><span id="kA">0</span></div><div class="barra"><i id="bkA" style="background:#5DCAA5;width:0%"></i></div>
+    <div class="fila"><span>Bienestar</span><span id="wA">80</span></div><div class="barra"><i id="bwA" style="background:#5DCAA5;width:80%"></i></div>
+  </div>
+</div>
+<div id="ficha" class="panel oculto"><div class="n" id="fn"></div><div class="s" id="fs"></div><div class="p" id="fp"></div></div>
+<div id="cronica" class="panel"><b>Crónica · </b><span id="ct">Veinte personas despiertan en un valle sin nada. Nadie sabe hacer fuego todavía.</span></div>
+<div id="capa"></div>
+<script src="three.min.js"></script>
+<script>
+const q=new URLSearchParams(location.search),PLANO=q.get('plano')||'general';
+const el=document.getElementById('escena'),W=innerWidth,H=innerHeight;
+const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});R.setSize(W,H);R.setPixelRatio(devicePixelRatio);R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;el.appendChild(R.domElement);
+const S=new THREE.Scene();const cielo=PLANO==='noche'?'#1C2A44':'#BFDCEB';S.background=new THREE.Color(cielo);S.fog=new THREE.Fog(cielo,45,90);document.body.style.background=cielo;
+const C=new THREE.PerspectiveCamera(42,W/H,.1,300);
+const noche=PLANO==='noche';
+S.add(new THREE.HemisphereLight(noche?'#6A7FB0':'#ffffff',noche?'#1E2A1A':'#6b8f4e',noche?.35:.62));
+const sol=new THREE.DirectionalLight(noche?'#9FB4E0':'#fff1d6',noche?.25:.9);sol.position.set(14,24,10);sol.castShadow=true;sol.shadow.mapSize.set(2048,2048);const sc=sol.shadow.camera;sc.left=sc.bottom=-24;sc.right=sc.top=24;S.add(sol);
+const M=c=>new THREE.MeshLambertMaterial({color:c});
+const suelo=new THREE.Mesh(new THREE.BoxGeometry(44,1,30),M('#79A64E'));suelo.position.y=-.5;suelo.receiveShadow=true;S.add(suelo);
+for(let z=-14;z<15;z+=2){const d=new THREE.Mesh(new THREE.BoxGeometry(.18,.06,1.1),M('#ffffff'));d.position.set(0,.03,z);S.add(d);}
+let s=11;const r=()=>{s=(s*9301+49297)%233280;return s/233280};
+const ambos=f=>{f(1);f(-1);};
+ambos(k=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(3.4,3.4,.12,32),M('#4A90C8'));l.position.set(k*15,.02,-7);l.receiveShadow=true;S.add(l);
+ const c=new THREE.Mesh(new THREE.BoxGeometry(6,.08,4),M('#C9A24A'));c.position.set(k*8.5,.04,8.5);S.add(c);
+ for(let i=0;i<5;i++){const f=new THREE.Mesh(new THREE.BoxGeometry(6,.28,.25),M('#9FBF4A'));f.position.set(k*8.5,.16,6.9+i*.8);f.castShadow=true;S.add(f);}
+ for(let i=0;i<4;i++){const ro=new THREE.Mesh(new THREE.DodecahedronGeometry(.5+r()*.4),M('#9A968C'));ro.position.set(k*(17+r()*3),.3,8+r()*5);ro.castShadow=true;S.add(ro);}});
+const arb=[];for(let i=0;i<30;i++){const x=2+r()*19,z=-14+r()*28;if(Math.hypot(x-15,z+7)<4.4||(Math.abs(x-8.5)<4&&Math.abs(z-8.5)<3)||(x>3&&x<13&&z>-4.5&&z<4.5))continue;arb.push([x,z,.8+r()*.6]);}
+arb.forEach(t=>ambos(k=>{const g=new THREE.Group();const tr=new THREE.Mesh(new THREE.CylinderGeometry(.15,.22,.9,6),M('#7A5232'));tr.position.y=.45;const co=new THREE.Mesh(new THREE.ConeGeometry(.85*t[2],2.1*t[2],7),M(r()<.5?'#3E7A3A':'#4C8A40'));co.position.y=.9+t[2];tr.castShadow=co.castShadow=true;g.add(tr,co);g.position.set(k*t[0],0,t[1]);S.add(g);}));
+const casas=[[5,-2.5,0],[8.5,1,.5],[5,3.2,-.3],[11,-2.5,.2],[11.5,3,0]];
+casas.forEach(h=>ambos(k=>{const g=new THREE.Group();const b=new THREE.Mesh(new THREE.BoxGeometry(1.9,1.35,1.7),M('#EFE3CC'));b.position.y=.68;const t=new THREE.Mesh(new THREE.ConeGeometry(1.62,1.05,4),M(k>0?'#2F8A6A':'#C8613A'));t.position.y=1.88;t.rotation.y=Math.PI/4;const p=new THREE.Mesh(new THREE.BoxGeometry(.42,.72,.05),M('#6B4428'));p.position.set(0,.36,.86);const v=new THREE.Mesh(new THREE.BoxGeometry(.36,.3,.05),new THREE.MeshBasicMaterial({color:noche?'#FFD27A':'#A8C8E0'}));v.position.set(.55,.85,.86);b.castShadow=t.castShadow=true;g.add(b,t,p,v);g.position.set(k*h[0],0,h[1]);g.rotation.y=h[2]*k;S.add(g);}));
+ambos(k=>{const f=new THREE.Mesh(new THREE.ConeGeometry(.32,.7,6),new THREE.MeshBasicMaterial({color:'#F2A23A'}));f.position.set(k*8,.35,.2);S.add(f);
+ for(let i=0;i<6;i++){const l=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.7,5),M('#5A3A1E'));l.position.set(k*8+Math.cos(i)*.25,.06,.2+Math.sin(i)*.25);l.rotation.z=Math.PI/2;l.rotation.y=i;S.add(l);}
+ if(noche){const pl=new THREE.PointLight('#FFB25A',1.6,9);pl.position.set(k*8,1,.2);S.add(pl);}});
+const piel=['#F1C9A0','#D9A57A','#B07A52','#E8B896'],pelo=['#3A2412','#6B4428','#1E1E1E','#A0522D'];
+const gente=[];
+ambos(k=>{for(let i=0;i<10;i++){const g=new THREE.Group();const cu=new THREE.Mesh(new THREE.CylinderGeometry(.22,.29,.78,12),M(k>0?'#1D9E75':'#D85A30'));cu.position.y=.56;const ca=new THREE.Mesh(new THREE.SphereGeometry(.21,16,12),M(piel[i%4]));ca.position.y=1.15;const pe=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12,0,Math.PI*2,0,Math.PI/2),M(pelo[i%4]));pe.position.y=1.18;cu.castShadow=ca.castShadow=true;g.add(cu,ca,pe);
+ const x=k*(3+r()*15),z=-11+r()*22;g.position.set(x,0,z);g.rotation.y=r()*6;S.add(g);gente.push({g,k});}});
+const prota=gente.find(p=>p.k>0),otra=gente.find(p=>p.k<0),vecino=gente.filter(p=>p.k>0)[1];
+if(PLANO==='frontera'){prota.g.position.set(0.9,0,11);prota.g.rotation.y=-Math.PI/2;otra.g.position.set(-0.9,0,11);otra.g.rotation.y=Math.PI/2;}
+else{prota.g.position.set(6.4,0,5.4);prota.g.rotation.y=-.5;vecino.g.position.set(7.6,0,4.9);vecino.g.rotation.y=-2;otra.g.position.set(-6.4,0,5.4);}
+const planos={
+ general:{pos:[24,26,30],mira:[0,0,0]},
+ personaje:{pos:[4.3,2.3,9.6],mira:[6.6,.9,5.2]},
+ frontera:{pos:[0,2.8,17],mira:[0,1.2,2]},
+ noche:{pos:[18,15,22],mira:[0,0,0]},
+ marcador:{pos:[0,38,18],mira:[0,0,0]},
+};
+const pl=planos[PLANO]||planos.general;C.position.set(...pl.pos);C.lookAt(...pl.mira);C.updateMatrixWorld();
+const datos={dia:q.get('dia')||'Año 1 · día 1',pA:q.get('pA')||20,pB:q.get('pB')||20,kA:q.get('kA')||0,kB:q.get('kB')||0,wA:q.get('wA')||80,wB:q.get('wB')||80};
+document.getElementById('dia').textContent=datos.dia;
+for(const l of 'AB'){document.getElementById('p'+l).textContent=datos['p'+l];document.getElementById('k'+l).textContent=datos['k'+l];document.getElementById('bk'+l).style.width=Math.min(100,datos['k'+l]*8)+'%';document.getElementById('w'+l).textContent=datos['w'+l];document.getElementById('bw'+l).style.width=datos['w'+l]+'%';}
+if(q.get('cronica'))document.getElementById('ct').textContent=q.get('cronica');
+const capa=document.getElementById('capa');
+function enPantalla(v){const p=v.clone().project(C);return[(p.x+1)/2*W,(1-p.y)/2*H];}
+function bocadillo(obj,texto){const[x,y]=enPantalla(obj.g.position.clone().add(new THREE.Vector3(0,1.6,0)));const b=document.createElement('div');b.className='bocadillo';b.style.left=x+'px';b.style.top=y+'px';b.textContent=texto;if(PLANO==='frontera'){b.style.width='150px';b.style.left=Math.min(Math.max(x,85),W-85)+'px';}capa.appendChild(b);}
+if(PLANO==='personaje'){const f=document.getElementById('ficha');f.classList.remove('oculto');document.getElementById('fn').textContent='Lúa · 24 años';document.getElementById('fs').textContent='Los del Mío · Recolectora · Hambre 62 · Sin refugio';document.getElementById('fp').textContent='Piensa: "Si guardo grano ahora, mi familia no pasará el invierno con hambre."';bocadillo(prota,'¿Me cambias madera por bayas?');document.getElementById('marcador').classList.add('oculto');}
+if(PLANO==='frontera'){bocadillo(prota,'Lo que construyo es para los míos.');bocadillo(otra,'Lo que tenemos es de todos.');
+ [['Los del Nuestro',-2.6,'rgba(216,90,48,.9)'],['Los del Mío',2.6,'rgba(29,158,117,.9)']].forEach(([t,x,c])=>{const[sx,sy]=enPantalla(new THREE.Vector3(x,4.2,-3));const e=document.createElement('div');e.className='etiqueta';e.style.left=sx+'px';e.style.top=sy+'px';e.style.background=c;e.textContent=t;capa.appendChild(e);});
+ document.getElementById('marcador').classList.add('oculto');}
+if(PLANO==='noche')document.getElementById('marcador').classList.add('oculto');
+R.render(S,C);window.listo=true;
+</script>
+</body>
+</html>

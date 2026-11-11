@@ -1,0 +1,13 @@
+@DOMINIO@, www.@DOMINIO@ {
+	root * @DIR@/web
+	file_server
+	encode gzip
+	@json path /estado.json
+	header @json Cache-Control "no-cache"
+}
+
+# Acceso local para la grabación de reels y la vigilancia
+http://127.0.0.1 {
+	root * @DIR@/web
+	file_server
+}

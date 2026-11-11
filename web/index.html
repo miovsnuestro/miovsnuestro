@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Mío vs Nuestro — en directo</title>
+<meta name="description" content="Dos sociedades de IA. Mismo mundo. Valores opuestos. Experimento en directo.">
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#BFDCEB;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#fff}
+  #escena{position:absolute;inset:0;touch-action:none}
+  .panel{position:absolute;background:rgba(18,24,28,.74);border-radius:16px;padding:10px 14px}
+  #top{top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center}
+  #top .t{font-weight:600;font-size:16px}#top .d{font-size:13px;opacity:.85}
+  #marcador{top:64px;left:12px;right:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px}
+  .lado{border-radius:12px;padding:8px 10px}
+  .lado h3{margin:0;font-size:14px;font-weight:600}.sub{font-size:11px;opacity:.8;margin:0 0 4px}
+  .fila{display:flex;justify-content:space-between;font-size:12px;line-height:1.6}
+  #ficha{left:12px;right:12px;bottom:84px;display:none}
+  #ficha .n{font-weight:600;font-size:16px}#ficha .s{font-size:12px;opacity:.8;margin:2px 0 6px}#ficha .p{font-size:14px;font-style:italic;line-height:1.4}
+  #cronica{left:12px;right:12px;bottom:12px;font-size:13px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  #cronica b{color:#FAC775;font-weight:600}
+  #botones{position:absolute;right:12px;bottom:150px;display:flex;flex-direction:column;gap:6px}
+  #botones button{background:rgba(18,24,28,.74);color:#fff;border:0;border-radius:10px;padding:8px 10px;font-size:12px}
+  #ia{position:absolute;right:12px;top:178px;font-size:10.5px;background:rgba(18,24,28,.6);padding:4px 8px;border-radius:8px}
+  .oculto{display:none!important}
+  #titular{position:absolute;left:24px;right:24px;top:38%;text-align:center;font-size:30px;font-weight:700;line-height:1.2;text-shadow:0 2px 10px rgba(0,0,0,.6);display:none}
+</style>
+</head>
+<body>
+<div id="escena"></div>
+<div id="top" class="panel"><span class="t">Mío vs Nuestro</span><span class="d" id="dia">Cargando…</span></div>
+<div id="marcador" class="panel">
+  <div class="lado" id="ladoB" style="background:rgba(216,90,48,.28);border:1.5px solid #D85A30"><h3 id="nB">Los del Nuestro</h3><div class="sub" id="sB"></div>
+    <div class="fila"><span>Población</span><span id="pB">-</span></div><div class="fila"><span>Inventos</span><span id="iB">-</span></div>
+    <div class="fila"><span>Bienestar</span><span id="wB">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tB">-</span></div></div>
+  <div class="lado" id="ladoA" style="background:rgba(29,158,117,.28);border:1.5px solid #1D9E75"><h3 id="nA">Los del Mío</h3><div class="sub" id="sA"></div>
+    <div class="fila"><span>Población</span><span id="pA">-</span></div><div class="fila"><span>Inventos</span><span id="iA">-</span></div>
+    <div class="fila"><span>Bienestar</span><span id="wA">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tA">-</span></div></div>
+</div>
+<div id="ficha" class="panel"><div class="n" id="fn"></div><div class="s" id="fs"></div><div class="p" id="fp"></div></div>
+<div id="botones"><button data-ir="B">Nuestro</button><button data-ir="C">Centro</button><button data-ir="A">Mío</button></div>
+<div id="ia">Contenido generado con IA</div>
+<div id="titular"></div>
+<div id="cronica" class="panel"><b>Crónica · </b><span id="ct">Cargando el mundo…</span></div>
+<script src="three.min.js"></script>
+<script>
+const q=new URLSearchParams(location.search),REEL=q.get('reel')==='1';
+const el=document.getElementById('escena');let W=innerWidth,H=innerHeight;
+const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(W,H);R.shadowMap.enabled=true;el.appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color('#BFDCEB');S.fog=new THREE.Fog('#BFDCEB',60,140);
+const C=new THREE.PerspectiveCamera(45,W/H,.1,400);
+S.add(new THREE.HemisphereLight('#ffffff','#6b8f4e',.62));
+const sol=new THREE.DirectionalLight('#fff1d6',.85);sol.position.set(30,50,20);sol.castShadow=true;sol.shadow.mapSize.set(2048,2048);Object.assign(sol.shadow.camera,{left:-90,right:90,top:40,bottom:-40});S.add(sol);
+const M=c=>new THREE.MeshLambertMaterial({color:c});
+const COL={p:'#79A64E',b:'#5E8F42',a:'#4A90C8',r:'#9A968C',f:'#8FB34F',m:'#857F74',g:'#2F6FA8'};
+const COLOR={A:'#1D9E75',B:'#D85A30'};
+let mapa=null,est=null,ox=0,oz=0;const grupoMapa=new THREE.Group();S.add(grupoMapa);const grupoGente=new THREE.Group();S.add(grupoGente);
+const gente=new Map(),hits=[];let foco=null;
+function construirMapa(m){
+  grupoMapa.clear();ox=m.ancho/2;oz=m.alto/2;
+  const n=m.ancho*m.alto,geo=new THREE.BoxGeometry(1,1,1),mat=new THREE.MeshLambertMaterial({vertexColors:false});
+  const im=new THREE.InstancedMesh(geo,new THREE.MeshLambertMaterial(),n);im.receiveShadow=true;
+  const d=new THREE.Object3D(),c=new THREE.Color();let i=0;
+  const arbG=new THREE.ConeGeometry(.45,1.4,6),arb=new THREE.InstancedMesh(arbG,M('#3E7A3A'),n);arb.castShadow=true;let na=0;
+  const roG=new THREE.DodecahedronGeometry(.35),ro=new THREE.InstancedMesh(roG,M('#8F8B80'),n);let nr=0;
+  for(let y=0;y<m.alto;y++)for(let x=0;x<m.ancho;x++){
+    const t=m.tipo[y][x],exp=m.explorado[y][x]==='1',h=(t==='a'||t==='g')?.2:t==='m'?1.4:.5;
+    d.position.set(x-ox,h/2-.5,y-oz);d.scale.set(1,h,1);d.updateMatrix();im.setMatrixAt(i,d.matrix);
+    c.set(exp?COL[t]:'#5B6670');const du=m.dueno[y][x];if(exp&&du!=='-'&&x>=m.ancho/2-35&&x<m.ancho/2+35)c.lerp(new THREE.Color(COLOR[du]),.18);
+    im.setColorAt(i,c);i++;
+    if(exp&&t==='b'&&((x*7+y*13)%3===0)){d.position.set(x-ox,.7,y-oz);d.scale.set(1,1,1);d.updateMatrix();arb.setMatrixAt(na++,d.matrix);}
+    if(exp&&(t==='r')&&((x+y)%2===0)){d.position.set(x-ox,.15,y-oz);d.updateMatrix();ro.setMatrixAt(nr++,d.matrix);}
+  }
+  arb.count=na;ro.count=nr;grupoMapa.add(im,arb,ro);
+
+}
+function persona(a){
+  const g=new THREE.Group(),cu=new THREE.Mesh(new THREE.CylinderGeometry(.18,.24,.62,10),M(COLOR[a.lado]));cu.position.y=.31;
+  const ca=new THREE.Mesh(new THREE.SphereGeometry(.17,12,10),M('#E8B896'));ca.position.y=.78;cu.castShadow=ca.castShadow=true;g.add(cu,ca);
+  const esc=a.edad<14?.6:1;g.scale.set(esc,esc,esc);cu.userData.id=ca.userData.id=a.id;hits.push(cu,ca);grupoGente.add(g);return g;
+}
+const casas=new THREE.Group();S.add(casas);
+function actualizar(e){
+  est=e;if(!mapa){mapa=e.mapa;construirMapa(mapa);irA(q.get('lado')||'C',true);}else{mapa=e.mapa;construirMapa(mapa);}
+  document.getElementById('dia').textContent='Año '+e.ano+' · día '+e.dia+(e.contacto?' · en contacto':'');
+  for(const l of 'AB'){const s=e.sociedades[l],m=s.metricas;
+    document.getElementById('n'+l).textContent=s.nombre;document.getElementById('s'+l).textContent=s.subtitulo;
+    document.getElementById('p'+l).textContent=m.poblacion;document.getElementById('i'+l).textContent=m.inventos;
+    document.getElementById('w'+l).textContent=m.bienestar;document.getElementById('t'+l).textContent=m.en_tierra_de_nadie+' casillas';}
+  const c=[e.sociedades.B.cronica,e.sociedades.A.cronica].filter(Boolean).join(' · ');
+  document.getElementById('ct').textContent=q.get('cronica')||c||'Un día tranquilo.';
+  const vivos=new Set();casas.clear();const vistas=new Set();
+  for(const a of e.agentes){vivos.add(a.id);let g=gente.get(a.id);if(!g){g=persona(a);g.position.set(a.x-ox,0,a.y-oz);gente.set(a.id,g);}
+    g.userData.dest=new THREE.Vector3(a.x-ox+((a.id*37)%7)/10-.3,0,a.y-oz+((a.id*53)%7)/10-.3);g.userData.a=a;
+    if(a.refugio&&a.edad>=14){const k=Math.round(a.x/2)+','+Math.round(a.y/2);if(!vistas.has(k)){vistas.add(k);
+      const b=new THREE.Mesh(new THREE.BoxGeometry(1.2,.8,1.1),M('#EFE3CC'));b.position.set(a.x-ox+.8,.4,a.y-oz-.6);
+      const t=new THREE.Mesh(new THREE.ConeGeometry(1.05,.7,4),M(a.lado==='A'?'#2F8A6A':'#C8613A'));t.position.set(b.position.x,1.15,b.position.z);t.rotation.y=Math.PI/4;b.castShadow=t.castShadow=true;casas.add(b,t);}}}
+  for(const[id,g]of gente)if(!vivos.has(id)){grupoGente.remove(g);gente.delete(id);}
+  if(q.get('foco')||(REEL&&q.get('lado'))){let g=gente.get(+q.get('foco'));
+    if(!g){const del=[...gente.values()].filter(x=>x.userData.a.lado===q.get('lado')&&x.userData.a.edad>=14);g=del[(+q.get('semilla')||0)%Math.max(1,del.length)];}
+    if(g&&!foco){foco=g;if(!REEL)mostrarFicha(g.userData.a);}}
+}
+async function cargar(){try{const r=await fetch('estado.json?t='+Date.now());actualizar(await r.json());}catch(e){document.getElementById('ct').textContent='Reconectando con el mundo…';}}
+let cx=0,cz=0,dist=46,yaw=0,pit=.95;
+function irA(l,inst){cx=l==='A'?36:l==='B'?-36:0;cz=0;dist=l==='C'?60:42;}
+document.querySelectorAll('#botones button').forEach(b=>b.onclick=()=>{foco=null;irA(b.dataset.ir);});
+let toques=new Map(),d0=0,moved=0;
+el.addEventListener('pointerdown',e=>{toques.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;if(toques.size===2){const[a,b]=[...toques.values()];d0=Math.hypot(a.x-b.x,a.y-b.y);}});
+el.addEventListener('pointermove',e=>{if(!toques.has(e.pointerId))return;const p=toques.get(e.pointerId);const dx=e.clientX-p.x,dy=e.clientY-p.y;moved+=Math.abs(dx)+Math.abs(dy);
+  if(toques.size===1){foco=null;cx-=dx*dist/W*1.2;cz-=dy*dist/H*1.2;}else if(toques.size===2){toques.set(e.pointerId,{x:e.clientX,y:e.clientY});const[a,b]=[...toques.values()];const d=Math.hypot(a.x-b.x,a.y-b.y);if(d0)dist=Math.min(120,Math.max(8,dist*d0/d));d0=d;return;}
+  toques.set(e.pointerId,{x:e.clientX,y:e.clientY});});
+const fin=e=>{if(toques.size===1&&moved<6)elegir(e);toques.delete(e.pointerId);};el.addEventListener('pointerup',fin);el.addEventListener('pointercancel',e=>toques.delete(e.pointerId));
+el.addEventListener('wheel',e=>{dist=Math.min(120,Math.max(8,dist*(1+e.deltaY/600)));},{passive:true});
+const rc=new THREE.Raycaster(),mv=new THREE.Vector2();
+function elegir(e){mv.x=e.clientX/W*2-1;mv.y=-e.clientY/H*2+1;rc.setFromCamera(mv,C);const h=rc.intersectObjects(hits)[0];if(!h)return;const g=gente.get(h.object.userData.id);if(g){foco=g;mostrarFicha(g.userData.a);}}
+function mostrarFicha(a){const s=est.sociedades[a.lado];const f=document.getElementById('ficha');f.style.display='block';
+  document.getElementById('fn').textContent=a.nombre+' · '+a.edad+' años';
+  document.getElementById('fs').textContent=s.nombre+' · hambre '+a.hambre+' · salud '+a.salud+(a.refugio?' · con casa':' · sin casa')+(a.conocimientos.length?' · sabe: '+a.conocimientos.slice(0,3).join(', '):'');
+  document.getElementById('fp').textContent=a.dice?'Dice: «'+a.dice+'»':(a.piensa?'Piensa: «'+a.piensa+'»':(a.creencias?'Cree: «'+a.creencias+'»':''));}
+if(REEL){['top','marcador','titular','cronica','ia'].forEach(id=>document.getElementById(id).style.zoom=(innerWidth/440).toFixed(2));
+  ['marcador','botones','ficha','ia','cronica'].forEach(id=>{if(q.get('ui')!=='todo')document.getElementById(id).classList.add('oculto');});
+  if(q.get('marcador')==='1')document.getElementById('marcador').classList.remove('oculto');
+  if(q.get('titular')){const t=document.getElementById('titular');t.style.display='block';t.textContent=q.get('titular');}}
+addEventListener('resize',()=>{W=innerWidth;H=innerHeight;R.setSize(W,H);C.aspect=W/H;C.updateProjectionMatrix();});
+let t=0;function bucle(){t+=.016;
+  for(const g of gente.values()){const d=g.userData.dest;if(d){g.position.lerp(d,.02);}}
+  if(foco){cx+=(foco.position.x-cx)*.08;cz+=(foco.position.z-cz)*.08;dist+=(12-dist)*.05;if(foco.userData.a&&!REEL)mostrarFicha(foco.userData.a);}
+  if(q.get('rotar')==='1')yaw+=.0025;
+  C.position.set(cx+Math.sin(yaw)*Math.cos(pit)*dist,Math.sin(pit)*dist,cz+Math.cos(yaw)*Math.cos(pit)*dist);C.lookAt(cx,0,cz);
+  R.render(S,C);requestAnimationFrame(bucle);}
+cargar().then(()=>{window.listo=true;});setInterval(cargar,REEL?3600000:30000);bucle();
+</script>
+</body>
+</html>

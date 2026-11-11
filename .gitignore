@@ -1,0 +1,7 @@
+datos/
+.env
+*.db
+*.pkl
+__pycache__/
+reels/salida/
+informe_validacion.*
