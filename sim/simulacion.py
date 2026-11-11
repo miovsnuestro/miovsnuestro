@@ -112,7 +112,8 @@ class Simulacion:
             "sociedades": {l: {"nombre": config.NOMBRE_SOCIEDAD[l], "subtitulo": config.SUBTITULO_SOCIEDAD[l],
                                "color": config.COLOR_SOCIEDAD[l], "metricas": self.metricas(l), "cronica": cron[l],
                                "inventos": [{"nombre": n, "categoria": d.get("categoria"), "dia": d.get("dia"),
-                                             "inventor": d.get("inventor"), "origen": d.get("origen"), "antes": d.get("antes", [])}
+                                             "inventor": d.get("inventor"), "origen": d.get("origen"), "antes": d.get("antes", []),
+                                             "tipo": d.get("tipo_creacion", "objeto"), "inedito": bool(d.get("inedito"))}
                                             for n, d in self.inventos[l].items()],
                                "epoca": self.epoca_de(l),
                                "libros_leidos": len(getattr(self, "libros_leidos", {}).get(l, ())),
@@ -523,8 +524,16 @@ class Simulacion:
                         (self.nombre, a.lado, nombre, self.dia, a.nombre, idea, json.dumps(res, ensure_ascii=False)))
         self.suceso(fase, a, "invento", f"{a.nombre} inventa {nombre} ({res['categoria']}) en «{config.NOMBRE_SOCIEDAD[a.lado]}».")
         if res.get("inedito"):  # no está en nuestra historia: se diseña con su explicación y se le da su momento
-            self.suceso(fase, a, "invento_inedito", f"{a.nombre} crea algo que nadie había hecho antes: «{nombre}».")
-            clave = self.fab.pedir_modelo_invento(self, a, nombre, res)
+            self.suceso(fase, a, "invento_inedito", f"{a.nombre} crea algo que nadie había hecho antes ({res.get('tipo_creacion', 'objeto')}): «{nombre}».")
+            from .fabricacion import CAT_ESTRUCTURA
+            cosa = res.get("tipo_creacion") in ("objeto", "estructura") or (res["categoria"] in CAT_OBJETO | set(CAT_ESTRUCTURA) and res.get("tipo_creacion") not in ("oficio", "organizacion", "costumbre", "sistema", "tecnica"))
+            clave = self.fab.pedir_modelo_invento(self, a, nombre, res) if cosa else None
+            if not cosa:  # un oficio, una organización, una costumbre o un sistema nuevos: se analizan y se desarrollan
+                self.bd.execute("""CREATE TABLE IF NOT EXISTS mecanicas_propuestas(id INTEGER PRIMARY KEY, mundo TEXT, dia INT, lado TEXT,
+                                   invento TEXT, funcion TEXT, estado TEXT DEFAULT 'pendiente')""")
+                if not res.get("efecto_nuevo"):
+                    self.bd.execute("INSERT INTO mecanicas_propuestas(mundo,dia,lado,invento,funcion) VALUES(?,?,?,?,?)",
+                                    (self.nombre, self.dia, a.lado, nombre, f"{res.get('tipo_creacion')}: " + "; ".join((res.get("diseno") or {}).values())))
             avisos.invento_inedito(self, a, nombre, res, idea, clave)
             self.frenar(f"invento inédito: {nombre}")
         elif res.get("hito"):
@@ -918,6 +927,8 @@ class Simulacion:
             a.casa = getattr(pareja, "casa", None) or (a.x, a.y)
         f["casa"] = list(a.casa) if a.refugio and getattr(a, "casa", None) else None
         f["libros"] = [b["titulo"] for b in BIBLIOTECA[a.lado] if b["id"] in getattr(a, "libros", set())]
+        reg = self.inventos[a.lado]
+        f["oficios"] = [n for n in sorted(a.conocimientos) if reg.get(n, {}).get("tipo_creacion") == "oficio" or reg.get(n, {}).get("categoria") == "oficio"]
         f["objetos"] = [{"tipo": o["tipo"], "categoria": o["categoria"], "modelo": o.get("modelo"), "color": o.get("color"),
                          "nombre": o["nombre"]} for o in getattr(a, "objetos", [])]
         for campo in ("dice", "piensa", "creencias"):

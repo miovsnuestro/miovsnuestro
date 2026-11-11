@@ -64,16 +64,18 @@ def invento_inedito(sim, agente, nombre, datos, idea, clave):
         sim.bd.commit()
     diseno = "\n".join(f"  · {k.replace('_', ' ')}: {v}" for k, v in (datos.get("diseno") or {}).items()) or "  · " + datos.get("descripcion_visual", "")
     telegram(
-        f"✨ Invento INÉDITO en '{sim.nombre}' (día {sim.dia}): {agente.nombre} («{config.NOMBRE_SOCIEDAD[agente.lado]}») ha creado «{nombre}», "
+        f"✨ Creación INÉDITA ({datos.get('tipo_creacion', 'objeto')}) en '{sim.nombre}' (día {sim.dia}): {agente.nombre} («{config.NOMBRE_SOCIEDAD[agente.lado]}») ha creado «{nombre}», "
         f"algo que no está en nuestra historia (o hecho de otra manera).\n"
         f"Su idea, con sus palabras: «{idea[:300]}»\n"
         f"Diseño según su explicación:\n{diseno}\n"
         + (f"Lo que hace y aún no cabe en las reglas: {datos['efecto_nuevo']}\n"
            "→ Propuesta pendiente: hablarlo con Claude para añadir esa función a las reglas (igual para las dos sociedades).\n"
            if datos.get("efecto_nuevo") else "")
-        + f"Mientras tanto se ve con una pieza neutra. Modelo 3D: clave «{clave}».\n"
-        f"Prompt para Higgsfield: {getattr(sim.fab, 'ultimo_prompt', '')}\n"
-        f"Cuando lo tengas, mándame el .glb como archivo con «{clave}» en el pie. Gran momento para un reel."
+        + (f"Mientras tanto se ve con una pieza neutra. Modelo 3D: clave «{clave}».\n"
+           f"Prompt para Higgsfield: {getattr(sim.fab, 'ultimo_prompt', '')}\n"
+           f"Cuando lo tengas, mándame el .glb como archivo con «{clave}» en el pie.\n" if clave else
+           "No es una cosa: tráelo a Claude para analizarlo y decidir cómo se ve y cómo funciona (igual para los dos lados).\n")
+        + "Gran momento para un reel."
     )
 
 

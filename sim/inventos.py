@@ -35,10 +35,17 @@ EFECTOS = {
 CATEGORIAS = ["herramienta", "arma_caza", "ropa", "fuego_y_cocina", "recipiente", "cultivo", "animal_domestico",
               "vivienda", "taller", "almacen", "fabrica", "vehiculo_tierra", "barco", "maquina", "camino_o_puente",
               "medicina", "escritura_y_conocimiento", "moneda_o_comercio", "instrumento", "observacion_del_cielo",
-              "energia", "comunicacion", "transporte_aereo", "espacial", "otro"]
+              "energia", "comunicacion", "transporte_aereo", "espacial",
+              # creaciones que no son cosas: también se inventan, se enseñan y cuentan
+              "oficio", "organizacion", "norma_o_costumbre", "sistema", "otro"]
+TIPOS_CREACION = ["objeto", "estructura", "tecnica", "oficio", "organizacion", "costumbre", "sistema", "otro"]
 
 REGLAS_ARBITRO = """Eres el árbitro de un experimento: decides si una idea inventada por un habitante de una sociedad primitiva
 FUNCIONA en un mundo con la misma física, química y biología que la Tierra. Eres neutral y aplicas las mismas reglas a todos.
+Una idea puede ser una cosa, pero también una técnica, un oficio (un trabajo nuevo), una forma de organizarse,
+una norma o costumbre, o un sistema (de cuentas, de turnos, de reparto, de señales…). Las ideas sociales se juzgan con la
+naturaleza humana y lo que esa gente ya tiene: que sea posible y comprensible para ellos, no que sea justo ni que te guste.
+Nunca juzgues una idea por si favorece los valores de una sociedad u otra.
 
 Reglas:
 1. Solo puede usar materiales que tenga en su inventario y conocimientos que su sociedad ya haya inventado.
@@ -56,11 +63,14 @@ Reglas:
 8. 'modelo': cómo se dibuja en el mundo. Elige UNA clave de esta lista cerrada (es solo para el dibujo; el habitante no la ve):
    {modelos}
    Si ninguna encaja de verdad, pon "nuevo" y describe la forma en 'descripcion_visual' con detalle.
-9. LO INÉDITO TAMBIÉN VALE. Juzga solo si funciona con la física, la química y la biología de la Tierra, NUNCA si se parece
+9. 'tipo_creacion': uno de {tipos}. Si se parece a algo que ya conocemos, trátalo por semejanza (mismo dibujo, efectos
+   parecidos) aunque ellos lo llamen distinto.
+10. LO INÉDITO TAMBIÉN VALE. Juzga solo si funciona con la física, la química y la biología de la Tierra, NUNCA si se parece
    a algo que exista en nuestra historia. Pueden idear cosas que los humanos nunca hicimos o hacerlas de otra manera:
    - No lo conviertas en el objeto conocido más parecido ni lo «corrijas» hacia lo que tú conoces: respeta su idea tal cual.
    - Si no existe en la historia humana conocida (o funciona de una forma distinta a lo conocido), pon "inedito": true y "modelo": "nuevo".
-   - Rellena 'diseno' con SU explicación (forma, partes, materiales, tamaño y cómo se usa), para poder dibujarlo como lo pensó.
+   - Rellena 'diseno' con SU explicación (forma, partes, materiales, tamaño y cómo se usa; o, si no es una cosa,
+     quién lo hace, cómo funciona y qué cambia en su día a día), para poder dibujarlo y desarrollarlo como lo pensó.
    - Si lo que hace de verdad no cabe en la lista de efectos, pon los efectos más cercanos (o ninguno) y explica
      su función real en 'efecto_nuevo' (una frase). Se estudiará añadirla a las reglas, igual para las dos sociedades.
 
@@ -68,7 +78,7 @@ Responde SOLO con JSON:
 {{"aceptado": true/false, "motivo": "...", "nombre": "...", "categoria": "...", "efectos": [{{"tipo": "...", "objetivo": "...", "valor": 1.5}}],
  "requiere": ["inventos previos en los que se apoya"], "coste": {{"material": cantidad}}, "dificultad": 0.5,
  "hito": false, "modelo": "clave de la lista o nuevo", "descripcion_visual": "cómo se ve, en una frase",
- "inedito": false, "diseno": {{"forma": "...", "partes": "...", "materiales": "...", "tamano": "...", "como_se_usa": "..."}},
+ "tipo_creacion": "objeto", "inedito": false, "diseno": {{"forma": "...", "partes": "...", "materiales": "...", "tamano": "...", "como_se_usa": "..."}},
  "efecto_nuevo": null}}"""
 
 
@@ -91,6 +101,8 @@ def _limpiar(res, conocidos):
     res["requiere"] = [r for r in res.get("requiere", []) if r in conocidos]
     res["dificultad"] = max(0.05, min(0.95, float(res.get("dificultad") or 0.5)))
     res["inedito"] = bool(res.get("inedito"))
+    if res.get("tipo_creacion") not in TIPOS_CREACION:
+        res["tipo_creacion"] = "objeto" if res["categoria"] not in ("oficio", "organizacion", "norma_o_costumbre", "sistema") else "sistema"
     d = res.get("diseno") if isinstance(res.get("diseno"), dict) else {}
     res["diseno"] = {k: str(d.get(k) or "")[:200] for k in ("forma", "partes", "materiales", "tamano", "como_se_usa") if d.get(k)}
     res["efecto_nuevo"] = str(res.get("efecto_nuevo") or "")[:200] or None
@@ -103,7 +115,7 @@ def _limpiar(res, conocidos):
 
 def arbitrar_ia(idea, inventario, conocidos, llamar_llm):
     sistema = REGLAS_ARBITRO.format(efectos=json.dumps(EFECTOS, ensure_ascii=False),
-                                    actividades=", ".join(ACTIVIDADES), categorias=", ".join(CATEGORIAS),
+                                    actividades=", ".join(ACTIVIDADES), categorias=", ".join(CATEGORIAS), tipos=", ".join(TIPOS_CREACION),
                                     modelos=", ".join(__import__("sim.fabricacion", fromlist=["x"]).claves_modelo()))
     usuario = (f"Idea del habitante: {idea}\nSu inventario: {inventario}\n"
                f"Inventos que ya existen en su sociedad: {', '.join(conocidos) or 'ninguno'}")

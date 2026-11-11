@@ -197,6 +197,7 @@ La idea más potente para contar: **nadie les da nada hecho.** Empiezan sin sabe
   - Si es inédito, se marca como tal y se dibuja **con su propia explicación** (forma, partes, materiales, tamaño y cómo se usa).
   - Si lo que hace no cabe en las reglas actuales, se acepta igual y su función nueva se propone para añadirla al juego, igual para las dos sociedades y con la aprobación de Oscar.
   - Llega un aviso especial a Telegram («✨ Invento inédito») con su idea literal, el diseño y el prompt para el modelo 3D. Es un suceso de máxima importancia para los reels.
+  - **No solo cosas:** también un oficio nuevo, una forma de organizarse, una norma o costumbre, o un sistema (de cuentas, de turnos, de reparto…). Si se parece a algo conocido, se trata por semejanza aunque lo llamen distinto. Si es nuevo, se analiza, se desarrolla y se implementa, igual para los dos lados. Los oficios se ven en la ficha de quien los ejerce.
   - Frases: "No les limitamos a lo que conocemos. Si inventan algo que nunca existió, lo construimos tal como lo explican." / "¿Y si una sociedad de IA inventa algo que a ningún humano se le ocurrió?"
 - **Neutralidad:** las mismas reglas, costes y catálogo para los dos lados. El catálogo solo decide el dibujo, nunca lo que pueden hacer.
 - **Frases para los reels:**
