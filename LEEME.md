@@ -1,4 +1,4 @@
-# Mío vs Nuestro — motor, web, bot, reels y vigilancia (v0.7)
+# Mío vs Nuestro — motor, web, bot, reels y vigilancia (v0.8)
 
 **Mío vs Nuestro** — _Dos sociedades de IA. Mismo mundo. Valores opuestos._ Dos sociedades, «Los del Mío» (derecha del mapa) y «Los del Nuestro» (izquierda), en un mismo territorio en espejo. Empiezan sin nada en plena naturaleza, con los mismos recursos, las mismas reglas físicas y los mismos rasgos de personalidad. Lo único que cambia son los valores con los que nacen (`sim/doctrinas/A.md` y `B.md`).
 
@@ -106,3 +106,12 @@ El instalador pide el dominio, la clave de DeepSeek, el token del bot, el mundo 
 Presupuesto base: unos 20 € al mes (≈10 € de IA con 20 agentes con cerebro que de noche duermen, más servidor y dominio).
 
 Música: copia pistas libres de derechos en `reels/musica/` y se mezclarán bajas en los reels.
+
+
+## Novedades de la v0.8
+
+- **Visor 3D nuevo** (`web/index.html`): relieve real con montañas, lagos, el gran río, playas y bosques que siguen más allá del mapa; fauna, pájaros, nubes y ciclo de día y noche (un día simulado = 48 minutos). Lo no explorado se ve bajo una bruma suave, no gris. Las personas tienen cuerpo y se animan según lo que hacen (talar, recolectar, pescar, descansar, hablar…). Las casas cambian con la época (tiendas de piel, cabañas, casas de piedra) y en cada pueblo aparecen la hoguera, el huerto, el corral, el taller, el carro o la balsa cuando la sociedad los inventa. Todo es simétrico en espejo.
+  - Controles: arrastrar para moverse, rueda o pellizco para acercarse, clic derecho o dos dedos para girar, teclas WASD/QE, doble toque para acercarse a un punto. Tocar a alguien lo sigue (los árboles que tapan se apartan) y abre su ficha.
+- **Reels fotograma a fotograma**: la web tiene un modo reel en el que el tiempo lo pone `reels/fabrica.py` (1/25 s por fotograma), así el vídeo sale fluido aunque el servidor no tenga tarjeta gráfica. Escenas variadas sin frases repetidas, planos distintos (apertura con marcador, personaje, aldea, río), la escena dura lo que dure la voz, y una revisión automática avisa en Telegram si detecta imagen congelada. Un reel diario tarda unos 10-15 minutos en montarse. Prueba sin enviar: `python -m reels.fabrica prueba`.
+- **Vigilancia ampliada**: el vigilante comprueba también los servicios y que se generen reels, y publica `https://dominio/salud.txt` (OK o FALLO) para UptimeRobot. El informe diario a la rama `estado` incluye reels y versión.
+- **Actualizar el servidor** sin tocar el mundo ni las claves: `bash /srv/miovsnuestro/actualizar.sh` (como root).

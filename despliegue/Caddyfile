@@ -2,8 +2,8 @@
 	root * @DIR@/web
 	file_server
 	encode gzip
-	@json path /estado.json
-	header @json Cache-Control "no-cache"
+	@vivo path /estado.json /salud.txt
+	header @vivo Cache-Control "no-cache"
 }
 
 # Acceso local para la grabación de reels y la vigilancia

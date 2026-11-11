@@ -258,6 +258,8 @@ class Simulacion:
     # ---------- acciones ----------
     def _ejecutar(self, a, d, ctx, fase):
         acc = d.get("accion")
+        if fase != "noche" or not getattr(a, "ultima_accion", ""):
+            a.ultima_accion = acc or ""  # solo para la web: lo que hizo de día (animación); no afecta a las reglas
         otro = self.agentes.get(d.get("objetivo")) if isinstance(d.get("objetivo"), int) else None
         if otro and not otro.vivo:
             otro = None
@@ -647,6 +649,12 @@ class Simulacion:
     def _ficha_publica(self, a):
         """La ficha que se enseña en la web: lo que dice, piensa y cree pasa por el filtro."""
         f = a.ficha()
+        # Datos solo visuales para la web: lo último que hizo y dónde está su casa (fija desde que la construye).
+        f["accion"] = getattr(a, "ultima_accion", "")
+        if a.refugio and getattr(a, "casa", None) is None:
+            pareja = self.agentes.get(a.pareja) if a.pareja else None
+            a.casa = getattr(pareja, "casa", None) or (a.x, a.y)
+        f["casa"] = list(a.casa) if a.refugio and getattr(a, "casa", None) else None
         for campo in ("dice", "piensa", "creencias"):
             f[campo], _ = moderacion.publicable(self, a, campo, f[campo])
         return f

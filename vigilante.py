@@ -58,8 +58,28 @@ def comprobar():
     copias = sorted((config.RAIZ / "copias").glob("*.tar.gz")) if (config.RAIZ / "copias").exists() else []
     if not copias or time.time() - copias[-1].stat().st_mtime > 26 * 3600:
         problemas.append(("copia", "No hay copia de seguridad de las últimas 24 horas."))
+    # 6. Servicios y reels
+    for servicio in ("miovsnuestro-motor", "miovsnuestro-bot"):
+        try:
+            activo = subprocess.run(["systemctl", "is-active", "--quiet", servicio]).returncode == 0
+        except FileNotFoundError:
+            continue
+        datos[servicio] = "activo" if activo else "parado"
+        if not activo:
+            problemas.append((servicio, f"El servicio {servicio} está parado."))
+    try:
+        import sqlite3
+        r = sqlite3.connect(config.DATOS / "reels.db").execute("SELECT MAX(creado) FROM reels").fetchone()[0]
+        datos["ultimo_reel_horas"] = round((time.time() - r) / 3600, 1) if r else None
+        if r and time.time() - r > 30 * 3600:
+            problemas.append(("reels", "Hace más de 30 horas que no se genera ningún reel. Mira datos/reels.log."))
+    except Exception:
+        pass
     datos["problemas"] = [p[1] for p in problemas]
     (config.DATOS / "salud.json").write_text(json.dumps(datos, ensure_ascii=False, indent=2))
+    # Para la vigilancia externa (UptimeRobot busca la palabra OK en https://dominio/salud.txt)
+    graves = [p[1] for p in problemas if p[0] in ("motor_parado", "sin_latido", "web", "saldo", "disco", "miovsnuestro-motor")]
+    (config.WEB / "salud.txt").write_text("OK\n" if not graves else "FALLO\n" + "\n".join(graves) + "\n")
     return problemas
 
 

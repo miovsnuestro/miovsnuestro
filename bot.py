@@ -38,6 +38,7 @@ def enviar_video(ruta, texto, botones):
     limite = "----mvn" + str(int(time.time()))
     partes = []
     for k, v in (("chat_id", str(config.TELEGRAM_CHAT_ID)), ("caption", texto[:1000]),
+                 ("supports_streaming", "true"), ("width", "1080"), ("height", "1920"),
                  ("reply_markup", json.dumps({"inline_keyboard": botones}))):
         partes.append(f'--{limite}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
     with open(ruta, "rb") as f:

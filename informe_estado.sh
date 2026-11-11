@@ -17,4 +17,9 @@ PY
 tail -n 100 datos/vigilante.log > $D/vigilante.log 2>/dev/null || true
 sqlite3 -json datos/$(cat .mundo).db "SELECT dia, titulo, estado FROM propuestas ORDER BY id DESC LIMIT 10" > $D/propuestas.json 2>/dev/null || true
 sqlite3 -json datos/$(cat .mundo).db "SELECT dia, campo, motivos FROM moderacion ORDER BY rowid DESC LIMIT 20" > $D/moderacion.json 2>/dev/null || true
-cd $D && git add -A && git -c user.name="miovsnuestro-servidor" -c user.email="servidor@miovsnuestro" commit -qm "Informe $(date +%F)" && git push -q origin estado
+tail -n 60 datos/reels.log > $D/reels.log 2>/dev/null || true
+sqlite3 -json datos/reels.db "SELECT id, datetime(creado,'unixepoch') AS creado, estado, version FROM reels ORDER BY id DESC LIMIT 10" > $D/reels.json 2>/dev/null || true
+git log -1 --format='%h %cs %s' > $D/version.txt 2>/dev/null || true
+cd $D && git add -A
+git diff --cached --quiet || git -c user.name="miovsnuestro-servidor" -c user.email="servidor@miovsnuestro" commit -qm "Informe $(date +%F)"
+git push -q origin estado

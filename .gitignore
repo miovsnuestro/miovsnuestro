@@ -5,3 +5,7 @@ datos/
 __pycache__/
 reels/salida/
 informe_validacion.*
+web/estado.json
+web/estado.json.tmp
+web/salud.txt
+.mundo
