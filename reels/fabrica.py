@@ -35,8 +35,10 @@ URL_WEB = os.getenv("REEL_URL", "http://127.0.0.1/")
 FUENTE = os.getenv("REEL_FUENTE", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")
 VOZ_PIPER = os.getenv("VOZ_PIPER", str(config.RAIZ / "voces" / "es_ES-davefx-medium.onnx"))
 ANCHO, ALTO = 1080, 1920                      # tamaño final del vídeo
-RENDER = (int(os.getenv("REEL_RENDER_ANCHO", "720")), int(os.getenv("REEL_RENDER_ALTO", "1280")))  # se dibuja así y se escala
-FPS = int(os.getenv("REEL_FPS", "25"))
+RENDER = (int(os.getenv("REEL_RENDER_ANCHO", "640")), int(os.getenv("REEL_RENDER_ALTO", "1136")))  # se dibuja así y se escala
+FPS = int(os.getenv("REEL_FPS", "24"))
+# En los planos abiertos las sombras casi no se notan y son un 30 % del tiempo de dibujo: se quitan ahí.
+PLANOS_SIN_SOMBRAS = set(os.getenv("REEL_PLANOS_SIN_SOMBRAS", "general,marcador,rio").split(","))
 COLOR = {"A": "0x1D9E75", "B": "0xD85A30", "C": "0xFAC775"}
 VERBO = {"recolectar": "recoge comida", "talar": "tala madera", "picar_piedra": "pica piedra", "pescar": "pesca",
          "cazar": "sale a cazar", "cultivar": "cultiva la tierra", "criar": "cuida a los animales", "descansar": "descansa",
@@ -274,6 +276,8 @@ def grabar(escenas, titular, carpeta):
                       "dur": f"{dur:.2f}", "semilla": str(i), "hora": e.get("hora", "0.3")}
             if e.get("foco"):
                 params["foco"] = e["foco"]
+            if params["plano"] in PLANOS_SIN_SOMBRAS:
+                params["sombras"] = "0"
             if i == 0:
                 params.update({"titular": titular, "marcador": "1"})
             pg = nav.new_page(viewport={"width": RENDER[0], "height": RENDER[1]}, device_scale_factor=1)

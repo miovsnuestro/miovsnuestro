@@ -103,7 +103,7 @@ el.appendChild(R.domElement);
 const S=new THREE.Scene();const CIELO=new THREE.Color('#A9D3EE');S.background=CIELO.clone();S.fog=new THREE.Fog(CIELO.clone(),70,230);
 const C=new THREE.PerspectiveCamera(42,W/H,.1,900);
 const hemi=new THREE.HemisphereLight('#ffffff','#5d7a45',.55);S.add(hemi);
-const sol=new THREE.DirectionalLight('#fff1d6',.9);sol.castShadow=true;const SOMBRA=(!REEL&&Math.min(W,H)<700)?1024:2048;sol.shadow.mapSize.set(SOMBRA,SOMBRA);sol.shadow.bias=-.0006;sol.shadow.normalBias=.02;
+const sol=new THREE.DirectionalLight('#fff1d6',.9);sol.castShadow=true;const SOMBRA=+(q.get('sombra')||((!REEL&&Math.min(W,H)<700)?1024:2048));sol.shadow.mapSize.set(SOMBRA,SOMBRA);sol.shadow.bias=-.0006;sol.shadow.normalBias=.02;
 Object.assign(sol.shadow.camera,{left:-34,right:34,top:34,bottom:-34,near:1,far:220});S.add(sol,sol.target);
 
 const COLOR={A:'#1D9E75',B:'#D85A30'},COLA=new THREE.Color(COLOR.A),COLB=new THREE.Color(COLOR.B);
@@ -178,7 +178,16 @@ function construirTerreno(m){
     if((i+k)%2){ind.push(a,d,b,b,d,e);}else{ind.push(a,d,e,a,e,b);}}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));
   g.setIndex(ind);g.computeVertexNormals();
-  terreno=new THREE.Mesh(g,new THREE.MeshPhongMaterial({vertexColors:true,flatShading:true,shininess:0}));terreno.receiveShadow=true;S.add(terreno);
+  const matT=new THREE.MeshPhongMaterial({vertexColors:true,flatShading:true,shininess:0});
+  terreno=new THREE.Mesh(g,matT); // guarda la malla completa (colores); se dibuja por trozos
+  const T=Math.round(24/PASO);
+  for(let k0=0;k0<NV-1;k0+=T)for(let i0=0;i0<NU-1;i0+=T){const sub=[];let mnx=1e9,mxx=-1e9,mnz=1e9,mxz=-1e9,mny=1e9,mxy=-1e9;
+    for(let k=k0;k<Math.min(k0+T,NV-1);k++)for(let i=i0;i<Math.min(i0+T,NU-1);i++){const a=k*NU+i,b=a+1,d=a+NU,e=d+1;
+      if((i+k)%2){sub.push(a,d,b,b,d,e);}else{sub.push(a,d,e,a,e,b);}
+      for(const v of[a,e]){mnx=Math.min(mnx,pos[v*3]);mxx=Math.max(mxx,pos[v*3]);mnz=Math.min(mnz,pos[v*3+2]);mxz=Math.max(mxz,pos[v*3+2]);mny=Math.min(mny,pos[v*3+1]);mxy=Math.max(mxy,pos[v*3+1]);}}
+    const gt=new THREE.BufferGeometry();for(const n of['position','color','normal'])gt.setAttribute(n,g.attributes[n]);gt.setIndex(sub);
+    const cen=new THREE.Vector3((mnx+mxx)/2,(mny+mxy)/2,(mnz+mxz)/2);gt.boundingSphere=new THREE.Sphere(cen,Math.hypot(mxx-mnx,mxy-mny,mxz-mnz)/2+1);
+    const mt=new THREE.Mesh(gt,matT);mt.receiveShadow=true;S.add(mt);}
   expV=new Float32Array(n);
 }
 // Niebla de lo no explorado y tierras reclamadas (sin rehacer la malla)
@@ -208,9 +217,18 @@ function animarAgua(t){if(!agua)return;const p=agua.geometry.attributes.position
 
 // ---------------- vegetación, rocas, montañas (en espejo) ----------------
 const ocultables=[];
-function instanciar(geo,mat,lista,conColor){const im=new THREE.InstancedMesh(geo,mat,Math.max(1,lista.length));im.userData.lista=lista;const d=new THREE.Object3D(),c=new THREE.Color();
-  lista.forEach((p,i)=>{d.position.set(X(p[0]),suelo(X(p[0]),Z(p[1]))+(p[5]||0),Z(p[1]));d.rotation.set(0,p[3],0);d.scale.set(p[2],p[2]*(p[6]||1),p[2]);d.updateMatrix();im.setMatrixAt(i,d.matrix);
-    if(conColor){c.set(p[4]);im.setColorAt(i,c);}});im.count=lista.length;im.castShadow=true;im.receiveShadow=true;return im;}
+function instanciar(geo,mat,lista,conColor){
+  // Se parte en trozos de 24 unidades: cada trozo tiene su esfera y la cámara solo dibuja los que ve.
+  const grupo=new THREE.Group(),trozos=new Map(),d=new THREE.Object3D(),c=new THREE.Color();
+  lista.forEach(p=>{const k=Math.floor(p[0]/24)+','+Math.floor(p[1]/24);if(!trozos.has(k))trozos.set(k,[]);trozos.get(k).push(p);});
+  for(const sub of trozos.values()){const gc=geo.clone(),im=new THREE.InstancedMesh(gc,mat,sub.length);im.userData.lista=sub;
+    const centro=new THREE.Vector3();let r=0;
+    sub.forEach((p,i)=>{d.position.set(X(p[0]),suelo(X(p[0]),Z(p[1]))+(p[5]||0),Z(p[1]));d.rotation.set(0,p[3],0);d.scale.set(p[2],p[2]*(p[6]||1),p[2]);d.updateMatrix();im.setMatrixAt(i,d.matrix);
+      centro.add(d.position);if(conColor){c.set(p[4]);im.setColorAt(i,c);}});
+    centro.divideScalar(sub.length);sub.forEach(p=>{r=Math.max(r,Math.hypot(X(p[0])-centro.x,Z(p[1])-centro.z));});
+    gc.boundingSphere=new THREE.Sphere(centro,r+4);im.count=sub.length;im.castShadow=true;im.receiveShadow=true;grupo.add(im);}
+  return grupo;}
+const sinSombra=g=>{g.children.forEach(m=>m.castShadow=false);return g;};
 function plantar(){
   const pinos=[],frond=[],arbus=[],rocas=[],flores=[],trigo=[],pedr=[];
   const add=(arr,u,v,s,r,c,y,sy)=>{arr.push([u,v,s,r,c,y,sy]);arr.push([MW-u,v,s,-r,c,y,sy]);};
@@ -236,12 +254,12 @@ function plantar(){
   const cono1=new THREE.ConeGeometry(.52,1.1,7);cono1.translate(0,1.0,0);const cono2=new THREE.ConeGeometry(.38,.85,7);cono2.translate(0,1.55,0);
   const copa=new THREE.IcosahedronGeometry(.55,0);copa.translate(0,1.05,0);
   const blanco=new THREE.MeshPhongMaterial({color:'#ffffff',flatShading:true,shininess:0});
-  const arbIM=[instanciar(tronco,MF('#6E4A2C'),pinos.concat(frond)),instanciar(cono1,blanco,pinos,true),instanciar(cono2,blanco,pinos,true),instanciar(copa,blanco,frond,true)];g.add(...arbIM);ocultables.push(...arbIM);
+  const arbIM=[instanciar(tronco,MF('#6E4A2C'),pinos.concat(frond)),instanciar(cono1,blanco,pinos,true),instanciar(cono2,blanco,pinos,true),instanciar(copa,blanco,frond,true)];g.add(...arbIM);arbIM.forEach(x=>ocultables.push(...x.children));
   const arb=new THREE.IcosahedronGeometry(.3,0);arb.translate(0,.18,0);g.add(instanciar(arb,blanco,arbus,true));
-  const roca=new THREE.DodecahedronGeometry(.34,0);roca.translate(0,.16,0);const rIM=instanciar(roca,blanco,rocas,true);g.add(rIM);ocultables.push(rIM);
-  const pd=new THREE.DodecahedronGeometry(.09,0);g.add(instanciar(pd,blanco,pedr,true));
-  const fl=new THREE.IcosahedronGeometry(.055,0);const fi=instanciar(fl,new THREE.MeshLambertMaterial({color:'#fff'}),flores,true);fi.castShadow=false;g.add(fi);
-  const tr=new THREE.CylinderGeometry(.03,.05,.42,4);tr.translate(0,.21,0);const ti=instanciar(tr,blanco,trigo,true);ti.castShadow=false;g.add(ti);
+  const roca=new THREE.DodecahedronGeometry(.34,0);roca.translate(0,.16,0);const rIM=instanciar(roca,blanco,rocas,true);g.add(rIM);ocultables.push(...rIM.children);
+  const pd=new THREE.DodecahedronGeometry(.09,0);g.add(sinSombra(instanciar(pd,blanco,pedr,true)));
+  const fl=new THREE.IcosahedronGeometry(.055,0);g.add(sinSombra(instanciar(fl,new THREE.MeshLambertMaterial({color:'#fff'}),flores,true)));
+  const tr=new THREE.CylinderGeometry(.03,.05,.42,4);tr.translate(0,.21,0);g.add(sinSombra(instanciar(tr,blanco,trigo,true)));
   S.add(g);
 }
 // Aparta los árboles que tapan a la persona seguida (como en los Sims)
