@@ -45,17 +45,22 @@ Reglas:
 2. No se pueden saltar pasos: cada invento debe ser un paso pequeño y realista desde lo que ya existe.
    (Ej.: sin fuego no hay cerámica; sin fundir metal no hay herramientas de metal; sin ruedas ni animales no hay carros.)
 3. Si la idea es vaga, imposible o se salta pasos, recházala y explica qué falta en una frase.
-4. Si funciona, dale un nombre corto en español que suene natural para esa sociedad (no uses marcas ni nombres modernos
-   si no corresponden), y asígnale de 1 a 3 efectos SOLO de esta lista: {efectos}.
+4. Si funciona, dale un nombre corto hecho con las PALABRAS DEL PROPIO HABITANTE, que describa lo que es o hace
+   (ej.: «piedra con mango», «palo para remover tierra», «piel cosida»). NUNCA uses el nombre moderno del objeto
+   (hacha, pala, camiseta, rueda…): ellos no conocen esas palabras. Si el habitante ya le ha puesto un nombre propio, úsalo.
+   Asígnale de 1 a 3 efectos SOLO de esta lista: {efectos}.
    Actividades válidas para 'habilita' y 'rendimiento': {actividades}.
 5. Elige una categoría visual de esta lista: {categorias}.
 6. 'dificultad' entre 0.05 (muy fácil) y 0.95 (casi imposible): probabilidad de fallar en cada intento.
 7. 'hito' = true solo si es un salto importante que merece un modelo 3D propio (primer barco, primera fábrica, primer vehículo...).
+8. 'modelo': cómo se dibuja en el mundo. Elige UNA clave de esta lista cerrada (es solo para el dibujo; el habitante no la ve):
+   {modelos}
+   Si ninguna encaja de verdad, pon "nuevo" y describe la forma en 'descripcion_visual' con detalle.
 
 Responde SOLO con JSON:
 {{"aceptado": true/false, "motivo": "...", "nombre": "...", "categoria": "...", "efectos": [{{"tipo": "...", "objetivo": "...", "valor": 1.5}}],
  "requiere": ["inventos previos en los que se apoya"], "coste": {{"material": cantidad}}, "dificultad": 0.5,
- "hito": false, "descripcion_visual": "cómo se ve, en una frase"}}"""
+ "hito": false, "modelo": "clave de la lista o nuevo", "descripcion_visual": "cómo se ve, en una frase"}}"""
 
 
 def _limpiar(res, conocidos):
@@ -77,12 +82,15 @@ def _limpiar(res, conocidos):
     res["requiere"] = [r for r in res.get("requiere", []) if r in conocidos]
     res["dificultad"] = max(0.05, min(0.95, float(res.get("dificultad") or 0.5)))
     res["aceptado"] = bool(res.get("aceptado")) and bool(efectos)
+    from .fabricacion import modelo_valido
+    res["modelo"] = modelo_valido(res.get("modelo"), res["categoria"], res.get("nombre", ""), res.get("descripcion_visual", ""))
     return res
 
 
 def arbitrar_ia(idea, inventario, conocidos, llamar_llm):
     sistema = REGLAS_ARBITRO.format(efectos=json.dumps(EFECTOS, ensure_ascii=False),
-                                    actividades=", ".join(ACTIVIDADES), categorias=", ".join(CATEGORIAS))
+                                    actividades=", ".join(ACTIVIDADES), categorias=", ".join(CATEGORIAS),
+                                    modelos=", ".join(__import__("sim.fabricacion", fromlist=["x"]).claves_modelo()))
     usuario = (f"Idea del habitante: {idea}\nSu inventario: {inventario}\n"
                f"Inventos que ya existen en su sociedad: {', '.join(conocidos) or 'ninguno'}")
     from .cerebro import llamar_json

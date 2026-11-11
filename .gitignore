@@ -9,3 +9,6 @@ web/estado.json
 web/estado.json.tmp
 web/salud.txt
 .mundo
+web/modelos/subidos/
+web/modelos/subidos.json
+web/prueba.json

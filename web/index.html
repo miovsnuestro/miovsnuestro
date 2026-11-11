@@ -124,6 +124,7 @@
 <div id="titular"></div>
 <div id="cronica" class="panel"><b>Crónica<span class="toca">▾</span> · </b><span id="ct">Cargando el mundo…</span></div>
 <script src="three.min.js"></script>
+<script src="obras.js"></script>
 <script>
 "use strict";
 // ======================================================================
@@ -290,7 +291,7 @@ function plantar(){
   const cono1=new THREE.ConeGeometry(.52,1.1,7);cono1.translate(0,1.0,0);const cono2=new THREE.ConeGeometry(.38,.85,7);cono2.translate(0,1.55,0);
   const copa=new THREE.IcosahedronGeometry(.55,0);copa.translate(0,1.05,0);
   const blanco=new THREE.MeshPhongMaterial({color:'#ffffff',flatShading:true,shininess:0});
-  const arbIM=[instanciar(tronco,MF('#6E4A2C'),pinos.concat(frond)),instanciar(cono1,blanco,pinos,true),instanciar(cono2,blanco,pinos,true),instanciar(copa,blanco,frond,true)];g.add(...arbIM);arbIM.forEach(x=>ocultables.push(...x.children));
+  const arbIM=[instanciar(tronco,MF('#6E4A2C'),pinos.concat(frond)),instanciar(cono1,blanco,pinos,true),instanciar(cono2,blanco,pinos,true),instanciar(copa,blanco,frond,true)];g.add(...arbIM);arbIM.forEach(x=>{ocultables.push(...x.children);x.children.forEach(c=>c.userData.arbol=true);});arbIM[0].children.forEach(c=>c.userData.tronco=true);
   const arb=new THREE.IcosahedronGeometry(.3,0);arb.translate(0,.18,0);g.add(instanciar(arb,blanco,arbus,true));
   const roca=new THREE.DodecahedronGeometry(.34,0);roca.translate(0,.16,0);const rIM=instanciar(roca,blanco,rocas,true);g.add(rIM);ocultables.push(...rIM.children);
   const pd=new THREE.DodecahedronGeometry(.09,0);g.add(sinSombra(instanciar(pd,blanco,pedr,true)));
@@ -350,7 +351,7 @@ function moverFauna(dt){for(const f of fauna){const g=f.g;f.esp-=dt;
 
 // ---------------- personas ----------------
 const PIEL=['#F1C9A0','#E0AE84','#C48A5E','#9E6B45','#E8B896','#D49C72'],PELO=['#2B1A0E','#5A3A20','#1B1B1B','#8A4B23','#B88A4A','#3A2A1E'];
-const VERBO={recolectar:'recoge comida',talar:'tala madera',picar_piedra:'pica piedra',pescar:'pesca',cazar:'caza',cultivar:'cultiva la tierra',criar:'cuida los animales',
+const VERBO={fabricar:'fabrica algo con sus manos',construir:'construye',nombrar:'le pone nombre a algo',leer:'lee',recolectar:'recoge comida',talar:'tala madera',picar_piedra:'pica piedra',pescar:'pesca',cazar:'caza',cultivar:'cultiva la tierra',criar:'cuida los animales',
   extraer_arcilla:'saca arcilla',extraer_metal:'busca metal',extraer_carbon:'saca carbón',comer:'come',descansar:'descansa',construir_refugio:'construye una casa',explorar:'explora',
   asentarse:'reclama tierra',emigrar:'emigra',inventar:'intenta inventar algo',hablar:'habla',intercambiar:'hace un trueque',regalar:'regala algo',enseñar:'enseña lo que sabe',
   depositar:'guarda en el almacén común',tomar:'toma del almacén común',cortejar:'corteja',robar:'roba'};
@@ -360,7 +361,7 @@ function crearPersona(a){
   const ropa=MF(COLOR[a.lado]),pantalon=MF(a.lado==='A'?'#3F4F49':'#4F433D'),mp=MF(piel),mh=MF(pelo);
   const cad=new THREE.Group();cad.position.y=.5;g.add(cad); // cadera: todo cuelga de aquí
   const torso=new THREE.Mesh(new THREE.BoxGeometry(.3,.36,.18),ropa);torso.geometry.translate(0,.18,0);cad.add(torso);
-  const cin=new THREE.Mesh(new THREE.BoxGeometry(.31,.05,.19),MF('#5A3A20'));cin.position.y=.02;cad.add(cin);
+  const cin=new THREE.Mesh(new THREE.BoxGeometry(.32,.07,.2),MF(COLOR[a.lado]));cin.position.y=.02;cad.add(cin);
   const cuello=new THREE.Group();cuello.position.y=.38;torso.add(cuello);
   const cab=new THREE.Mesh(new THREE.IcosahedronGeometry(.13,1),mp);cab.position.y=.12;cuello.add(cab);
   const pel=new THREE.Mesh(new THREE.SphereGeometry(.14,10,6,0,Math.PI*2,0,Math.PI*.55),mh);pel.position.y=.135;pel.rotation.x=-.25;cuello.add(pel);
@@ -393,14 +394,14 @@ function animarPersona(g,dt,t){
   const sc=a.edad<6?.55:a.edad<14?.75:1;if(u.escala!==sc){u.escala=sc;g.scale.setScalar(sc);}
   u.fase+=dt*(andando?9:3);const f=u.fase;
   // postura base
-  u.cad.position.y=.5;u.torso.rotation.set(0,0,0);u.cuello.rotation.set(0,0,0);u.bI.rotation.set(0,0,0);u.bD.rotation.set(0,0,0);u.pI.rotation.set(0,0,0);u.pD.rotation.set(0,0,0);u.herr.visible=false;
+  u.cad.position.y=.5;u.torso.rotation.set(0,0,0);u.cuello.rotation.set(0,0,0);u.bI.rotation.set(0,0,0);u.bD.rotation.set(0,0,0);u.pI.rotation.set(0,0,0);u.pD.rotation.set(0,0,0);vestir(g);if(u.manoD){u.manoD.visible=false;u.manoI.visible=false;}else u.herr.visible=false;
   if(andando){const s=Math.sin(f)*.6;u.pI.rotation.x=s;u.pD.rotation.x=-s;u.bI.rotation.x=-s*.8;u.bD.rotation.x=s*.8;u.cad.position.y=.5+Math.abs(Math.cos(f))*.03;}
-  else if(['talar','picar_piedra','extraer_metal','extraer_carbon','construir_refugio'].includes(acc)){u.herr.visible=true;const s=(Math.sin(f*1.6)+1)/2;u.bD.rotation.x=-2.4+s*1.9;u.bI.rotation.x=-1.6+s*1.2;u.torso.rotation.x=s*.25;}
-  else if(['recolectar','cultivar','extraer_arcilla','criar'].includes(acc)){const s=(Math.sin(f*.8)+1)/2;u.torso.rotation.x=.25+s*.55;u.bI.rotation.x=-.6-s*.6;u.bD.rotation.x=-.4-s*.7;u.cad.position.y=.5-s*.04;}
-  else if(acc==='pescar'||acc==='cazar'){u.herr.visible=true;u.bD.rotation.x=-1.2+Math.sin(f*.7)*.15;u.bI.rotation.x=-.9;}
-  else if(acc==='descansar'){u.cad.position.y=.26;u.pI.rotation.x=u.pD.rotation.x=-1.45;u.torso.rotation.x=-.12;u.bI.rotation.z=-.25;u.bD.rotation.z=.25;u.cuello.rotation.x=.15+Math.sin(f*.3)*.05;}
-  else if(['hablar','intercambiar','regalar','enseñar','cortejar'].includes(acc)){u.bD.rotation.x=-.5+Math.sin(f*1.2)*.35;u.bD.rotation.z=.2;u.bI.rotation.x=-.2+Math.sin(f*.9+1)*.2;u.cuello.rotation.y=Math.sin(f*.5)*.3;}
-  else if(acc==='inventar'){u.cuello.rotation.x=.35;u.bD.rotation.x=-1.0+Math.sin(f*2)*.2;u.bI.rotation.x=-.9;u.torso.rotation.x=.15;}
+  else if(['talar','picar_piedra','extraer_metal','extraer_carbon','construir_refugio','construir'].includes(acc)){sacarObjeto(u,acc);const s=(Math.sin(f*1.6)+1)/2;u.bD.rotation.x=-2.4+s*1.9;u.bI.rotation.x=-1.6+s*1.2;u.torso.rotation.x=s*.25;}
+  else if(['recolectar','cultivar','extraer_arcilla','criar'].includes(acc)){sacarObjeto(u,acc);const s=(Math.sin(f*.8)+1)/2;u.torso.rotation.x=.25+s*.55;u.bI.rotation.x=-.6-s*.6;u.bD.rotation.x=-.4-s*.7;u.cad.position.y=.5-s*.04;}
+  else if(acc==='pescar'||acc==='cazar'){sacarObjeto(u,acc);u.bD.rotation.x=-1.2+Math.sin(f*.7)*.15;u.bI.rotation.x=-.9;}
+  else if(acc==='descansar'){sacarObjeto(u,acc);u.cad.position.y=.26;u.pI.rotation.x=u.pD.rotation.x=-1.45;u.torso.rotation.x=-.12;u.bI.rotation.z=-.25;u.bD.rotation.z=.25;u.cuello.rotation.x=.15+Math.sin(f*.3)*.05;}
+  else if(['hablar','intercambiar','regalar','ensenar','enseñar','cortejar','nombrar'].includes(acc)){if(acc==='intercambiar')sacarObjeto(u,acc);u.bD.rotation.x=-.5+Math.sin(f*1.2)*.35;u.bD.rotation.z=.2;u.bI.rotation.x=-.2+Math.sin(f*.9+1)*.2;u.cuello.rotation.y=Math.sin(f*.5)*.3;}
+  else if(acc==='inventar'||acc==='fabricar'||acc==='leer'){if(acc!=='inventar')sacarObjeto(u,acc);u.cuello.rotation.x=.35;u.bD.rotation.x=-1.0+Math.sin(f*2)*.2;u.bI.rotation.x=-.9;u.torso.rotation.x=.15;}
   else{u.cuello.rotation.y=Math.sin(f*.4)*.35;u.bI.rotation.z=-.05;u.bD.rotation.z=.05;u.torso.rotation.x=Math.sin(f*.5)*.02;}
 }
 
@@ -444,6 +445,7 @@ function carro(){const g=new THREE.Group();const c=new THREE.Mesh(new THREE.BoxG
 function enTierra(u,v){for(let r=0;r<10;r++)for(let k=0;k<12;k++){const a=k/12*Math.PI*2,uu=u+Math.cos(a)*r,vv=clamp(v+Math.sin(a)*r,1,MH-2);if(altura(uu,vv)>.25)return[uu,vv];}return[u,v];}
 let firmaPueblos='',plazas={};const obstaculos=[];
 function construirPueblos(e){
+  if(e.obras){construirObras(e);return;}  // mundos nuevos: cada cosa construida, pieza a pieza (obras.js)
   const ep=e.epoca==='prehistoria'?'prehistoria':e.epoca==='aldeas'?'aldeas':'piedra';
   const casas={A:[],B:[]};for(const a of e.agentes)if(a.casa){const k=a.casa.join(',');if(!casas[a.lado].some(c=>c.k===k))casas[a.lado].push({k,x:a.casa[0],y:a.casa[1],a});}
   const cats={};for(const l of'AB')cats[l]=new Set((e.sociedades[l].inventos||[]).map(i=>i.categoria));
@@ -564,7 +566,7 @@ function mostrarFicha(a){if(!ultimaFicha||ultimaFicha.id!==a.id){$('entrevista')
   $('fc').style.background=COLOR[a.lado];$('fn').textContent=a.nombre+' · '+a.edad+' años';
   const pareja=a.pareja&&est.agentes.find(o=>o.id===a.pareja),inv=Object.entries(a.inventario||{}).filter(([,v])=>v>=1).map(([k,v])=>Math.floor(v)+' '+k).slice(0,4);
   conColor($('fs'),s.nombre+' · '+(VERBO[a.accion]||'anda por ahí')+(a.casa?' · tiene casa':' · sin casa')+(pareja?' · pareja: '+pareja.nombre:'')+(a.hijos&&a.hijos.length?' · '+a.hijos.length+' hijo'+(a.hijos.length>1?'s':''):'')
-    +(a.conocimientos.length?' · sabe: '+a.conocimientos.slice(0,4).join(', '):'')+(inv.length?' · lleva: '+inv.join(', '):''));
+    +(a.conocimientos.length?' · sabe: '+a.conocimientos.slice(0,4).join(', '):'')+(inv.length?' · tiene: '+inv.join(', '):'')+(a.objetos&&a.objetos.length?' · lleva: '+[...new Set(a.objetos.map(o=>o.nombre))].slice(-4).join(', '):''));
   const bar=(id,v,c)=>{$(id).style.width=clamp(v,0,100)+'%';$(id).style.background=c;};bar('bh',a.hambre,'#E8A33A');bar('be',a.energia,'#5DB3E0');bar('bs',a.salud,'#6CC66C');
   conColor($('fp'),a.dice?'Dice: «'+a.dice+'»':(a.piensa?'Piensa: «'+a.piensa+'»':(a.creencias?'Cree: «'+a.creencias+'»':'')));recolocar();}
 function mostrarTexto(t){setTimeout(recolocar,0);$('bentrevistar').style.display='none';$('entrevista').classList.add('oculto');const f=$('ficha');f.style.display='block';$('ia').style.display='none';$('fc').style.background='#FAC775';$('fn').textContent=t;$('fs').textContent='';$('fp').textContent='';['bh','be','bs'].forEach(i=>$(i).style.width='0');ultimaFicha=null;$('bseguir').textContent='Seguir';}
@@ -630,11 +632,11 @@ function paso(dt){t+=dt;
   C.position.set(cam.x+Math.sin(cam.yaw)*Math.cos(cam.pitch)*cam.dist,ty+Math.sin(cam.pitch)*cam.dist,cam.z+Math.cos(cam.yaw)*Math.cos(cam.pitch)*cam.dist);
   const minY=Math.max(suelo(C.position.x,C.position.z),NIVEL)+.5;if(C.position.y<minY)C.position.y=minY;
   C.lookAt(cam.x,ty+(cam.dist<10?.2:0),cam.z);
-  if(foco&&cam.dist<16)despejar(foco.position,C.position);else if(apartados.length)restaurarVista();
+  if(foco&&cam.dist<16){despejar(foco.position,C.position);despejarObras(foco.position,C.position);}else{if(apartados.length)restaurarVista();despejarObras(null);}
   const d=luzDelDia();
   for(const g of gente.values())animarPersona(g,dt,t);
   if(foco){anillo.visible=true;anillo.position.set(foco.position.x,foco.position.y+.03,foco.position.z);anillo.material.color.set(COLOR[foco.userData.a.lado]);anillo.scale.setScalar(1+Math.sin(t*3)*.06);}
-  moverFauna(dt);animarAgua(t);
+  moverFauna(dt);animarAgua(t);animarObras(t,dt);
   nubes.visible=C.position.y<46;for(const n of nubes.children){n.position.x+=n.userData.v*dt;if(n.position.x>130)n.position.x=-130;}
   for(const p of pajaros){const u=p.userData,a=t*u.vel+u.fase;p.position.set(u.cx+Math.cos(a)*u.r,u.alt+Math.sin(t*.7+u.fase)*.4,u.cz+Math.sin(a)*u.r);p.rotation.y=-a+(u.vel>0?0:Math.PI);
     const w=Math.sin(t*9+u.fase*3)*.5,pa=p.geometry.attributes.position.array;pa[4]=w;pa[13]=w;p.geometry.attributes.position.needsUpdate=true;}

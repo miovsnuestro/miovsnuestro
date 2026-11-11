@@ -32,7 +32,12 @@ ACCIONES = {
     "inventar": "intentar una idea nueva: describe en 'idea' qué quieres hacer, con qué materiales y para qué",
     "hablar": "hablar con alguien (objetivo = id)",
     "intercambiar": "proponer un trueque (objetivo = id, da = recurso, pide = recurso)",
-    "regalar": "dar algo a alguien (objetivo = id, da = recurso, cantidad)",
+    "regalar": "dar algo a alguien (objetivo = id, da = recurso, cantidad; o bien objeto = algo que llevas encima)",
+    "fabricar": "hacer con tus manos algo que tu gente ya sabe hacer (recurso = cuál de tu lista; objeto = cómo es, con tus palabras; "
+                "color y material si quieres; objetivo = id si es para otra persona). Gasta materiales",
+    "nombrar": "ponerle un nombre propio a algo que tu gente ya sabe hacer (recurso = cómo lo llamáis ahora; objeto = el nombre nuevo)",
+    "construir": "levantar algo que tu gente ya sabe construir (recurso = cuál de tu lista; objeto = cómo lo llamáis; "
+                 "para = \"todos\" si es de todos). Gasta materiales",
     "ensenar": "enseñar un invento que sabes (objetivo = id, recurso = nombre del invento)",
     "depositar": "dejar recursos en el almacén común de tu sociedad (recurso, cantidad)",
     "tomar": "coger recursos del almacén común (recurso, cantidad)",
@@ -182,6 +187,16 @@ class CerebroReglas:
             if a.inventario.get("madera", 0) >= 4:
                 return {"accion": "construir_refugio"}
             return {"accion": "talar"}
+        if ctx.get("sabe_construir") and sum(ctx.get("obras_cerca", {}).values()) < 6 + len(ctx["vecinos"]) and r() < 0.06:
+            return {"accion": "construir", "recurso": self.rnd.choice(ctx["sabe_construir"]),
+                    "para": "todos" if r() < (0.7 if a.lado == "B" else 0.25) else None}
+        if ctx.get("sabe_fabricar") and len(ctx.get("objetos", [])) < 4 and r() < 0.08:
+            hacer = self.rnd.choice(ctx["sabe_fabricar"])
+            color = self.rnd.choice(["", "", "rojo", "amarillo", "azul", "verde", "blanco", "negro"])
+            return {"accion": "fabricar", "recurso": hacer, "objeto": f"{hacer} {color}".strip(), "color": color or None}
+        if a.conocimientos and r() < 0.0015:  # solo pruebas: a veces inventan una palabra propia
+            viejo = self.rnd.choice(sorted(a.conocimientos))
+            return {"accion": "nombrar", "recurso": viejo, "objeto": self.rnd.choice(["ka", "tu", "mo", "ri", "sa", "no"]) + self.rnd.choice(["ro", "la", "ten", "mi", "ko"])}
         ideas = ctx.get("ideas_prueba", [])
         if ideas and r() < 0.12 + rs["curiosidad"] * 0.25:
             texto, coste = self.rnd.choice(ideas)
@@ -237,9 +252,10 @@ class CerebroIA:
     def decidir(self, a, ctx):
         sistema = (
             prompt_sistema(a.lado) +
-            "Acciones posibles (elige UNA):\n" + "\n".join(f"- {k}: {v}" for k, v in ACCIONES.items()) + "\n\n"
+            "Acciones posibles (elige UNA):\n" + "\n".join(f"- {k}: {v}" for k, v in ACCIONES.items()
+                                                          if k not in ("fabricar", "construir") or k in ctx["puede"]) + "\n\n"
             'Responde SOLO con JSON: {"accion": "...", "objetivo": id o número de idea o null, "recurso": null, '
-            '"da": null, "pide": null, "cantidad": null, "idea": null, "dice": "lo que dices en voz alta o \\"\\"", "piensa": "tu pensamiento"}'
+            '"da": null, "pide": null, "cantidad": null, "idea": null, "objeto": null, "color": null, "material": null, "para": null, "dice": "lo que dices en voz alta o \\"\\"", "piensa": "tu pensamiento"}'
         )
         vecinos = "\n".join(
             f"- id {v.id}: {v.nombre}, {v.edad} años, hambre {round(v.hambre)}, relación contigo {a.relaciones.get(v.id, 0)}"
@@ -253,6 +269,10 @@ class CerebroIA:
             f"Tienes: {dict((k, v) for k, v in a.inventario.items() if v) or 'nada'}. Refugio: {'sí' if a.refugio else 'no'}.\n"
             f"Inventos que sabes usar:\n{sabe}\nOtros inventos de tu gente que podrías aprender de alguien: {sociedad}.\n"
             f"Puedes hacer estas actividades: {', '.join(sorted(ctx['puede']))}.\n"
+            + (f"Cosas que sabes hacer con tus manos: {', '.join(ctx['sabe_fabricar'])}.\n" if ctx.get("sabe_fabricar") else "")
+            + (f"Cosas que sabes construir: {', '.join(ctx['sabe_construir'])}.\n" if ctx.get("sabe_construir") else "")
+            + (f"Llevas encima: {', '.join(ctx['objetos'])}.\n" if ctx.get("objetos") else "")
+            + (f"Cerca de aquí tu gente ha levantado: {', '.join(f'{n} ({q})' for n, q in ctx['obras_cerca'].items())}.\n" if ctx.get("obras_cerca") else "")
             + (f"Libros de tu gente que aún no has leído: {', '.join('«' + t + '»' for t in ctx['libros'])}.\n" if ctx.get("libros") else "") +
             f"Estás en: {ctx['lugar']}. {ctx['sobre_otros']}\n"
             f"Tu gente se hace llamar «{config.NOMBRE_SOCIEDAD[a.lado]}». Almacén común de tu gente: {dict((k, v) for k, v in ctx['almacen'].items() if v) or 'vacío'}.\n"

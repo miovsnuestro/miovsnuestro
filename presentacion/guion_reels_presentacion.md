@@ -21,6 +21,7 @@ Material para los reels de lanzamiento del proyecto. La fábrica de reels lo usa
 3. **Igualdad de partida:** la misma tierra, los mismos recursos, las mismas personalidades, las mismas reglas y el mismo cerebro de IA. Solo cambian los valores.
 4. **Son autónomos:** cada habitante piensa, recuerda, habla, comercia, forma pareja, tiene hijos, descubre cosas y puede cambiar de opinión o marcharse. Nadie los dirige.
 5. **Empiezan en la prehistoria y nadie les dice qué inventar:** sin fuego, sin herramientas y sin casas. No hay una lista de descubrimientos: cada invento sale de una idea de los propios habitantes. Pueden llegar a la caza, la agricultura, el metal, las fábricas, los vehículos o el espacio… o quedarse estancados.
+5b. **Todo lo que crean se ve, a su manera:** ni siquiera conocen la palabra «hacha». Si atan una piedra a un palo, la llaman como quieren y se ve en su mano. 4 casas son 4 casas, la ropa tiene el color que eligen y cada lado se ve según su propio avance.
 6. **Se mide todo y es público:** población, comida, desigualdad, inventos, bienestar, conflictos, territorio y, tras el encuentro, hacia dónde emigra la gente.
 7. **No hay ganador decidido:** no sabemos qué va a pasar. Lo vemos juntos.
 8. **Transparencia:** las reglas, los valores y las instrucciones de la IA están publicados en la web.
@@ -178,6 +179,32 @@ Todo esto ya existe y se puede enseñar. Las frases entre comillas son ideas de 
 
 ### Vigilancia 24/7 (para el reel de transparencia, si interesa)
 - El servidor se vigila solo cada 5 minutos, se reinicia si se atasca, guarda copias diarias y cada mañana Claude revisa el estado y avisa si algo va mal. Una página pública dice si todo está OK.
+
+### Todo lo que inventan se ve, y lo descubren ellos (v1.0, 11-nov-2026)
+La idea más potente para contar: **nadie les da nada hecho.** Empiezan sin saber lo que es un hacha, una pala o una camiseta. Ni siquiera conocen esas palabras.
+- **Lo descubren:** un habitante piensa «si ato esta piedra afilada a un palo, cortaré mejor la madera». Un árbitro neutral comprueba que funcione con la física de la Tierra, que tenga los materiales y que no se salte pasos (sin fuego no hay cerámica; sin metal no hay herramientas de metal). Puede fallar, y a menudo falla.
+- **Lo nombran ellos:** el invento se queda con *sus* palabras («piedra con mango») y luego pueden ponerle un nombre propio que se inventen. Cada sociedad acaba con su propio vocabulario. Por debajo, solo para dibujarlo, el sistema sabe que eso es «un hacha»; ellos nunca lo ven.
+- **Hacerlo cuesta:** fabricar otra unidad gasta material y una jornada de trabajo. Si no tienen piedra ni madera, no hay herramienta.
+- **Todo es individual y se ve:**
+  - si hacen 4 casas hay 4 casas, cada una en su sitio, y el pueblo crece alrededor de las primeras;
+  - cada uno lleva sus herramientas en la mano cuando trabaja (Xiana tala con su piedra con mango, Roi caza con su arco). Quien no tiene herramienta trabaja con las manos;
+  - la ropa tiene el color que eligen («quiero una camiseta amarilla») y el cinturón siempre lleva el color de su sociedad;
+  - los campos se ven arados y el bosque talado deja un claro con tocones, que tarda meses en volver;
+  - una hoguera vieja se apaga cuando encienden otra. Lo que es de todos lleva un banderín de su sociedad.
+- **Cada sociedad se ve según su propio avance, no el del mundo:** si una llega antes a las casas de piedra o a la era industrial, solo su lado cambia. Así se ve de un vistazo quién va por delante en qué.
+- **Lo nuevo de verdad pide su modelo 3D:** si inventan algo que el catálogo aún no sabe dibujar, mientras tanto sale una pieza neutra y llega un aviso a Telegram con el prompt para generarlo (por ejemplo con Higgsfield). Oscar manda el .glb por Telegram y queda puesto. **Un modelo vale para las dos sociedades.**
+- **Neutralidad:** las mismas reglas, costes y catálogo para los dos lados. El catálogo solo decide el dibujo, nunca lo que pueden hacer.
+- **Frases para los reels:**
+  - "Nadie les dijo qué es un hacha. Lo descubrieron atando una piedra a un palo."
+  - "Lo llaman como quieren. Nosotros solo lo dibujamos."
+  - "Cada casa que ves la levantó alguien con nombre propio."
+  - "Si la quiere amarilla, es amarilla."
+- **Capturas:** `capturas/11_pueblo_con_inventos.png`, `12_herramientas_y_ropa.png`, `13_cada_lado_su_epoca.png` (un lado aún con chozas, el otro con casas) y `14_campos_y_tala.png`.
+- **Dónde va en los guiones:**
+  - **Reel 2 (cómo funciona):** sustituir la parte de los inventos por la secuencia piedra → palo → «piedra con mango» → se ve en su mano (8–10 s).
+  - **Reel 4 (hasta dónde pueden llegar):** el pueblo que crece, de choza a ciudad, y los campos y claros que van cambiando el paisaje.
+  - **Reel 3 (por qué es justo):** "mismas reglas y mismo catálogo para los dos; un modelo nuevo vale para los dos lados".
+  - **Idea de reel propio, «Lo inventaron ellos»:** 30 s siguiendo el primer objeto de cada sociedad, desde la idea escrita con sus palabras hasta que se ve en la mano, con el nombre que le pusieron.
 
 ### Cambios en los guiones de arriba
 - **Reel 1 (tráiler):** sustituir las capturas antiguas por tomas del visor nuevo: vista general al amanecer, primer plano siguiendo a alguien, aldea al anochecer.

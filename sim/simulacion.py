@@ -3,6 +3,7 @@ import json
 import random
 import sqlite3
 from . import config, inventos, avisos, moderacion, capacidad
+from .fabricacion import Fabricacion, CAT_OBJETO
 from .agente import Agente, crear
 from .cerebro import CerebroIA, CerebroReglas, Gasto, llamar_llm
 from .mundo import Mundo, ACTIVIDAD_TERRENO
@@ -11,7 +12,7 @@ EPOCAS = ["prehistoria", "aldeas", "metal", "industrial", "moderna", "espacial"]
 from pathlib import Path as _Path
 # Libros de los fundadores: mismos temas, mismo orden y extensión parecida para las dos sociedades.
 BIBLIOTECA = {l: json.loads((_Path(__file__).parent / "biblioteca" / f"{l}.json").read_text(encoding="utf-8")) for l in "AB"}
-IMPORTANCIA = {"primer_contacto": 10, "mundo_nuevo": 10, "horizonte": 7, "lectura": 5, "duda": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
+IMPORTANCIA = {"primer_contacto": 10, "objeto_nuevo": 7, "nombre_nuevo": 6, "construccion_nueva": 8, "fabrica": 2, "construccion": 3, "mundo_nuevo": 10, "horizonte": 7, "lectura": 5, "duda": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
                "enseñanza": 4, "regalo": 3, "trueque": 3, "invento_fallido": 2, "trueque_rechazado": 2, "almacén": 2, "habla": 1}
 ACTIVIDADES_LIBRES = {"recolectar", "talar", "picar_piedra", "cazar"}
 
@@ -25,6 +26,7 @@ class Simulacion:
         self.ia = CerebroIA(self.rnd) if usar_ia else None
         self.agentes: dict[int, Agente] = {}
         self.inventos = {"A": {}, "B": {}}  # registro de lo inventado por cada sociedad
+        self.fab = Fabricacion()  # objetos y construcciones que existen de verdad en el mundo
         self.dia = 0
         self.ano = 0.0             # años simulados transcurridos (el calendario es elástico)
         self.freno_hasta = 0
@@ -64,7 +66,31 @@ class Simulacion:
         with open(ruta, "rb") as f:
             sim = pickle.load(f)
         sim.bd = sqlite3.connect(ruta_bd)
+        if not hasattr(sim, "fab"):  # mundos guardados antes de que existieran los objetos
+            sim.fab = Fabricacion()
+            sim._poner_lo_que_ya_habia()
         return sim
+
+    def _poner_lo_que_ya_habia(self):
+        """Mundo anterior a los objetos: aparecen las casas que ya tenían y la primera pieza de cada invento
+        (de quien lo sabe), sin sucesos ni avisos. Igual para los dos lados."""
+        self.suceso = lambda *a, **k: None
+        memoria = {a.id: list(a.memoria) for a in self.agentes.values()}
+        try:
+            for a in self.vivos():
+                if a.refugio:
+                    if getattr(a, "casa", None) is None:
+                        a.casa = self.fab.sitio_casa(self, a)
+                    self.fab.casa(self, a)
+            for l in "AB":
+                for n in list(self.inventos[l]):
+                    quien = next((a for a in self.vivos(l) if n in a.conocimientos and a.adulto), None)
+                    if quien:
+                        self.fab.primera_pieza(self, quien, n, "dia")
+        finally:
+            del self.suceso
+            for a in self.agentes.values():  # no se inventan recuerdos: eso ya existía
+                a.memoria = memoria.get(a.id, a.memoria)
 
     def despertar(self):
         """Si se ha aprobado subir el número de cerebros, despierta adultos de relleno hasta el nuevo
@@ -86,8 +112,9 @@ class Simulacion:
             "sociedades": {l: {"nombre": config.NOMBRE_SOCIEDAD[l], "subtitulo": config.SUBTITULO_SOCIEDAD[l],
                                "color": config.COLOR_SOCIEDAD[l], "metricas": self.metricas(l), "cronica": cron[l],
                                "inventos": [{"nombre": n, "categoria": d.get("categoria"), "dia": d.get("dia"),
-                                             "inventor": d.get("inventor"), "origen": d.get("origen")}
+                                             "inventor": d.get("inventor"), "origen": d.get("origen"), "antes": d.get("antes", [])}
                                             for n, d in self.inventos[l].items()],
+                               "epoca": self.epoca_de(l),
                                "libros_leidos": len(getattr(self, "libros_leidos", {}).get(l, ())),
                                "libros_total": len([b for b in BIBLIOTECA[l] if config.LIBROS_CON_CRITICAS or not b["critica"]])} for l in "AB"},
             "mapa": {"ancho": m.w, "alto": m.h,
@@ -99,6 +126,8 @@ class Simulacion:
                      "dueno": ["".join((m.dueno[y][x] or "-") for x in range(m.w)) for y in range(m.h)],
                      "explorado": ["".join("1" if (x, y) in explorado else "0" for x in range(m.w)) for y in range(m.h)]},
             "agentes": [self._ficha_publica(a) for a in self.agentes.values() if a.vivo],
+            "obras": self.fab.publico(),
+            "talado": self._talado(),
             "contacto": self.contacto,
         }
 
@@ -148,6 +177,10 @@ class Simulacion:
                 p.add(e["objetivo"])
         if self.sabe_leer(a) and self.libros_pendientes(a):
             p.add("leer")
+        if self.fab.puede_fabricar(self, a):
+            p.add("fabricar")
+        if self.fab.puede_construir(self, a):
+            p.add("construir")
         return p
 
     # ---------- libros de los fundadores ----------
@@ -244,6 +277,9 @@ class Simulacion:
             "puede": self.puede(a), "sabe_refugio": self.sabe_refugio(a), "inventos_sociedad": sociedad,
             "libros": [b["titulo"] for b in self.libros_pendientes(a)][:6] if self.sabe_leer(a) else [],
             "descripciones": {n: d.get("descripcion_visual", "") for n, d in reg.items()},
+            "sabe_fabricar": self.fab.puede_fabricar(self, a), "sabe_construir": self.fab.puede_construir(self, a),
+            "objetos": [o["nombre"] for o in getattr(a, "objetos", [])],
+            "obras_cerca": self._obras_cerca(a),
             # solo lo usa el cerebro de reglas (pruebas sin IA)
             "ideas_prueba": [(inventos.IDEAS_PRUEBA[i][0], inventos.IDEAS_PRUEBA[i][2])
                              for i in inventos.ideas_prueba_posibles(a.conocimientos)],
@@ -312,6 +348,15 @@ class Simulacion:
         a.energia = max(0, a.energia - 3 * (1 - self.maximo(a, "ahorro_energia")))
         puede = ctx["puede"]
 
+        if acc == "nombrar":
+            self._nombrar(a, d, fase)
+            return
+        if acc == "fabricar" and "fabricar" in puede:
+            self.fab.fabricar(self, a, d, fase)
+            return
+        if acc == "construir" and "construir" in puede:
+            self.fab.construir(self, a, d, fase)
+            return
         if acc in ACTIVIDAD_TERRENO and acc in puede:
             tipos, rec, base = ACTIVIDAD_TERRENO[acc]
             alcance = 12 + self.maximo(a, "alcance")
@@ -322,6 +367,12 @@ class Simulacion:
             a.x, a.y = c
             q = self.mundo.extraer(*c, rec, max(1, round(base * self.mult(a, "rendimiento", acc))))
             a.dar(rec, q)
+            if acc == "talar" and q:  # los árboles cortados tardan en volver: se ve el claro
+                if not hasattr(self, "tala"):
+                    self.tala = {}
+                self.tala[c] = min(12.0, self.tala.get(c, 0) + q)
+            if acc == "cultivar" and q:
+                self.fab.cultivado(c[0], c[1], a.lado)  # la tierra trabajada se ve como campo
             if acc == "recolectar" and self.rnd.random() < 0.4:
                 a.dar("fibra", self.mundo.extraer(*c, "fibra", 1))
         elif acc == "cazar":
@@ -359,6 +410,11 @@ class Simulacion:
             a.refugio = True
             if a.pareja:
                 self.agentes[a.pareja].refugio = True
+            pareja = self.agentes.get(a.pareja) if a.pareja else None
+            a.casa = getattr(a, "casa", None) or getattr(pareja, "casa", None) or self.fab.sitio_casa(self, a)
+            if pareja:
+                pareja.casa = a.casa
+            self.fab.casa(self, a)  # cada vivienda es una casa que se ve: 4 casas son 4 casas
             self.suceso(fase, a, "refugio", f"{a.nombre} construye una vivienda para su familia.")
         elif acc == "leer" and "leer" in puede:
             self._leer(a, d, fase)
@@ -373,6 +429,8 @@ class Simulacion:
             self.suceso(fase, a, "habla", f"{a.nombre} a {otro.nombre}: {frase}")
         elif acc == "intercambiar" and otro:
             self._trueque(a, otro, d, fase)
+        elif acc == "regalar" and otro and d.get("objeto") and self.fab.regalar_objeto(self, a, otro, d["objeto"], fase):
+            pass
         elif acc == "regalar" and otro:
             rec, q = d.get("da") or a.alimento_principal(), int(d.get("cantidad") or 1)
             dado = a.quitar(rec, q)
@@ -444,6 +502,7 @@ class Simulacion:
             a.recordar(f"Día {self.dia}: probé \"{idea[:60]}\" y no funcionó. {res.get('motivo', '')}")
             return
         nombre = res["nombre"].strip().lower()[:40]
+        nombre = next((n for n, i in reg.items() if nombre in i.get("antes", [])), nombre)  # ya tiene nombre propio en su gente
         if not all(a.inventario.get(k, 0) >= v for k, v in res["coste"].items()):
             a.recordar(f"Día {self.dia}: para \"{idea[:50]}\" me faltan materiales: {res['coste']}.")
             return
@@ -463,9 +522,38 @@ class Simulacion:
         self.bd.execute("INSERT INTO inventos VALUES(?,?,?,?,?,?,?)",
                         (self.nombre, a.lado, nombre, self.dia, a.nombre, idea, json.dumps(res, ensure_ascii=False)))
         self.suceso(fase, a, "invento", f"{a.nombre} inventa {nombre} ({res['categoria']}) en «{config.NOMBRE_SOCIEDAD[a.lado]}».")
+        self.fab.primera_pieza(self, a, nombre, fase)
         if res.get("hito"):
             avisos.hito_visual(self, a, nombre, res)
             self.frenar(f"gran invento: {nombre}")
+
+    def _nombrar(self, a, d, fase):
+        """Ponerle nombre propio a algo que ya saben hacer: «piedra con mango» puede acabar llamándose como ellos quieran.
+        La palabra se queda en su gente (el dibujo no cambia: sigue siendo la misma cosa)."""
+        reg = self.inventos[a.lado]
+        viejo = (d.get("recurso") or "").strip().lower()
+        nuevo = " ".join(str(d.get("objeto") or d.get("nombre") or "").strip().lower().split())[:30]
+        if viejo not in reg or viejo not in a.conocimientos or len(nuevo) < 2 or nuevo in reg:
+            return
+        info = reg.pop(viejo)
+        info["antes"] = info.get("antes", []) + [viejo]
+        reg[nuevo] = info
+        for o in self.vivos(a.lado):
+            if viejo in o.conocimientos:
+                o.conocimientos.discard(viejo); o.conocimientos.add(nuevo)
+        for o in self.agentes.values():
+            for ob in getattr(o, "objetos", []):
+                if ob.get("invento") == viejo and ob["lado"] == a.lado:
+                    ob["invento"] = nuevo
+                    if ob["nombre"] == viejo:
+                        ob["nombre"] = nuevo
+        for e in self.fab.estructuras:
+            if e["lado"] == a.lado and (e.get("invento") == viejo or e["nombre"] == viejo):
+                e["invento"] = nuevo if e.get("invento") == viejo else e.get("invento")
+                if e["nombre"] == viejo:
+                    e["nombre"] = nuevo
+        a.recordar(f"Día {self.dia}: empecé a llamar «{nuevo}» a lo que antes llamábamos {viejo}.")
+        self.suceso(fase, a, "nombre_nuevo", f"{a.nombre} le pone nombre propio a «{viejo}»: desde ahora su gente lo llama «{nuevo}».")
 
     def puede_cruzar_rio(self, a):
         """El gran río del centro solo se cruza con un invento de barco, puente o transporte."""
@@ -656,8 +744,12 @@ class Simulacion:
     # ---------- ritmo elástico ----------
     def epoca(self):
         """Época del mundo según lo inventado por la sociedad más avanzada (el calendario es común)."""
+        return max((self.epoca_de(l) for l in "AB"), key=EPOCAS.index)
+
+    def epoca_de(self, lado):
+        """Época propia de cada sociedad: lo que se ve en su lado depende solo de lo que ella ha logrado."""
         cats, habil = set(), set()
-        for reg in self.inventos.values():
+        for reg in (self.inventos[lado],):
             for d in reg.values():
                 cats.add(d.get("categoria"))
                 habil |= {e.get("objetivo") for e in d.get("efectos", []) if e["tipo"] == "habilita"}
@@ -688,6 +780,10 @@ class Simulacion:
         self._comprobar_contacto("noche")
         self._ampliar_mundo()
         self.mundo.regenerar()
+        for c in list(getattr(self, "tala", {})):  # el bosque vuelve poco a poco (unos 3 meses de días)
+            self.tala[c] -= 0.12
+            if self.tala[c] <= 0:
+                del self.tala[c]
         self._estropear_comida()
         dpa = self.dias_por_ano()
         paso = 1 / dpa                 # años que pasan hoy
@@ -795,6 +891,18 @@ class Simulacion:
                 "memoria": memoria, "conoce_otros": bool(self.contacto)}
         return res
 
+    def _talado(self):
+        """Bosque cortado: [x, y, árboles cortados de 1 a 12]. Se recupera muy despacio (un árbol tarda en crecer)."""
+        return [[x, y, round(v)] for (x, y), v in getattr(self, "tala", {}).items() if v >= 0.5]
+
+    def _obras_cerca(self, a):
+        """Lo construido cerca, contado con los nombres que le pusieron (para que lo tengan presente)."""
+        cuenta = {}
+        for e in self.fab.estructuras:
+            if e["lado"] == a.lado and abs(e["x"] - a.x) + abs(e["y"] - a.y) <= 10:
+                cuenta[e["nombre"]] = cuenta.get(e["nombre"], 0) + 1
+        return cuenta
+
     def _ficha_publica(self, a):
         """La ficha que se enseña en la web: lo que dice, piensa y cree pasa por el filtro."""
         f = a.ficha()
@@ -805,6 +913,8 @@ class Simulacion:
             a.casa = getattr(pareja, "casa", None) or (a.x, a.y)
         f["casa"] = list(a.casa) if a.refugio and getattr(a, "casa", None) else None
         f["libros"] = [b["titulo"] for b in BIBLIOTECA[a.lado] if b["id"] in getattr(a, "libros", set())]
+        f["objetos"] = [{"tipo": o["tipo"], "categoria": o["categoria"], "modelo": o.get("modelo"), "color": o.get("color"),
+                         "nombre": o["nombre"]} for o in getattr(a, "objetos", [])]
         for campo in ("dice", "piensa", "creencias"):
             f[campo], _ = moderacion.publicable(self, a, campo, f[campo])
         return f

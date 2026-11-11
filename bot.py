@@ -6,7 +6,9 @@ Qué hace:
     para compartir si la publicación automática aún no está aprobada por la plataforma).
   · Cambiar: te pregunta qué quieres cambiar, y la fábrica lo vuelve a montar con tus indicaciones.
 - Te manda las propuestas de ampliación con «Aprobar» y «Rechazar». Nada se aplica sin tu sí.
-- Comandos: /estado /pausa /reanudar /propuestas /reels /ayuda
+- Modelos 3D: cuando algo nuevo no tiene dibujo, avisa con un prompt para generarlo. Mándale el .glb como
+  archivo con la clave en el pie (por ejemplo «objeto:honda») y queda puesto en el mundo, para los dos lados.
+- Comandos: /estado /pausa /reanudar /propuestas /reels /modelos /ayuda
 """
 import json
 import sqlite3
@@ -160,12 +162,62 @@ def manejar_texto(texto):
         for i, t, d, c0, c1 in filas[-5:]:
             enviar(f"{t}\n{d}\nIA: de {c0} € a {c1} € al mes.", [[{"text": "Aprobar", "callback_data": f"prop:aprobar:{i}"},
                                                                {"text": "Rechazar", "callback_data": f"prop:rechazar:{i}"}]])
+    elif cmd == "/modelos":
+        bd, mundo = bd_mundo()
+        try:
+            filas = bd.execute("SELECT clave, descripcion, dia FROM modelos_pendientes WHERE estado='pendiente' ORDER BY dia").fetchall()
+        except sqlite3.OperationalError:
+            filas = []
+        enviar("Modelos 3D pendientes:\n" + "\n".join(f"· {c} — «{d}» (día {di})" for c, d, di in filas) +
+               "\n\nMándame el .glb como archivo con la clave en el pie." if filas else "No falta ningún modelo 3D.")
     elif cmd == "/reels":
         bd = bd_reels()
         n = dict(bd.execute("SELECT estado, COUNT(*) FROM reels GROUP BY estado").fetchall())
         enviar("Reels: " + (", ".join(f"{v} {k}" for k, v in n.items()) or "ninguno todavía"))
     else:
-        enviar("Comandos: /estado /pausa /reanudar /propuestas /reels")
+        enviar("Comandos: /estado /pausa /reanudar /propuestas /reels /modelos")
+
+
+def manejar_modelo(msg):
+    """Oscar manda un .glb: se guarda en web/modelos/subidos/ y el visor lo usa para esa clave en los dos lados."""
+    import re
+    doc = msg["document"]
+    if not doc.get("file_name", "").lower().endswith(".glb"):
+        enviar("Solo sé usar modelos .glb. Mándalo como archivo, con la clave en el pie (por ejemplo «objeto:honda»).")
+        return
+    if doc.get("file_size", 0) > 20_000_000:
+        enviar("El archivo pasa de 20 MB: Telegram no me deja bajarlo. Prueba a exportarlo más ligero (low-poly).")
+        return
+    bd, mundo = bd_mundo()
+    clave = (msg.get("caption") or "").strip().lower()
+    if not clave:
+        try:
+            fila = bd.execute("SELECT clave FROM modelos_pendientes WHERE estado='pendiente' ORDER BY dia LIMIT 1").fetchone()
+        except sqlite3.OperationalError:
+            fila = None
+        clave = fila[0] if fila else ""
+    if not re.fullmatch(r"(objeto|estructura):[a-z0-9 _-]{1,40}", clave):
+        enviar("No sé para qué es este modelo. Vuelve a mandarlo con la clave en el pie (mira /modelos).")
+        return
+    ruta = llamar("getFile", file_id=doc["file_id"])["result"]["file_path"]
+    with urllib.request.urlopen(f"https://api.telegram.org/file/bot{config.TELEGRAM_TOKEN}/{ruta}", timeout=120) as r:
+        datos = r.read()
+    if datos[:4] != b"glTF":
+        enviar("Ese archivo no parece un .glb válido.")
+        return
+    carpeta = config.WEB / "modelos" / "subidos"
+    carpeta.mkdir(parents=True, exist_ok=True)
+    nombre = re.sub(r"[^a-z0-9]+", "_", clave) + ".glb"
+    (carpeta / nombre).write_bytes(datos)
+    indice = config.WEB / "modelos" / "subidos.json"
+    j = json.loads(indice.read_text()) if indice.exists() else {}
+    j[clave] = "subidos/" + nombre
+    indice.write_text(json.dumps(j, indent=1, ensure_ascii=False))
+    try:
+        bd.execute("UPDATE modelos_pendientes SET estado='hecho' WHERE clave=?", (clave,)); bd.commit()
+    except sqlite3.OperationalError:
+        pass
+    enviar(f"✅ Modelo puesto para «{clave}». Ya se ve en el mundo (en los dos lados).")
 
 
 def main():
@@ -182,6 +234,8 @@ def main():
                     continue  # ignora a cualquiera que no sea Oscar
                 if "callback_query" in u:
                     manejar_boton(u["callback_query"])
+                elif u.get("message", {}).get("document"):
+                    manejar_modelo(u["message"])
                 elif u.get("message", {}).get("text"):
                     manejar_texto(u["message"]["text"])
         except Exception as e:
