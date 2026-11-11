@@ -165,13 +165,85 @@ def guion(mundo, n_escenas, instruccion=""):
 
 
 # ---------- 2. voz ----------
-def voz(texto, ruta):
+# Proveedor de la voz del narrador (VOZ_PROVEEDOR en .env): azure (gratis hasta 0,5 M caracteres/mes),
+# elevenlabs (de pago, la más natural) o piper (local y gratis, la más robótica). Si el elegido falla o se
+# pasa del cupo gratis, se usa Piper para que el reel salga igual.
+VOZ_PROVEEDOR = os.getenv("VOZ_PROVEEDOR", "azure" if os.getenv("AZURE_SPEECH_KEY") else "piper")
+VOZ_AZURE = os.getenv("VOZ_AZURE", "es-ES-AlvaroNeural")
+CUPO_AZURE = int(os.getenv("CUPO_AZURE_CARACTERES", "450000"))  # margen bajo los 500.000 gratis
+
+
+def _uso_voz(sumar=0):
+    """Caracteres enviados este mes al proveedor de voz (para no salirse del plan gratis)."""
+    ruta = config.DATOS / "voz_uso.json"
+    mes = time.strftime("%Y-%m")
+    try:
+        d = json.loads(ruta.read_text())
+    except Exception:
+        d = {}
+    if d.get("mes") != mes:
+        d = {"mes": mes, "caracteres": 0}
+    if sumar:
+        d["caracteres"] += sumar
+        ruta.write_text(json.dumps(d))
+    return d["caracteres"]
+
+
+def _voz_azure(texto, ruta):
+    import urllib.request
+    from xml.sax.saxutils import escape
+    region, clave = os.getenv("AZURE_SPEECH_REGION", "westeurope"), os.getenv("AZURE_SPEECH_KEY")
+    if not clave or _uso_voz() + len(texto) > CUPO_AZURE:
+        return None
+    ssml = (f'<speak version="1.0" xml:lang="es-ES"><voice name="{VOZ_AZURE}">'
+            f'<prosody rate="-4%">{escape(texto)}</prosody></voice></speak>')
+    req = urllib.request.Request(f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1", data=ssml.encode("utf-8"),
+                                 headers={"Ocp-Apim-Subscription-Key": clave, "Content-Type": "application/ssml+xml",
+                                          "X-Microsoft-OutputFormat": "riff-24khz-16bit-mono-pcm", "User-Agent": "miovsnuestro"})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        Path(ruta).write_bytes(r.read())
+    _uso_voz(len(texto))
+    return ruta
+
+
+def _voz_elevenlabs(texto, ruta):
+    import urllib.request
+    clave, voz_id = os.getenv("ELEVENLABS_API_KEY"), os.getenv("ELEVENLABS_VOZ")
+    if not (clave and voz_id):
+        return None
+    req = urllib.request.Request(f"https://api.elevenlabs.io/v1/text-to-speech/{voz_id}?output_format=pcm_24000",
+                                 data=json.dumps({"text": texto, "model_id": os.getenv("ELEVENLABS_MODELO", "eleven_multilingual_v2")}).encode(),
+                                 headers={"xi-api-key": clave, "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=90) as r:
+        pcm = r.read()
+    with wave.open(ruta, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes(pcm)
+    _uso_voz(len(texto))
+    return ruta
+
+
+def _voz_piper(texto, ruta):
     piper = os.getenv("PIPER") or shutil.which("piper")
-    if texto and piper and Path(piper).exists() and Path(VOZ_PIPER).exists():
+    if piper and Path(piper).exists() and Path(VOZ_PIPER).exists():
         subprocess.run([piper, "--model", VOZ_PIPER, "--output_file", ruta, "--length_scale", "1.05"], input=texto.encode(),
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return ruta
-    return None  # sin voz instalada: el reel sale con subtítulos y música
+    return None
+
+
+def voz(texto, ruta):
+    if not texto:
+        return None
+    proveedor = {"azure": _voz_azure, "elevenlabs": _voz_elevenlabs}.get(VOZ_PROVEEDOR)
+    if proveedor:
+        try:
+            r = proveedor(texto, ruta)
+            if r:
+                return r
+            print(f"Voz {VOZ_PROVEEDOR}: sin clave o cupo del mes agotado; uso Piper.", flush=True)
+        except Exception as err:
+            print(f"Voz {VOZ_PROVEEDOR} no disponible ({err}); uso Piper.", flush=True)
+    return _voz_piper(texto, ruta)  # sin voz instalada: el reel sale con subtítulos y música
 
 
 def duracion_wav(ruta):
