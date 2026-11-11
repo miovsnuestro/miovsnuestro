@@ -261,15 +261,18 @@ def montar(g, clips, carpeta, salida):
     fin = str(carpeta / "fin.mp4")
     cierre_f = _texto(carpeta, "cierre", g.get("cierre", ""), 30)
     lema_f = _texto(carpeta, "lema", config.LEMA, 34)
+    logo = config.RAIZ / "reels" / "logo.png"
+    entrada_logo = ["-loop", "1", "-t", "3", "-i", str(logo)] if logo.exists() else []
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", f"color=c=#12181C:s={ANCHO}x{ALTO}:d=3:r={FPS}",
-                    "-f", "lavfi", "-t", "3", "-i", "anullsrc=r=44100:cl=stereo", "-vf",
+                    "-f", "lavfi", "-t", "3", "-i", "anullsrc=r=44100:cl=stereo", *entrada_logo, "-filter_complex",
+                    ("[2:v]scale=460:460,format=rgba[l];[0:v][l]overlay=(W-w)/2:H*0.13[b];[b]" if entrada_logo else "[0:v]") +
                     f"drawtext=fontfile={FUENTE}:text='{_esc(config.PROYECTO)}':fontcolor=white:fontsize=96:x=(w-text_w)/2:y=h*0.38,"
                     f"drawbox=x=(iw/2)-160:y=ih*0.455:w=150:h=10:color={COLOR['B']}@1:t=fill,"
                     f"drawbox=x=(iw/2)+10:y=ih*0.455:w=150:h=10:color={COLOR['A']}@1:t=fill,"
                     f"drawtext=fontfile={FUENTE}:textfile={cierre_f}:fontcolor=#FAC775:fontsize=48:line_spacing=12:x=(w-text_w)/2:y=h*0.50,"
                     f"drawtext=fontfile={FUENTE}:textfile={lema_f}:fontcolor=white@0.8:fontsize=36:line_spacing=10:x=(w-text_w)/2:y=h*0.64,"
                     f"drawtext=fontfile={FUENTE}:text='Contenido generado con IA':fontcolor=white@0.7:fontsize=26:x=(w-text_w)/2:y=h-90,"
-                    f"fade=t=in:st=0:d=0.3",
+                    f"fade=t=in:st=0:d=0.3[v]", "-map", "[v]", "-map", "1:a",
                     "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "44100", "-ac", "2",
                     "-shortest", fin], check=True)
     piezas.append(fin)
