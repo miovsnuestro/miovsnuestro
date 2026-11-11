@@ -147,7 +147,16 @@ Todo esto ya existe y se puede enseñar. Las frases entre comillas son ideas de 
 - **No cambia el experimento:** lo que pregunta el público no entra en su memoria ni en sus decisiones. Es de solo lectura. Esto hay que decirlo claro: "Puedes hablar con ellos, pero no puedes influir en ellos."
 - Solo conocen su mundo: si les preguntas por política real, famosos o internet, no saben de qué hablas.
 - Límites: 3 preguntas por persona al día y un tope de gasto de 2 € al mes. Si se llega al tope: "Los habitantes descansan por hoy".
+- **Es una entrevista, no un chat:** cada pregunta se responde por separado y el personaje no recuerda lo que le preguntaste antes. Es a propósito, para que nadie pueda «educarle» a base de insistir. Frase para el reel: "Cada respuesta sale de lo que ha vivido de verdad en el mundo."
+- Al principio del mundo tienen pocos recuerdos y responden corto; con el tiempo sus respuestas se llenan de historia (su familia, su casa, sus inventos, el día que cruzaron el río). Buen gancho para un reel de seguimiento: la misma persona entrevistada el día 1 y meses después.
+- Cómo se ve en pantalla (para grabarlo): tocar a un adulto → ficha → «🎤 Entrevistar» → escribir la pregunta → aparece su respuesta con el aviso «Tu pregunta no cambia nada en el experimento. Contenido generado con IA».
 - Idea de reel nuevo: **"Les hemos preguntado…"** — la misma pregunta a un habitante de cada sociedad ("¿Qué harías si tu vecino pasa hambre?", "¿Qué es lo más valioso que tienes?") y sus respuestas, una al lado de la otra. Mismo tiempo para cada uno y sin decir quién tiene razón.
+
+### Identidad visual: el logo (11-nov-2026)
+- Logo elegido: **la isla 3D low-poly** partida por el gran río, coral a la izquierda (Los del Nuestro) y verde azulado a la derecha (Los del Mío), con una casita y un árbol idénticos en cada orilla, montañas nevadas al fondo y un anillo dorado (#FAC775) sobre fondo oscuro (#12181C). Archivo: `presentacion/logo_perfil_1024.png`.
+- Por qué este: es el que más se parece al mundo real del visor y es neutral (los dos lados son idénticos en tamaño, brillo, casa y árbol; solo cambia el color). Se descartaron un SVG plano (las casas se tocaban sobre el río, como si ya vivieran juntas) y uno facetado (no era simétrico y las dos casas tenían el tejado coral).
+- Dónde va: foto de perfil de Telegram, TikTok, Instagram, YouTube y X; icono de la web y de la pantalla de inicio del móvil; tarjeta para compartir el enlace (`web/compartir.png`: logo + nombre + lema); y **tarjeta final de todos los reels** (logo encima del título, la franja coral y verde, la pregunta al público y el lema).
+- Idea para el tráiler: abrir o cerrar con el logo y hacer zoom hasta entrar en el mundo 3D real ("Esta isla existe. Y viven en ella.").
 
 ### Reels automáticos que se ven bien (v0.8)
 - Cada reel se graba fotograma a fotograma dentro del mundo 3D, con planos distintos: apertura con el marcador, primer plano de un personaje, la aldea, el río.
