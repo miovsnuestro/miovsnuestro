@@ -54,6 +54,29 @@ def hito_visual(sim, agente, nombre, datos):
     )
 
 
+def invento_inedito(sim, agente, nombre, datos, idea, clave):
+    """Algo que no existe en nuestra historia (o hecho de otra forma). Se diseña a partir de SU explicación."""
+    sim.bd.execute("""CREATE TABLE IF NOT EXISTS mecanicas_propuestas(id INTEGER PRIMARY KEY, mundo TEXT, dia INT, lado TEXT,
+                      invento TEXT, funcion TEXT, estado TEXT DEFAULT 'pendiente')""")
+    if datos.get("efecto_nuevo"):
+        sim.bd.execute("INSERT INTO mecanicas_propuestas(mundo,dia,lado,invento,funcion) VALUES(?,?,?,?,?)",
+                       (sim.nombre, sim.dia, agente.lado, nombre, datos["efecto_nuevo"]))
+        sim.bd.commit()
+    diseno = "\n".join(f"  · {k.replace('_', ' ')}: {v}" for k, v in (datos.get("diseno") or {}).items()) or "  · " + datos.get("descripcion_visual", "")
+    telegram(
+        f"✨ Invento INÉDITO en '{sim.nombre}' (día {sim.dia}): {agente.nombre} («{config.NOMBRE_SOCIEDAD[agente.lado]}») ha creado «{nombre}», "
+        f"algo que no está en nuestra historia (o hecho de otra manera).\n"
+        f"Su idea, con sus palabras: «{idea[:300]}»\n"
+        f"Diseño según su explicación:\n{diseno}\n"
+        + (f"Lo que hace y aún no cabe en las reglas: {datos['efecto_nuevo']}\n"
+           "→ Propuesta pendiente: hablarlo con Claude para añadir esa función a las reglas (igual para las dos sociedades).\n"
+           if datos.get("efecto_nuevo") else "")
+        + f"Mientras tanto se ve con una pieza neutra. Modelo 3D: clave «{clave}».\n"
+        f"Prompt para Higgsfield: {getattr(sim.fab, 'ultimo_prompt', '')}\n"
+        f"Cuando lo tengas, mándame el .glb como archivo con «{clave}» en el pie. Gran momento para un reel."
+    )
+
+
 def pendientes(ruta_bd=None):
     """Lista los hitos que esperan su modelo 3D."""
     import sqlite3

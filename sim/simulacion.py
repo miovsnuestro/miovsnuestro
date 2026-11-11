@@ -12,7 +12,7 @@ EPOCAS = ["prehistoria", "aldeas", "metal", "industrial", "moderna", "espacial"]
 from pathlib import Path as _Path
 # Libros de los fundadores: mismos temas, mismo orden y extensión parecida para las dos sociedades.
 BIBLIOTECA = {l: json.loads((_Path(__file__).parent / "biblioteca" / f"{l}.json").read_text(encoding="utf-8")) for l in "AB"}
-IMPORTANCIA = {"primer_contacto": 10, "objeto_nuevo": 7, "nombre_nuevo": 6, "construccion_nueva": 8, "fabrica": 2, "construccion": 3, "mundo_nuevo": 10, "horizonte": 7, "lectura": 5, "duda": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
+IMPORTANCIA = {"primer_contacto": 10, "objeto_nuevo": 7, "invento_inedito": 10, "nombre_nuevo": 6, "construccion_nueva": 8, "fabrica": 2, "construccion": 3, "mundo_nuevo": 10, "horizonte": 7, "lectura": 5, "duda": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
                "enseñanza": 4, "regalo": 3, "trueque": 3, "invento_fallido": 2, "trueque_rechazado": 2, "almacén": 2, "habla": 1}
 ACTIVIDADES_LIBRES = {"recolectar", "talar", "picar_piedra", "cazar"}
 
@@ -516,16 +516,21 @@ class Simulacion:
         a.recordar(f"Día {self.dia}: ¡he conseguido {nombre}! {res.get('descripcion_visual', '')}")
         if nombre in reg:
             return  # ya existía en su sociedad: lo ha aprendido por su cuenta
-        res.update({"inventor": a.nombre, "dia": self.dia, "idea": idea})
+        res.update({"inventor": a.nombre, "dia": self.dia, "idea": idea, "nombre_original": nombre})
         reg[nombre] = res
         self.metricas_dia[a.lado]["inventos_nuevos"] += 1
         self.bd.execute("INSERT INTO inventos VALUES(?,?,?,?,?,?,?)",
                         (self.nombre, a.lado, nombre, self.dia, a.nombre, idea, json.dumps(res, ensure_ascii=False)))
         self.suceso(fase, a, "invento", f"{a.nombre} inventa {nombre} ({res['categoria']}) en «{config.NOMBRE_SOCIEDAD[a.lado]}».")
-        self.fab.primera_pieza(self, a, nombre, fase)
-        if res.get("hito"):
+        if res.get("inedito"):  # no está en nuestra historia: se diseña con su explicación y se le da su momento
+            self.suceso(fase, a, "invento_inedito", f"{a.nombre} crea algo que nadie había hecho antes: «{nombre}».")
+            clave = self.fab.pedir_modelo_invento(self, a, nombre, res)
+            avisos.invento_inedito(self, a, nombre, res, idea, clave)
+            self.frenar(f"invento inédito: {nombre}")
+        elif res.get("hito"):
             avisos.hito_visual(self, a, nombre, res)
             self.frenar(f"gran invento: {nombre}")
+        self.fab.primera_pieza(self, a, nombre, fase)  # después del aviso: así el modelo nuevo se pide una sola vez
 
     def _nombrar(self, a, d, fase):
         """Ponerle nombre propio a algo que ya saben hacer: «piedra con mango» puede acabar llamándose como ellos quieran.

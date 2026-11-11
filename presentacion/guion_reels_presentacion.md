@@ -193,6 +193,11 @@ La idea más potente para contar: **nadie les da nada hecho.** Empiezan sin sabe
   - una hoguera vieja se apaga cuando encienden otra. Lo que es de todos lleva un banderín de su sociedad.
 - **Cada sociedad se ve según su propio avance, no el del mundo:** si una llega antes a las casas de piedra o a la era industrial, solo su lado cambia. Así se ve de un vistazo quién va por delante en qué.
 - **Lo nuevo de verdad pide su modelo 3D:** si inventan algo que el catálogo aún no sabe dibujar, mientras tanto sale una pieza neutra y llega un aviso a Telegram con el prompt para generarlo (por ejemplo con Higgsfield). Oscar manda el .glb por Telegram y queda puesto. **Un modelo vale para las dos sociedades.**
+- **Pueden inventar lo que nosotros nunca inventamos (añadido el 12-nov, idea de Oscar):** el árbitro juzga solo si algo funciona con la física de la Tierra, nunca si se parece a algo de nuestra historia. No les «corrige» hacia lo conocido.
+  - Si es inédito, se marca como tal y se dibuja **con su propia explicación** (forma, partes, materiales, tamaño y cómo se usa).
+  - Si lo que hace no cabe en las reglas actuales, se acepta igual y su función nueva se propone para añadirla al juego, igual para las dos sociedades y con la aprobación de Oscar.
+  - Llega un aviso especial a Telegram («✨ Invento inédito») con su idea literal, el diseño y el prompt para el modelo 3D. Es un suceso de máxima importancia para los reels.
+  - Frases: "No les limitamos a lo que conocemos. Si inventan algo que nunca existió, lo construimos tal como lo explican." / "¿Y si una sociedad de IA inventa algo que a ningún humano se le ocurrió?"
 - **Neutralidad:** las mismas reglas, costes y catálogo para los dos lados. El catálogo solo decide el dibujo, nunca lo que pueden hacer.
 - **Frases para los reels:**
   - "Nadie les dijo qué es un hacha. Lo descubrieron atando una piedra a un palo."
@@ -204,6 +209,7 @@ La idea más potente para contar: **nadie les da nada hecho.** Empiezan sin sabe
   - **Reel 2 (cómo funciona):** sustituir la parte de los inventos por la secuencia piedra → palo → «piedra con mango» → se ve en su mano (8–10 s).
   - **Reel 4 (hasta dónde pueden llegar):** el pueblo que crece, de choza a ciudad, y los campos y claros que van cambiando el paisaje.
   - **Reel 3 (por qué es justo):** "mismas reglas y mismo catálogo para los dos; un modelo nuevo vale para los dos lados".
+  - **Reel especial «Nunca existió»:** el día que salga el primer invento inédito: su idea con sus palabras, el diseño y cómo queda en el mundo.
   - **Idea de reel propio, «Lo inventaron ellos»:** 30 s siguiendo el primer objeto de cada sociedad, desde la idea escrita con sus palabras hasta que se ve en la mano, con el nombre que le pusieron.
 
 ### Cambios en los guiones de arriba

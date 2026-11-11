@@ -68,6 +68,8 @@ def modelo_valido(modelo, categoria, nombre="", desc=""):
     m = (modelo or "").strip().lower()
     if m in claves_modelo():
         return m
+    if m == "nuevo":  # el árbitro dice que no se parece a nada del catálogo: no se fuerza a lo conocido
+        return "nuevo"
     if categoria in CAT_OBJETO:
         return "objeto:" + tipo_de(f"{nombre} {desc}", categoria) if tipo_de(f"{nombre} {desc}", categoria) in CATALOGO_OBJETOS[categoria] \
             else ("nuevo" if m == "nuevo" else "objeto:" + CATALOGO_OBJETOS[categoria][-1])
@@ -168,7 +170,7 @@ class Fabricacion:
         for k, v in coste.items():
             a.quitar(k, v)
         modelo = modelo_de(info)
-        tipo = modelo.split(":", 1)[1] if ":" in modelo else slug(invento) or cat
+        tipo = modelo.split(":", 1)[1] if ":" in modelo else slug(info.get("nombre_original") or invento) or cat
         material = material_de(d, texto)
         obj = {"id": self.siguiente, "tipo": tipo, "categoria": cat, "invento": invento, "modelo": modelo, "nombre": str(texto)[:40],
                "color": color_de(d, texto) or (MATERIAL_COLOR.get(material) if material else None), "material": material,
@@ -231,7 +233,7 @@ class Fabricacion:
         info = sim.inventos[a.lado][invento]
         cat = info.get("categoria")
         modelo = modelo_de(info)
-        tipo = modelo.split(":", 1)[1] if modelo.startswith("estructura:") else (slug(invento) if modelo == "nuevo" else CAT_ESTRUCTURA.get(cat, "monumento"))
+        tipo = modelo.split(":", 1)[1] if modelo.startswith("estructura:") else (slug(info.get("nombre_original") or invento) if modelo == "nuevo" else CAT_ESTRUCTURA.get(cat, "monumento"))
         coste = {} if gratis else dict(COSTE_ESTRUCTURA.get(tipo, COSTE_ESTRUCTURA.get(CAT_ESTRUCTURA.get(cat, "monumento"), {"madera": 4})))
         falta = [k for k, v in coste.items() if a.inventario.get(k, 0) < v]
         if falta:
@@ -333,27 +335,39 @@ class Fabricacion:
         self.campos[(x, y)] = lado
 
     # ---------- cola de modelos 3D ----------
-    def _quizas_pedir_modelo(self, sim, clase, tipo, cat, item, a):
+    def pedir_modelo_invento(self, sim, a, nombre, info):
+        """Invento inédito: su modelo se pide en cuanto existe, con el diseño que explicó el inventor. Devuelve la clave."""
+        clase = "objeto" if info.get("categoria") in CAT_OBJETO else "estructura"
+        return self._quizas_pedir_modelo(sim, clase, slug(nombre) or "invento", info.get("categoria"),
+                                         {"nombre": nombre, "invento": nombre}, a, avisar=False)
+
+    def _quizas_pedir_modelo(self, sim, clase, tipo, cat, item, a, avisar=True):
         clave = f"{clase}:{tipo}"
         if clave in modelos_disponibles():
-            return
+            return clave
         bd = sim.bd
         bd.execute("CREATE TABLE IF NOT EXISTS modelos_pendientes(clave TEXT PRIMARY KEY, clase TEXT, tipo TEXT, categoria TEXT, "
                    "descripcion TEXT, lado TEXT, dia INT, estado TEXT)")
         if bd.execute("SELECT 1 FROM modelos_pendientes WHERE clave=?", (clave,)).fetchone():
-            return
+            return clave
         desc = item.get("nombre") or tipo
         inv = sim.inventos[a.lado].get(item.get("invento") or "", {})
         visual = inv.get("descripcion_visual", "")
+        if inv.get("diseno"):  # el diseño sale de la explicación del propio inventor
+            visual += ". " + ". ".join(f"{k}: {v}" for k, v in inv["diseno"].items())
         bd.execute("INSERT INTO modelos_pendientes VALUES(?,?,?,?,?,?,?,?)", (clave, clase, tipo, cat, desc, a.lado, sim.dia, "pendiente"))
         bd.commit()
         prompt = (f"Low-poly 3D model, flat shading, simple shapes, game asset, single object on neutral background: "
                   f"{desc} ({tipo}). {visual}. Primitive {('handmade' if sim.epoca_de(a.lado) in ('prehistoria', 'aldeas') else 'crafted')} style.")
+        self.ultimo_prompt = prompt
+        if not avisar:
+            return clave
         from . import avisos
         avisos.telegram(f"🧩 Modelo 3D nuevo necesario ({clase}): «{desc}» — lo ha creado {a.nombre} ({config.NOMBRE_SOCIEDAD[a.lado]}), día {sim.dia}.\n"
                         f"Mientras tanto se ve con una pieza genérica de «{cat}». Valdrá para las dos sociedades.\n"
                         f"Clave: {clave}\nPrompt para Higgsfield: {prompt}\n"
                         f"Cuando lo tengas, mándame el .glb como archivo con «{clave}» en el pie.")
+        return clave
 
     # ---------- lo que ve la web ----------
     def publico(self):
