@@ -1,0 +1,1 @@
+8e87a8f 2026-11-11 Web móvil: la crónica abierta se lee entera (con desplazamiento si es larga)
