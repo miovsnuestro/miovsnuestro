@@ -78,6 +78,7 @@ LLAMADAS_POR_CEREBRO_DIA_SIM = len(FASES_CON_IA)
 TOKENS_POR_LLAMADA = (2000, 300)    # entrada, salida (estimación; se sustituye por lo medido)
 FRACCION_EN_CACHE = 0.6             # instrucciones y doctrina se repiten al principio de cada llamada
 PRECIO_CACHE = {LLM_MODELO: 0.003, LLM_MODELO_LISTO: 0.0036}  # $ por millón de tokens de entrada en caché
+LLM_PENSAR = os.getenv("LLM_PENSAR", "disabled")  # DeepSeek V4 piensa por defecto: deja la respuesta vacía en modo JSON y gasta más
 LIBROS_CON_CRITICAS = True   # las bibliotecas incluyen las dudas sobre las propias ideas (igual en los dos lados)
 USD_A_EUR = 0.92
 

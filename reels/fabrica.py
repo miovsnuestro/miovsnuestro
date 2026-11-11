@@ -197,13 +197,23 @@ def _voz_azure(texto, ruta):
         return None
     ssml = (f'<speak version="1.0" xml:lang="es-ES"><voice name="{VOZ_AZURE}">'
             f'<prosody rate="-4%">{escape(texto)}</prosody></voice></speak>')
-    req = urllib.request.Request(f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1", data=ssml.encode("utf-8"),
-                                 headers={"Ocp-Apim-Subscription-Key": clave, "Content-Type": "application/ssml+xml",
-                                          "X-Microsoft-OutputFormat": "riff-24khz-16bit-mono-pcm", "User-Agent": "miovsnuestro"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        Path(ruta).write_bytes(r.read())
-    _uso_voz(len(texto))
-    return ruta
+    # Se pide en MP3 (8 veces más ligero que WAV: evita cortes de descarga) y se convierte a WAV con ffmpeg.
+    mp3 = ruta + ".mp3"
+    ultimo = None
+    for _ in range(3):
+        try:
+            req = urllib.request.Request(f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1", data=ssml.encode("utf-8"),
+                                         headers={"Ocp-Apim-Subscription-Key": clave, "Content-Type": "application/ssml+xml",
+                                                  "X-Microsoft-OutputFormat": "audio-24khz-96kbitrate-mono-mp3", "User-Agent": "miovsnuestro"})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                Path(mp3).write_bytes(r.read())
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", mp3, "-ar", "24000", "-ac", "1", ruta], check=True)
+            _uso_voz(len(texto))
+            return ruta
+        except Exception as err:
+            ultimo = err
+            time.sleep(2)
+    raise RuntimeError(ultimo)
 
 
 def _voz_elevenlabs(texto, ruta):

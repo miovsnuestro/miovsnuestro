@@ -98,7 +98,7 @@ const q=new URLSearchParams(location.search),REEL=q.get('reel')==='1';
 const $=id=>document.getElementById(id);
 const el=$('escena'),capa=$('capa');let W=innerWidth,H=innerHeight;
 const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:REEL,powerPreference:'high-performance'});
-R.setPixelRatio(REEL?1:Math.min(devicePixelRatio,2));R.setSize(W,H);R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
+R.setPixelRatio(REEL?1:Math.min(devicePixelRatio,2));R.setSize(W,H);R.shadowMap.enabled=q.get('sombras')!=='0';R.shadowMap.type=THREE.PCFSoftShadowMap;
 el.appendChild(R.domElement);
 const S=new THREE.Scene();const CIELO=new THREE.Color('#A9D3EE');S.background=CIELO.clone();S.fog=new THREE.Fog(CIELO.clone(),70,230);
 const C=new THREE.PerspectiveCamera(42,W/H,.1,900);
@@ -155,7 +155,7 @@ const CT={c:new THREE.Color('#8A8378'),o:new THREE.Color('#A99C76'),p:new THREE.
 const C_ARENA=new THREE.Color('#DCCB94'),C_HIERBA=new THREE.Color('#6F9A45'),C_BOSQ=new THREE.Color('#4B7636'),C_ROCA=new THREE.Color('#8E877B'),C_NIEVE=new THREE.Color('#F1F3F4'),C_NIEBLA=new THREE.Color('#A6B2BA');
 let terreno=null,colBase=null,expV=null;
 function construirTerreno(m){
-  prepararAlturas(m);PASO=MW*MH>16000?1:.5;
+  prepararAlturas(m);PASO=(MW*MH>16000||q.get('malla')==='1')?1:.5;
   NU=Math.round((MW+2*MX)/PASO)+1;NV=Math.round((MH+MZN+MZS)/PASO)+1;
   const n=NU*NV,pos=new Float32Array(n*3),col=new Float32Array(n*3);rejilla=new Float32Array(n);colBase=new Float32Array(n*3);
   const c=new THREE.Color(),t2=new THREE.Color();

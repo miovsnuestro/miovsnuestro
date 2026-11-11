@@ -81,6 +81,8 @@ def llamar_llm(mensajes, modelo=None, json_mode=True, max_tokens=300, temperatur
     cuerpo = {"model": modelo, "messages": mensajes, "max_tokens": max_tokens, "temperature": temperatura}
     if json_mode:
         cuerpo["response_format"] = {"type": "json_object"}
+    if "deepseek" in modelo and config.LLM_PENSAR in ("disabled", "enabled"):
+        cuerpo["thinking"] = {"type": config.LLM_PENSAR}
     base, clave = config.LLM_BASE_URL, config.LLM_API_KEY
     if modelo == config.JUEZ_MODELO and config.JUEZ_BASE_URL:  # juez en otro proveedor
         base, clave = config.JUEZ_BASE_URL, config.JUEZ_API_KEY
@@ -92,7 +94,11 @@ def llamar_llm(mensajes, modelo=None, json_mode=True, max_tokens=300, temperatur
     with urllib.request.urlopen(req, timeout=60) as r:
         datos = json.loads(r.read())
     Gasto.sumar(modelo, datos.get("usage", {}))
-    return datos["choices"][0]["message"]["content"]
+    msg = datos["choices"][0]["message"]
+    texto = msg.get("content") or ""
+    if not texto.strip() and msg.get("reasoning_content"):
+        texto = msg["reasoning_content"]  # si aun así pensó, el JSON puede venir en el razonamiento
+    return texto
 
 
 def extraer_json(texto):
