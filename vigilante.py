@@ -45,8 +45,8 @@ def comprobar():
             b = json.loads(urllib.request.urlopen(req, timeout=15).read())
             saldo = sum(float(i.get("total_balance", 0)) for i in b.get("balance_infos", []))
             datos["saldo_ia"] = saldo
-            if saldo < 2:
-                problemas.append(("saldo", f"Queda poco saldo en DeepSeek: {saldo:.2f}. Recarga para que no se pare la IA."))
+            if saldo < 4:  # umbral acordado: con ~13 €/mes de IA, 4 $ dan para unos 8-9 días
+                problemas.append(("saldo", f"Queda poco saldo en DeepSeek: {saldo:.2f} $. Recarga para que no se pare la IA."))
         except Exception:
             pass
     # 4. Disco
@@ -56,6 +56,11 @@ def comprobar():
         problemas.append(("disco", f"Queda poco disco: {libre:.1f} GB."))
     # 5. Copia de seguridad de hoy
     copias = sorted((config.RAIZ / "copias").glob("*.tar.gz")) if (config.RAIZ / "copias").exists() else []
+    copias = sorted(copias, key=lambda c: c.stat().st_mtime)
+    if copias:
+        datos["copia_horas"] = round((time.time() - copias[-1].stat().st_mtime) / 3600, 1)
+        datos["copia_mb"] = round(copias[-1].stat().st_size / 1e6, 1)
+        datos["copias_guardadas"] = len(copias)
     if not copias or time.time() - copias[-1].stat().st_mtime > 26 * 3600:
         problemas.append(("copia", "No hay copia de seguridad de las últimas 24 horas."))
     # 6. Servicios y reels

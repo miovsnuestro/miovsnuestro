@@ -250,6 +250,7 @@ def _guion_ia(base, h, e, orden, ano, dia, instruccion=""):
         print("Guion con IA retenido por la moderación, uso la plantilla:", motivo)
         return None
     print(f"Guion con IA listo: «{g.get('titular')}»")
+    g["_ia"] = True
     return g
 
 
@@ -286,23 +287,36 @@ def _voz_azure(texto, ruta):
         return None
     ssml = (f'<speak version="1.0" xml:lang="es-ES"><voice name="{VOZ_AZURE}">'
             f'<prosody rate="-4%">{escape(texto)}</prosody></voice></speak>')
-    # Se pide en MP3 (8 veces más ligero que WAV: evita cortes de descarga) y se convierte a WAV con ffmpeg.
+    # Se pide en MP3 (8 veces más ligero que WAV) y se convierte a WAV con ffmpeg. La descarga se lee por trozos
+    # y, si se corta a medias (IncompleteRead), se reintenta con espera creciente y, desde el tercer intento,
+    # con un MP3 más ligero (48 kbit/s, de sobra para una voz), que tiene menos que descargar.
     mp3 = ruta + ".mp3"
     ultimo = None
-    for _ in range(3):
+    for intento in range(5):
+        formato = "audio-24khz-96kbitrate-mono-mp3" if intento < 2 else "audio-24khz-48kbitrate-mono-mp3"
         try:
             req = urllib.request.Request(f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1", data=ssml.encode("utf-8"),
                                          headers={"Ocp-Apim-Subscription-Key": clave, "Content-Type": "application/ssml+xml",
-                                                  "X-Microsoft-OutputFormat": "audio-24khz-96kbitrate-mono-mp3", "User-Agent": "miovsnuestro"})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                Path(mp3).write_bytes(r.read())
+                                                  "X-Microsoft-OutputFormat": formato, "User-Agent": "miovsnuestro",
+                                                  "Connection": "close"})
+            trozos = []
+            with urllib.request.urlopen(req, timeout=90) as r:
+                while True:
+                    t = r.read(16384)
+                    if not t:
+                        break
+                    trozos.append(t)
+            datos = b"".join(trozos)
+            if len(datos) < 2000:
+                raise RuntimeError(f"audio demasiado corto ({len(datos)} bytes)")
+            Path(mp3).write_bytes(datos)
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", mp3, "-ar", "24000", "-ac", "1", ruta], check=True)
             _uso_voz(len(texto))
             return ruta
         except Exception as err:
             ultimo = err
-            time.sleep(2)
-    raise RuntimeError(ultimo)
+            time.sleep((2, 5, 10, 20, 0)[intento])
+    raise RuntimeError(f"{ultimo} (tras 5 intentos)")
 
 
 def _voz_elevenlabs(texto, ruta):
@@ -330,19 +344,46 @@ def _voz_piper(texto, ruta):
     return None
 
 
-def voz(texto, ruta):
+def voz(texto, ruta, proveedor_forzado=None):
+    """Devuelve (ruta del wav o None, proveedor que la hizo)."""
     if not texto:
-        return None
-    proveedor = {"azure": _voz_azure, "elevenlabs": _voz_elevenlabs}.get(VOZ_PROVEEDOR)
+        return None, None
+    nombre = proveedor_forzado or VOZ_PROVEEDOR
+    proveedor = {"azure": _voz_azure, "elevenlabs": _voz_elevenlabs}.get(nombre)
     if proveedor:
         try:
             r = proveedor(texto, ruta)
             if r:
-                return r
-            print(f"Voz {VOZ_PROVEEDOR}: sin clave o cupo del mes agotado; uso Piper.", flush=True)
+                return r, nombre
+            print(f"Voz {nombre}: sin clave o cupo del mes agotado; uso Piper.", flush=True)
         except Exception as err:
-            print(f"Voz {VOZ_PROVEEDOR} no disponible ({err}); uso Piper.", flush=True)
-    return _voz_piper(texto, ruta)  # sin voz instalada: el reel sale con subtítulos y música
+            print(f"Voz {nombre} no disponible ({err}); uso Piper.", flush=True)
+    r = _voz_piper(texto, ruta)  # sin voz instalada: el reel sale con subtítulos y música
+    return r, ("piper" if r else None)
+
+
+def voces_del_reel(escenas, carpeta):
+    """Todo el reel con LA MISMA voz: si alguna escena no sale con la voz buena, se reintenta al final y,
+    si sigue sin salir, se rehace todo el reel con Piper (mezclar dos voces en un reel suena a error)."""
+    quien = {}
+    for i, e in enumerate(escenas):
+        e["audio"], quien[i] = voz(e.get("narracion", ""), str(carpeta / f"voz{i}.wav"))
+    hechas = {q for q in quien.values() if q}
+    if len(hechas) <= 1:
+        return next(iter(hechas), None)
+    buena = VOZ_PROVEEDOR
+    for i, e in enumerate(escenas):
+        if quien[i] and quien[i] != buena:
+            time.sleep(15)
+            print(f"  reintento la voz de la escena {i + 1} con {buena}", flush=True)
+            e["audio"], quien[i] = voz(e.get("narracion", ""), str(carpeta / f"voz{i}.wav"), buena)
+    if len({q for q in quien.values() if q}) > 1:
+        print("  la voz buena no sale en todas las escenas: hago todo el reel con Piper para que no se mezclen", flush=True)
+        for i, e in enumerate(escenas):
+            if e.get("narracion"):
+                e["audio"] = _voz_piper(e["narracion"], str(carpeta / f"voz{i}.wav"))
+        return "piper (respaldo)"
+    return buena
 
 
 def duracion_wav(ruta):
@@ -488,8 +529,8 @@ def fabricar(tipo="diario", reel_id=None, instruccion="", enviar=True):
     t0 = time.time()
     with tempfile.TemporaryDirectory() as tmp:
         carpeta = Path(tmp)
-        for i, e in enumerate(g["escenas"]):  # primero la voz: la escena dura lo que dure la frase
-            e["audio"] = voz(e.get("narracion", ""), str(carpeta / f"voz{i}.wav"))
+        voz_usada = voces_del_reel(g["escenas"], carpeta)  # primero la voz: la escena dura lo que dure la frase
+        for i, e in enumerate(g["escenas"]):
             e["dur"] = max(seg if i else 4.5, min(10.0, duracion_wav(e["audio"]) + 0.9)) if e["audio"] else (seg if i else 4.5)
             e["hora"] = "0.62" if i == len(g["escenas"]) - 1 and tipo == "episodio" else "0.3"
         clips = grabar(g["escenas"], g["titular"], carpeta)
@@ -503,6 +544,11 @@ def fabricar(tipo="diario", reel_id=None, instruccion="", enviar=True):
         salida = str(SALIDA / f"reel_{reel_id}_v{version}.mp4")
         montar(g, clips, carpeta, salida)
     dur, problemas = comprobar_video(salida)
+    if voz_usada and voz_usada != VOZ_PROVEEDOR and VOZ_PROVEEDOR != "piper":
+        problemas.append(f"voz de respaldo ({voz_usada}) porque {VOZ_PROVEEDOR} no respondió")
+    if not g.get("_ia"):
+        problemas.append("guion de plantilla (la IA no dio un guion válido; mira reels.log)")
+    g.pop("_ia", None)
     for e in g["escenas"]:
         e.pop("audio", None)
     texto = f"{g.get('descripcion', '')}\n\n{g.get('hashtags', '')}\n\nContenido generado con IA."
@@ -534,25 +580,45 @@ def rehacer():
         fabricar("diario", reel_id=ident, instruccion=instr or "")
 
 
-def bloqueo():
-    """Evita que se monten dos reels a la vez (cada uno tarda varios minutos)."""
+def bloqueo(esperar_min=0):
+    """Evita que se monten dos reels a la vez (cada uno tarda bastantes minutos).
+    El reel diario y el episodio esperan su turno (hasta `esperar_min`) en vez de perderse ese día."""
     import fcntl
     f = open(config.DATOS / "reels.lock", "w")
+    limite = time.time() + esperar_min * 60
+    aviso = False
+    while True:
+        try:
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return f
+        except OSError:
+            if time.time() >= limite:
+                print("Ya se está montando otro reel; lo dejo para la próxima vez.", flush=True)
+                sys.exit(0)
+            if not aviso:
+                print(f"Hay otro reel montándose; espero mi turno (hasta {esperar_min} min).", flush=True)
+                aviso = True
+            time.sleep(30)
+
+
+def hay_que_rehacer():
     try:
-        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except OSError:
-        print("Ya se está montando otro reel; lo dejo para la próxima vez.")
-        sys.exit(0)
-    return f
+        return bd_reels().execute("SELECT COUNT(*) FROM reels WHERE estado='rehacer'").fetchone()[0] > 0
+    except Exception:
+        return True  # si no se puede mirar, que lo intente como antes
 
 
 if __name__ == "__main__":
     modo = sys.argv[1] if len(sys.argv) > 1 else "diario"
     config.DATOS.mkdir(exist_ok=True)
-    _cerrojo = bloqueo()
     if modo == "rehacer":
+        if not hay_que_rehacer():
+            sys.exit(0)  # cron lo lanza cada 10 min: sin nada pendiente no hace nada ni escribe en el log
+        _cerrojo = bloqueo()
         rehacer()
     elif modo == "prueba":
+        _cerrojo = bloqueo()
         print(fabricar(sys.argv[2] if len(sys.argv) > 2 else "diario", enviar=False))
     else:
+        _cerrojo = bloqueo(esperar_min=120)
         print(fabricar(modo))

@@ -17,6 +17,18 @@ IMPORTANCIA = {"primer_contacto": 10, "objeto_nuevo": 7, "invento_inedito": 10, 
 ACTIVIDADES_LIBRES = {"recolectar", "talar", "picar_piedra", "cazar"}
 
 
+
+def limpiar_cronica(texto, dia, nombre):
+    """Misma forma para las dos crónicas: sin markdown, sin título («Día 3 — Los del Nuestro») y en un párrafo."""
+    import re
+    t = (texto or "").replace("**", "").replace("__", "").replace("#", "")
+    lineas = [l.strip() for l in t.splitlines() if l.strip()]
+    if len(lineas) > 1 and len(lineas[0]) < 60 and (re.match(r"^d[ií]a\s*\d+", lineas[0], re.I) or nombre.lower() in lineas[0].lower()):
+        lineas = lineas[1:]  # la primera línea era un título
+    t = " ".join(lineas)
+    t = re.sub(r"^d[ií]a\s*\d+\s*[—–\-:.]\s*(" + re.escape(nombre) + r"\s*[—–\-:.]\s*)?", "", t, flags=re.I)
+    return re.sub(r"\s{2,}", " ", t).strip()
+
 class Simulacion:
     def __init__(self, nombre_mundo="pruebas", usar_ia=False, semilla=config.SEMILLA, ruta_bd=config.RUTA_BD):
         self.nombre = nombre_mundo
@@ -949,9 +961,12 @@ class Simulacion:
                 try:
                     texto = llamar_llm([
                         {"role": "system", "content": "Eres el cronista neutral de un experimento social. Escribes en español, "
-                         "con tono de documental, sin opinar sobre qué sociedad es mejor."},
+                         "con tono de documental, sin opinar sobre qué sociedad es mejor. Formato fijo e igual para las dos "
+                         "sociedades: un solo párrafo de 3 frases en texto plano, sin título, sin fecha al principio, sin "
+                         "negritas ni markdown."},
                         {"role": "user", "content": f"Escribe 3 frases de crónica del día {dia} de la sociedad «{config.NOMBRE_SOCIEDAD[lado]}» con estos hechos:\n" + "\n".join(hechos)},
-                    ], modelo=config.LLM_MODELO_LISTO, json_mode=False, max_tokens=180, temperatura=0.7).strip()
+                    ], modelo=config.LLM_MODELO_LISTO, json_mode=False, max_tokens=180, temperatura=0.7)
+                    texto = limpiar_cronica(texto, dia, config.NOMBRE_SOCIEDAD[lado]) or None
                 except Exception:
                     Gasto.fallos += 1
             textos[lado] = texto or " ".join(hechos[:4])
