@@ -16,6 +16,7 @@ Cada reel lleva la etiqueta «Contenido generado con IA».
 import json
 import os
 import random
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -89,6 +90,53 @@ def hechos(mundo, dias):
     return res, ultimo
 
 
+# ---------- lo que se ve en cada escena: la acción que se narra ----------
+MATERIAL_A_OBJETO = {"comida": "frutos", "carne": "carne", "pieles": "pieles", "madera": "madera", "piedra": "piedra",
+                     "pescado": "pescado", "fibra": "fibra", "arcilla": "arcilla", "metal": "metal", "carbon": "carbon", "carbón": "carbon"}
+ACCIONES_DE_DOS = {"trueque", "trueque_rechazado", "regalo", "robo", "habla", "enseñanza", "pareja", "nacimiento"}
+
+
+def _objetos_del_texto(tipo, texto):
+    """Qué llevan en las manos según lo que dice el suceso («cambia madera por pescado» → madera y pescado)."""
+    t = (texto or "").lower()
+    m = re.search(r"cambia (\w+) por (\w+)", t)
+    if m:
+        return MATERIAL_A_OBJETO.get(m.group(1)), MATERIAL_A_OBJETO.get(m.group(2))
+    if tipo == "caza":
+        return "carne", "pieles"
+    for palabra in re.findall(r"\w+", t):
+        if palabra in MATERIAL_A_OBJETO:
+            return MATERIAL_A_OBJETO[palabra], None
+    return None, None
+
+
+def _companero(texto, foco, ag):
+    """El otro habitante que nombra el suceso (para ponerlos frente a frente)."""
+    nombre_foco = next((a["nombre"] for a in ag if a["id"] == foco), None)
+    resto = (texto or "").replace(nombre_foco, "", 1) if nombre_foco else (texto or "")
+    for a in sorted(ag, key=lambda a: -len(a["nombre"])):  # «Xabier 2» antes que «Xabier»
+        if a["id"] != foco and re.search(r"\b" + re.escape(a["nombre"]) + r"\b(?! \d)", resto):
+            return a["id"]
+    return None
+
+
+def _accion_de_escena(esc, s, ag):
+    """Añade a la escena qué hay que escenificar: accion, con (compañero) y los objetos (prop, prop2)."""
+    if not esc.get("foco"):
+        return esc
+    esc["accion"] = s["tipo"]
+    if s["tipo"] in ACCIONES_DE_DOS:
+        otro = _companero(s["texto"], esc["foco"], ag)
+        if otro:
+            esc["con"] = otro
+    p1, p2 = _objetos_del_texto(s["tipo"], s["texto"])
+    if p1:
+        esc["prop"] = p1
+    if p2 and s["tipo"] != "caza":
+        esc["prop2"] = p2
+    return esc
+
+
 def _escena_persona(ag, lado, usados):
     libres = [a for a in ag if a["lado"] == lado and a["edad"] >= 14 and a["id"] not in usados]
     if not libres:
@@ -98,7 +146,7 @@ def _escena_persona(ag, lado, usados):
     que = VERBO.get(a.get("accion") or "", "sigue con su día")
     texto = f"{a['nombre']}, {a['edad']} años, {que}."
     voz = texto + (f" Piensa: {a['piensa']}" if a.get("piensa") else "")
-    return {"lado": lado, "foco": a["id"], "plano": "personaje", "texto": texto, "narracion": voz[:220]}
+    return {"lado": lado, "foco": a["id"], "plano": "personaje", "texto": texto, "narracion": voz[:220], "accion": a.get("accion") or ""}
 
 
 def guion(mundo, n_escenas, instruccion=""):
@@ -122,7 +170,7 @@ def guion(mundo, n_escenas, instruccion=""):
                 usados.add(foco)
             plano = ("rio" if s["tipo"] in ("primer_contacto", "emigración") else "general" if s["tipo"] == "mundo_nuevo"
                      else "aldea" if s["tipo"] == "construccion_nueva" else "personaje" if foco else "aldea")
-            esc = {"lado": lado, "foco": foco, "plano": plano, "texto": s["texto"], "narracion": s["texto"]}
+            esc = _accion_de_escena({"lado": lado, "foco": foco, "plano": plano, "texto": s["texto"], "narracion": s["texto"]}, s, ag)
         esc = esc or _escena_persona(ag, lado, usados) or {
             "lado": lado, "foco": None, "plano": "aldea", "texto": f"Un día de trabajo entre {nombres[lado]}.",
             "narracion": f"Un día de trabajo entre {nombres[lado]}."}
@@ -131,7 +179,7 @@ def guion(mundo, n_escenas, instruccion=""):
     for lado in "AB":
         amplias = [x for x in escenas if x["lado"] == lado and x["plano"] == "aldea"]
         if not amplias:
-            cand = [x for x in escenas if x["lado"] == lado and x["plano"] == "personaje"]
+            cand = [x for x in escenas if x["lado"] == lado and x["plano"] == "personaje" and x.get("accion") not in ACCIONES_DE_DOS]
             if len(cand) > 1:
                 cand[-1]["plano"] = "aldea"
     apertura = {"lado": "C", "foco": None, "plano": "marcador", "texto": f"Año {ano}. {config.LEMA}",
@@ -141,29 +189,118 @@ def guion(mundo, n_escenas, instruccion=""):
             "hashtags": "#MíoVsNuestro #MioVsNuestro #IA #ExperimentoSocial"}
     if not config.LLM_API_KEY:
         return base, dia
+    g = _guion_ia(base, h, e, orden, ano, dia, instruccion)
+    return (g or base), dia
+
+
+def _contexto_sociedad(lado, h, e):
+    """Lo que el guionista necesita para ENTENDER el día de una sociedad (igual de detallado en las dos)."""
+    soc = (e.get("sociedades") or {}).get(lado, {})
+    m = soc.get("metricas", {})
+    datos = [f"{k.replace('_', ' ')}: {m[k]}" for k in ("poblacion", "bienestar", "comida_total", "inventos", "nacimientos",
+                                                       "muertes", "conflictos", "con_refugio", "parejas", "territorio") if k in m]
+    inventos = ", ".join(i["nombre"] for i in soc.get("inventos", [])[-6:]) or "ninguno todavía"
+    sucesos = "\n".join(f"   - día {x['dia']}: {x['texto']}" for x in h.get(lado, [])[:8]) or "   - (sin sucesos destacados)"
+    cronica = (soc.get("cronica") or "").replace("*", "").strip()
+    return (f"«{config.NOMBRE_SOCIEDAD[lado]}» ({config.SUBTITULO_SOCIEDAD[lado]}) · época: {soc.get('epoca', e.get('epoca', '?'))}\n"
+            f"  Datos: {'; '.join(datos)}\n  Inventos: {inventos}\n"
+            f"  Crónica del último día: {cronica or '(sin crónica)'}\n  Sucesos recientes:\n{sucesos}")
+
+
+def _revisar_guion(g, base):
+    """Devuelve una lista de problemas (vacía = guion válido)."""
+    if not isinstance(g, dict):
+        return ["la respuesta no es un objeto JSON"]
+    esc = g.get("escenas")
+    if not isinstance(esc, list):
+        return ["falta la lista «escenas»"]
+    fallos = []
+    if len(esc) != len(base["escenas"]):
+        fallos.append(f"hay {len(esc)} escenas y deben ser exactamente {len(base['escenas'])}")
+    for n, x in enumerate(esc, 1):
+        if not isinstance(x, dict) or not str(x.get("texto", "")).strip() or not str(x.get("narracion", "")).strip():
+            fallos.append(f"la escena {n} no tiene «texto» y «narracion»")
+    textos = [str(x.get("texto", "")).strip().lower() for x in esc if isinstance(x, dict)]
+    if len(set(textos)) != len(textos):
+        fallos.append("hay escenas con el mismo texto en pantalla")
+    for k in ("titular", "cierre"):
+        if not str(g.get(k, "")).strip():
+            fallos.append(f"falta «{k}»")
+    return fallos
+
+
+def _guion_ia(base, h, e, orden, ano, dia, instruccion=""):
+    """Guion escrito por la IA a partir de lo que de verdad pasó. Devuelve None si no sale uno válido
+    (y explica en el log por qué), para que el reel salga igualmente con la plantilla."""
+    from sim.cerebro import llamar_json
+    nombres = config.NOMBRE_SOCIEDAD
+    etiqueta = {"A": nombres["A"], "B": nombres["B"], "C": "las dos (apertura)"}
+    lista = "\n".join(f"{n}. [{etiqueta[x['lado']]} · plano {x['plano']}] {x['narracion']}"
+                       for n, x in enumerate(base["escenas"], 1))
+    sistema = (
+        "Eres el guionista de «Mío vs Nuestro», un experimento real que se emite en TikTok, Instagram y YouTube: dos "
+        "sociedades de agentes de IA viven en el mismo mundo simulado desde la prehistoria, con los mismos recursos y "
+        "valores opuestos (" + "; ".join(f"{nombres[l]}: {config.SUBTITULO_SOCIEDAD[l]}" for l in orden) + "). El público sigue la historia día a día, como una serie documental.\n"
+        "Cómo escribes:\n"
+        "- Español de España, tono de documental de naturaleza: concreto, visual, con ritmo. Frases cortas.\n"
+        "- La primera escena es el gancho: una pregunta o un contraste real que haga quedarse a mirar.\n"
+        "- Cada escena cuenta algo distinto y concreto (quién, qué hace, qué consigue o qué le preocupa). Nada de "
+        "frases vacías como «un día más de trabajo».\n"
+        "- Hilo narrativo: las escenas se encadenan y el cierre retoma el gancho.\n"
+        "- NEUTRALIDAD OBLIGATORIA: mismo peso y mismo tono para las dos sociedades; nunca insinúes cuál es mejor ni "
+        "uses adjetivos que la juzguen. Muestra, no opines.\n"
+        "- Usa SOLO hechos que aparezcan en el material. Puedes elegir, ordenar y explicar, pero no inventar.\n"
+        "- Ni partidos ni políticos reales, ni violencia gráfica.\n"
+        "Respondes siempre con un único objeto JSON válido, sin texto antes ni después.")
+    contexto = "\n\n".join(_contexto_sociedad(l, h, e) for l in orden)
+    pedido = (
+        f"Reel del año {ano} (día {dia}) del experimento. Primer contacto entre sociedades: "
+        f"{'sí' if e.get('contacto') else 'todavía no'}.\n\n"
+        f"MATERIAL DE CADA SOCIEDAD (para que entiendas qué está pasando):\n{contexto}\n\n"
+        f"ESCENAS QUE SE VAN A GRABAR ({len(base['escenas'])}, en este orden; la imagen ya está decidida y muestra a la "
+        f"sociedad y el plano indicados, así que el texto de cada escena debe hablar de ESA sociedad):\n{lista}\n\n"
+        + (f"INDICACIONES DE OSCAR PARA ESTA VERSIÓN (tienen prioridad): {instruccion}\n\n" if instruccion else "") +
+        f"Devuelve este JSON con exactamente {len(base['escenas'])} escenas, en el mismo orden:\n"
+        '{"titular": "máx. 8 palabras", "escenas": [{"texto": "texto en pantalla, máx. 12 palabras", '
+        '"narracion": "1-2 frases para la voz, máx. 30 palabras"}], "cierre": "1 frase con pregunta al público", '
+        '"descripcion": "texto para publicar, 2-3 frases", "hashtags": "5-8 hashtags"}')
+    mensajes = [{"role": "system", "content": sistema}, {"role": "user", "content": pedido}]
+    for vuelta in (1, 2):
+        registro = []
+        try:
+            g = llamar_json(mensajes, modelo=config.LLM_MODELO_LISTO, max_tokens=3000, temperatura=0.7,
+                            registro=registro, timeout=120)
+        except Exception as err:
+            print("Guion con IA no disponible, uso la plantilla:", err)
+            return None
+        for r in registro:
+            print("  aviso del guion:", r)
+        fallos = _revisar_guion(g, base)
+        if not fallos:
+            break
+        print(f"  guion de la IA no válido (vuelta {vuelta}): {'; '.join(fallos)}")
+        if vuelta == 2:
+            print("Guion con IA descartado tras corregirlo una vez; uso la plantilla.")
+            return None
+        mensajes = mensajes + [{"role": "assistant", "content": json.dumps(g, ensure_ascii=False)},
+                               {"role": "user", "content": "Corrige estos problemas y devuelve el JSON completo otra vez: "
+                                + "; ".join(fallos)}]
+    for nueva, b in zip(g["escenas"], base["escenas"]):
+        for k in ("lado", "foco", "plano", "accion", "con", "prop", "prop2"):
+            if k in b:
+                nueva[k] = b[k]  # qué se enseña lo decide el motor, no la IA
+    for k in ("descripcion", "hashtags"):
+        g[k] = g.get(k) or base[k]
     try:
-        pedido = (
-            "Eres el guionista neutral de 'Mío vs Nuestro', un experimento con dos sociedades de IA (" + nombres["B"] + " y " + nombres["A"] + "). "
-            "Reescribe el guion de un reel vertical en español: tono de documental, frases cortas, gancho fuerte al principio, "
-            "SIN opinar sobre qué sociedad es mejor, con el mismo peso para las dos y SIN repetir frases entre escenas. "
-            "No menciones partidos ni políticos reales. No inventes hechos que no estén en las escenas.\n"
-            f"Escenas (respeta el orden, el número y el lado): {json.dumps(base['escenas'], ensure_ascii=False)}\n"
-            + (f"INDICACIONES DE OSCAR PARA ESTA VERSIÓN: {instruccion}\n" if instruccion else "") +
-            'Responde SOLO JSON: {"titular": "máx 8 palabras", "escenas": [{"texto": "texto en pantalla, máx 12 palabras", '
-            '"narracion": "1-2 frases para la voz, máx 30 palabras"}], "cierre": "1 frase con pregunta al público", '
-            '"descripcion": "texto para publicar", "hashtags": "5-8 hashtags"}')
-        from sim.cerebro import llamar_json
-        g = llamar_json([{"role": "user", "content": pedido}], modelo=config.LLM_MODELO_LISTO, max_tokens=1400, temperatura=0.7)
-        if len(g.get("escenas", [])) == len(base["escenas"]) and len({x.get("texto") for x in g["escenas"]}) == len(g["escenas"]):
-            for nueva, b in zip(g["escenas"], base["escenas"]):
-                for k in ("lado", "foco", "plano"):
-                    nueva[k] = b[k]  # qué se enseña lo decide el motor, no la IA
-            ok, _ = moderacion.revisar_con_ia(json.dumps(g, ensure_ascii=False), llamar_llm)
-            if ok:
-                return g, dia
+        ok, motivo = moderacion.revisar_con_ia(json.dumps(g, ensure_ascii=False), llamar_llm)
     except Exception as err:
-        print("Guion con IA no disponible, uso la plantilla:", err)
-    return base, dia
+        ok, motivo = False, f"no se pudo moderar ({err})"
+    if not ok:
+        print("Guion con IA retenido por la moderación, uso la plantilla:", motivo)
+        return None
+    print(f"Guion con IA listo: «{g.get('titular')}»")
+    g["_ia"] = True
+    return g
 
 
 # ---------- 2. voz ----------
@@ -199,23 +336,36 @@ def _voz_azure(texto, ruta):
         return None
     ssml = (f'<speak version="1.0" xml:lang="es-ES"><voice name="{VOZ_AZURE}">'
             f'<prosody rate="-4%">{escape(texto)}</prosody></voice></speak>')
-    # Se pide en MP3 (8 veces más ligero que WAV: evita cortes de descarga) y se convierte a WAV con ffmpeg.
+    # Se pide en MP3 (8 veces más ligero que WAV) y se convierte a WAV con ffmpeg. La descarga se lee por trozos
+    # y, si se corta a medias (IncompleteRead), se reintenta con espera creciente y, desde el tercer intento,
+    # con un MP3 más ligero (48 kbit/s, de sobra para una voz), que tiene menos que descargar.
     mp3 = ruta + ".mp3"
     ultimo = None
-    for _ in range(3):
+    for intento in range(5):
+        formato = "audio-24khz-96kbitrate-mono-mp3" if intento < 2 else "audio-24khz-48kbitrate-mono-mp3"
         try:
             req = urllib.request.Request(f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1", data=ssml.encode("utf-8"),
                                          headers={"Ocp-Apim-Subscription-Key": clave, "Content-Type": "application/ssml+xml",
-                                                  "X-Microsoft-OutputFormat": "audio-24khz-96kbitrate-mono-mp3", "User-Agent": "miovsnuestro"})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                Path(mp3).write_bytes(r.read())
+                                                  "X-Microsoft-OutputFormat": formato, "User-Agent": "miovsnuestro",
+                                                  "Connection": "close"})
+            trozos = []
+            with urllib.request.urlopen(req, timeout=90) as r:
+                while True:
+                    t = r.read(16384)
+                    if not t:
+                        break
+                    trozos.append(t)
+            datos = b"".join(trozos)
+            if len(datos) < 2000:
+                raise RuntimeError(f"audio demasiado corto ({len(datos)} bytes)")
+            Path(mp3).write_bytes(datos)
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", mp3, "-ar", "24000", "-ac", "1", ruta], check=True)
             _uso_voz(len(texto))
             return ruta
         except Exception as err:
             ultimo = err
-            time.sleep(2)
-    raise RuntimeError(ultimo)
+            time.sleep((2, 5, 10, 20, 0)[intento])
+    raise RuntimeError(f"{ultimo} (tras 5 intentos)")
 
 
 def _voz_elevenlabs(texto, ruta):
@@ -243,19 +393,46 @@ def _voz_piper(texto, ruta):
     return None
 
 
-def voz(texto, ruta):
+def voz(texto, ruta, proveedor_forzado=None):
+    """Devuelve (ruta del wav o None, proveedor que la hizo)."""
     if not texto:
-        return None
-    proveedor = {"azure": _voz_azure, "elevenlabs": _voz_elevenlabs}.get(VOZ_PROVEEDOR)
+        return None, None
+    nombre = proveedor_forzado or VOZ_PROVEEDOR
+    proveedor = {"azure": _voz_azure, "elevenlabs": _voz_elevenlabs}.get(nombre)
     if proveedor:
         try:
             r = proveedor(texto, ruta)
             if r:
-                return r
-            print(f"Voz {VOZ_PROVEEDOR}: sin clave o cupo del mes agotado; uso Piper.", flush=True)
+                return r, nombre
+            print(f"Voz {nombre}: sin clave o cupo del mes agotado; uso Piper.", flush=True)
         except Exception as err:
-            print(f"Voz {VOZ_PROVEEDOR} no disponible ({err}); uso Piper.", flush=True)
-    return _voz_piper(texto, ruta)  # sin voz instalada: el reel sale con subtítulos y música
+            print(f"Voz {nombre} no disponible ({err}); uso Piper.", flush=True)
+    r = _voz_piper(texto, ruta)  # sin voz instalada: el reel sale con subtítulos y música
+    return r, ("piper" if r else None)
+
+
+def voces_del_reel(escenas, carpeta):
+    """Todo el reel con LA MISMA voz: si alguna escena no sale con la voz buena, se reintenta al final y,
+    si sigue sin salir, se rehace todo el reel con Piper (mezclar dos voces en un reel suena a error)."""
+    quien = {}
+    for i, e in enumerate(escenas):
+        e["audio"], quien[i] = voz(e.get("narracion", ""), str(carpeta / f"voz{i}.wav"))
+    hechas = {q for q in quien.values() if q}
+    if len(hechas) <= 1:
+        return next(iter(hechas), None)
+    buena = VOZ_PROVEEDOR
+    for i, e in enumerate(escenas):
+        if quien[i] and quien[i] != buena:
+            time.sleep(15)
+            print(f"  reintento la voz de la escena {i + 1} con {buena}", flush=True)
+            e["audio"], quien[i] = voz(e.get("narracion", ""), str(carpeta / f"voz{i}.wav"), buena)
+    if len({q for q in quien.values() if q}) > 1:
+        print("  la voz buena no sale en todas las escenas: hago todo el reel con Piper para que no se mezclen", flush=True)
+        for i, e in enumerate(escenas):
+            if e.get("narracion"):
+                e["audio"] = _voz_piper(e["narracion"], str(carpeta / f"voz{i}.wav"))
+        return "piper (respaldo)"
+    return buena
 
 
 def duracion_wav(ruta):
@@ -276,6 +453,9 @@ def grabar(escenas, titular, carpeta):
                       "dur": f"{dur:.2f}", "semilla": str(i), "hora": e.get("hora", "0.3")}
             if e.get("foco"):
                 params["foco"] = e["foco"]
+                for k in ("accion", "con", "prop", "prop2"):  # que se vea la acción que se narra
+                    if e.get(k):
+                        params[k] = e[k]
             if params["plano"] in PLANOS_SIN_SOMBRAS:
                 params["sombras"] = "0"
             if i == 0:
@@ -401,8 +581,8 @@ def fabricar(tipo="diario", reel_id=None, instruccion="", enviar=True):
     t0 = time.time()
     with tempfile.TemporaryDirectory() as tmp:
         carpeta = Path(tmp)
-        for i, e in enumerate(g["escenas"]):  # primero la voz: la escena dura lo que dure la frase
-            e["audio"] = voz(e.get("narracion", ""), str(carpeta / f"voz{i}.wav"))
+        voz_usada = voces_del_reel(g["escenas"], carpeta)  # primero la voz: la escena dura lo que dure la frase
+        for i, e in enumerate(g["escenas"]):
             e["dur"] = max(seg if i else 4.5, min(10.0, duracion_wav(e["audio"]) + 0.9)) if e["audio"] else (seg if i else 4.5)
             e["hora"] = "0.62" if i == len(g["escenas"]) - 1 and tipo == "episodio" else "0.3"
         clips = grabar(g["escenas"], g["titular"], carpeta)
@@ -416,6 +596,11 @@ def fabricar(tipo="diario", reel_id=None, instruccion="", enviar=True):
         salida = str(SALIDA / f"reel_{reel_id}_v{version}.mp4")
         montar(g, clips, carpeta, salida)
     dur, problemas = comprobar_video(salida)
+    if voz_usada and voz_usada != VOZ_PROVEEDOR and VOZ_PROVEEDOR != "piper":
+        problemas.append(f"voz de respaldo ({voz_usada}) porque {VOZ_PROVEEDOR} no respondió")
+    if not g.get("_ia"):
+        problemas.append("guion de plantilla (la IA no dio un guion válido; mira reels.log)")
+    g.pop("_ia", None)
     for e in g["escenas"]:
         e.pop("audio", None)
     texto = f"{g.get('descripcion', '')}\n\n{g.get('hashtags', '')}\n\nContenido generado con IA."
@@ -447,25 +632,45 @@ def rehacer():
         fabricar("diario", reel_id=ident, instruccion=instr or "")
 
 
-def bloqueo():
-    """Evita que se monten dos reels a la vez (cada uno tarda varios minutos)."""
+def bloqueo(esperar_min=0):
+    """Evita que se monten dos reels a la vez (cada uno tarda bastantes minutos).
+    El reel diario y el episodio esperan su turno (hasta `esperar_min`) en vez de perderse ese día."""
     import fcntl
     f = open(config.DATOS / "reels.lock", "w")
+    limite = time.time() + esperar_min * 60
+    aviso = False
+    while True:
+        try:
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return f
+        except OSError:
+            if time.time() >= limite:
+                print("Ya se está montando otro reel; lo dejo para la próxima vez.", flush=True)
+                sys.exit(0)
+            if not aviso:
+                print(f"Hay otro reel montándose; espero mi turno (hasta {esperar_min} min).", flush=True)
+                aviso = True
+            time.sleep(30)
+
+
+def hay_que_rehacer():
     try:
-        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except OSError:
-        print("Ya se está montando otro reel; lo dejo para la próxima vez.")
-        sys.exit(0)
-    return f
+        return bd_reels().execute("SELECT COUNT(*) FROM reels WHERE estado='rehacer'").fetchone()[0] > 0
+    except Exception:
+        return True  # si no se puede mirar, que lo intente como antes
 
 
 if __name__ == "__main__":
     modo = sys.argv[1] if len(sys.argv) > 1 else "diario"
     config.DATOS.mkdir(exist_ok=True)
-    _cerrojo = bloqueo()
     if modo == "rehacer":
+        if not hay_que_rehacer():
+            sys.exit(0)  # cron lo lanza cada 10 min: sin nada pendiente no hace nada ni escribe en el log
+        _cerrojo = bloqueo()
         rehacer()
     elif modo == "prueba":
+        _cerrojo = bloqueo()
         print(fabricar(sys.argv[2] if len(sys.argv) > 2 else "diario", enviar=False))
     else:
+        _cerrojo = bloqueo(esperar_min=120)
         print(fabricar(modo))

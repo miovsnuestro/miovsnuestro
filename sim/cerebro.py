@@ -80,7 +80,11 @@ class Gasto:
         cls.dolares += ti / 1e6 * pi + to / 1e6 * po
 
 
-def llamar_llm(mensajes, modelo=None, json_mode=True, max_tokens=300, temperatura=0.9):
+# Datos de la última respuesta de la IA (para saber POR QUÉ falla, no solo que falla).
+ULTIMA = {}
+
+
+def llamar_llm(mensajes, modelo=None, json_mode=True, max_tokens=300, temperatura=0.9, timeout=60):
     """Llamada a la API compatible con OpenAI. Devuelve texto o lanza excepción."""
     modelo = modelo or config.LLM_MODELO
     cuerpo = {"model": modelo, "messages": mensajes, "max_tokens": max_tokens, "temperature": temperatura}
@@ -96,14 +100,32 @@ def llamar_llm(mensajes, modelo=None, json_mode=True, max_tokens=300, temperatur
         data=json.dumps(cuerpo).encode(),
         headers={"Content-Type": "application/json", "Authorization": f"Bearer {clave}"},
     )
-    with urllib.request.urlopen(req, timeout=60) as r:
-        datos = json.loads(r.read())
-    Gasto.sumar(modelo, datos.get("usage", {}))
-    msg = datos["choices"][0]["message"]
+    ULTIMA.clear()
+    ULTIMA.update({"modelo": modelo, "modo_json": json_mode, "max_tokens": max_tokens})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        crudo = r.read()
+    if not crudo.strip():
+        ULTIMA["motivo"] = "respuesta HTTP vacía"
+        raise ValueError(f"la API devolvió una respuesta vacía ({modelo})")
+    datos = json.loads(crudo)
+    uso = datos.get("usage", {})
+    Gasto.sumar(modelo, uso)
+    eleccion = datos["choices"][0]
+    msg = eleccion["message"]
     texto = msg.get("content") or ""
+    ULTIMA.update({"fin": eleccion.get("finish_reason"), "tokens_salida": uso.get("completion_tokens"),
+                   "razonamiento": len(msg.get("reasoning_content") or "")})
     if not texto.strip() and msg.get("reasoning_content"):
         texto = msg["reasoning_content"]  # si aun así pensó, el JSON puede venir en el razonamiento
     return texto
+
+
+def _describir_ultima():
+    u = ULTIMA
+    if not u:
+        return ""
+    return (f" [{u.get('modelo')}, modo JSON {'sí' if u.get('modo_json') else 'no'}, fin={u.get('fin')}, "
+            f"tokens de salida={u.get('tokens_salida')}/{u.get('max_tokens')}, razonamiento={u.get('razonamiento', 0)} car.]")
 
 
 def extraer_json(texto):
@@ -118,20 +140,33 @@ def extraer_json(texto):
     return json.loads(t[i:j + 1])
 
 
-def llamar_json(mensajes, modelo=None, max_tokens=300, temperatura=0.9):
-    """Pide JSON a la IA. Si el modelo devuelve algo vacío o roto (pasa a veces con el modelo listo),
-    lo intenta una vez más con más margen y, si vuelve a fallar, con el modelo rápido."""
+def llamar_json(mensajes, modelo=None, max_tokens=300, temperatura=0.9, registro=None, timeout=60):
+    """Pide JSON a la IA y lo devuelve ya leído.
+
+    DeepSeek avisa de que su «modo JSON» (response_format) a veces devuelve el contenido VACÍO, y con el
+    modelo listo y textos largos pasa casi siempre. Por eso:
+      1) primero se pide en modo JSON;
+      2) si sale vacío o roto, se pide en modo TEXTO normal (el mismo que usa la crónica, que no falla) y se
+         saca el JSON del texto con extraer_json;
+      3) si aun así falla, se prueba con el modelo rápido en modo texto.
+    Si se corta por falta de espacio (fin=length), el siguiente intento lleva el doble de tokens.
+    `registro` (una lista) recibe una línea por intento fallido con el motivo exacto."""
     modelo = modelo or config.LLM_MODELO
-    intentos = [(modelo, max_tokens), (modelo, max_tokens * 2)]
+    intentos = [(modelo, True), (modelo, False)]
     if modelo != config.LLM_MODELO:
-        intentos.append((config.LLM_MODELO, max_tokens * 2))
-    error = None
-    for m, mt in intentos:
+        intentos.append((config.LLM_MODELO, False))
+    error, mt = None, max_tokens
+    for m, modo_json in intentos:
         try:
-            return extraer_json(llamar_llm(mensajes, modelo=m, json_mode=True, max_tokens=mt, temperatura=temperatura))
+            return extraer_json(llamar_llm(mensajes, modelo=m, json_mode=modo_json, max_tokens=mt, temperatura=temperatura,
+                                              timeout=timeout))
         except Exception as e:
-            error = e
+            error = f"{e}{_describir_ultima()}"
             Gasto.fallos += 1
+            if registro is not None:
+                registro.append(error)
+            if ULTIMA.get("fin") == "length":
+                mt *= 2
     raise ValueError(f"sin JSON válido tras {len(intentos)} intentos: {error}")
 
 

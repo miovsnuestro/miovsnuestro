@@ -213,6 +213,19 @@ La idea más potente para contar: **nadie les da nada hecho.** Empiezan sin sabe
   - **Reel especial «Nunca existió»:** el día que salga el primer invento inédito: su idea con sus palabras, el diseño y cómo queda en el mundo.
   - **Idea de reel propio, «Lo inventaron ellos»:** 30 s siguiendo el primer objeto de cada sociedad, desde la idea escrita con sus palabras hasta que se ve en la mano, con el nombre que le pusieron.
 
+### El Narrador: pregúntale lo que quieras (12-nov-2026, idea de Oscar)
+- En la pantalla principal hay un botón amarillo, **«💬 Pregunta al Narrador»**. El Narrador no es un habitante: es la voz del experimento.
+- Responde a cualquier duda: «¿Qué ha pasado hoy?», «¿Quién va ganando?», «¿Quién es Brais?», «¿Qué es la piedra con mango?», «¿Es justo?», «¿Puedo influir?»…
+- Casi todo lo responde **gratis**, con un banco de preguntas que se actualiza solo con cada día del mundo. Solo lo que no sabe pasa por la IA (3 preguntas así por persona y día, dentro del mismo tope que las entrevistas). Lo que no supo se apunta para aprenderlo.
+- Es **neutral**: si le preguntas quién gana o cuál es mejor, da los datos de las dos sociedades y no da veredicto.
+- Cuando nombra a alguien, aparece un botón «👁 Seguir a…» que te lleva hasta esa persona en el mapa.
+- **Para los reels:** plano de la pantalla con alguien escribiendo «¿Quién va ganando?» y la respuesta neutral apareciendo. Frase: «¿Tienes dudas? Pregúntale al Narrador. Te lo cuenta todo… menos quién es mejor.»
+
+### En los reels se ve lo que se cuenta (12-nov-2026, idea de Oscar)
+- Si la voz dice «Uxía vuelve de cazar con carne y pieles», se ve a Uxía volviendo al pueblo con la carne en la mano y las pieles a la espalda.
+- Si dice «Pablo cambia madera por pescado con Telmo», se les ve frente a frente, cada uno con lo suyo, pasándoselo por el aire.
+- También regalos, robos, conversaciones, enseñar algo, parejas (con un corazón), nacimientos (con el bebé en brazos), inventos (el objeto que brilla al nacer), construir, cargar al almacén, leer, explorar y reclamar tierra (con su banderín). Lo mismo para las dos sociedades.
+
 ### Cambios en los guiones de arriba
 - **Reel 1 (tráiler):** sustituir las capturas antiguas por tomas del visor nuevo: vista general al amanecer, primer plano siguiendo a alguien, aldea al anochecer.
 - **Reel 2 (cómo funciona):** añadir al final, en 5 s: "Y puedes entrar, seguir a cualquiera y hasta entrevistarle."
