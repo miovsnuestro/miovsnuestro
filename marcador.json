@@ -1,8 +1,8 @@
 {
  "proyecto": "Mío vs Nuestro",
  "mundo": "pruebas",
- "dia": 3,
- "ano": 1,
+ "dia": 35,
+ "ano": 2,
  "epoca": "prehistoria",
  "sociedades": {
   "A": {
@@ -11,7 +11,7 @@
    "color": "#1D9E75",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 51,
+    "comida_total": 189,
     "desigualdad_gini": 0.09,
     "inventos": 0,
     "inventos_propios": 0,
@@ -19,10 +19,10 @@
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 73,
+    "bienestar": 79,
     "con_refugio": 0,
     "parejas": 0,
-    "explorado": 689,
+    "explorado": 697,
     "territorio": 1360,
     "en_tierra_de_nadie": 0,
     "nacimientos": 0,
@@ -31,8 +31,9 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "Día 3. La recolección en la zona alta ocupó a la mayoría desde el alba; el trueque de herramientas por grano se realizó sin disputas al mediodía. Al caer la tarde, los turnos de vigilancia se cumplieron sin incidentes y cada refugio racionó el agua con precisión. La jornada cerró con pocas palabras y ningún altercado: un día de trabajo y supervivencia en calma.",
+   "cronica": "En el día 35, Roi entregó a Sabela una ración de comida valorada en 5 unidades, gesto que quedó registrado en el reparto de recursos de la jornada. Horas más tarde, el mismo Roi volvió a ceder a Sabela otra cantidad, esta vez de 6 unidades de comida, ampliando la transferencia inicial. Al cierre del día, los registros de la sociedad «Los del Mío» contabilizaban un total de 11 unidades de comida transferidas de Roi a Sabela en dos actos separados.",
    "inventos": [],
+   "epoca": "prehistoria",
    "libros_leidos": 0,
    "libros_total": 11
   },
@@ -42,15 +43,15 @@
    "color": "#D85A30",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 48,
-    "desigualdad_gini": 0.13,
+    "comida_total": 192,
+    "desigualdad_gini": 0.07,
     "inventos": 0,
     "inventos_propios": 0,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 71,
+    "bienestar": 74,
     "con_refugio": 0,
     "parejas": 0,
     "explorado": 680,
@@ -62,14 +63,20 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "**Día 3 — Los del Nuestro**\n\nLa jornada transcurrió sin sobresaltos: los miembros del grupo dedicaron las horas de luz a reforzar los refugios y a repartir las raciones almacenadas según el turno establecido.  \nAl caer la tarde, se observó una coordinación silenciosa en las tareas de acarreo de agua y en la reparación de herramientas, sin que nadie reclamara un papel distinto al asignado.  \nLa noche llegó con el grupo reunido en torno al fuego central, donde se intercambiaron instrucciones prácticas para el día siguiente antes de retirarse a descansar por relevos.",
+   "cronica": "Día 35. La jornada transcurrió sin incidentes: los turnos de recolección y mantenimiento se cumplieron según lo establecido, y cada miembro volvió a su refugio al caer la tarde.\n\nDía 35. Se observó un ritmo constante en el acopio de agua y en la reparación de los cercos; no hubo disputas ni llamadas de atención durante las horas de labor.\n\nDía 35. Al anochecer, las fogatas comunitarias se encendieron sin urgencia, y la mayoría compartió la cena en silencio antes de retirarse a descansar.",
    "inventos": [],
+   "epoca": "prehistoria",
    "libros_leidos": 0,
    "libros_total": 11
   }
  },
  "agentes": 20,
+ "obras": {
+  "estructuras": [],
+  "campos": []
+ },
+ "talado": [],
  "contacto": false,
- "inicio_dia": 1794433053.0974507,
+ "inicio_dia": 1794520510.1784425,
  "segundos_dia": 2880.0
 }
