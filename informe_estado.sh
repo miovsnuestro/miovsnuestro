@@ -31,6 +31,9 @@ consulta datos/$(cat .mundo).db "SELECT dia, campo, motivos FROM moderacion ORDE
 tail -n 60 datos/reels.log > $D/reels.log 2>/dev/null || true
 consulta datos/reels.db "SELECT id, datetime(creado,'unixepoch') AS creado, estado, version FROM reels ORDER BY id DESC LIMIT 10" $D/reels.json
 tail -n 20 datos/copia.log > $D/copia.log 2>/dev/null || true
+# Narrador: cuántas preguntas se respondieron gratis y cuáles no supo (para ampliar su banco)
+.venv/bin/python -m sim.narrador pendientes > $D/narrador.json 2>/dev/null || echo '{"error": "no se pudo leer"}' > $D/narrador.json
+.venv/bin/python entrevistas.py resumen > $D/publico.json 2>/dev/null || true
 git log -1 --format='%h %cs %s' > $D/version.txt 2>/dev/null || true
 cd $D && git add -A
 git diff --cached --quiet || git -c user.name="miovsnuestro-servidor" -c user.email="servidor@miovsnuestro" commit -qm "Informe $(date +%F)"

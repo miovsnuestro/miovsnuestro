@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from sim import config
 from sim.simulacion import Simulacion
 from sim.cerebro import Gasto
+from sim import narrador
 
 MUNDO = os.getenv("MUNDO", "pruebas")            # "pruebas" u "oficial"
 SEGUNDOS_POR_DIA = float(os.getenv("SEGUNDOS_POR_DIA", str(86400 / config.DIAS_SIM_POR_DIA_REAL)))
@@ -45,6 +46,7 @@ def main():
     try:
         escribir_json(config.WEB / "estado.json", sim.estado_publico())
         escribir_json(config.DATOS / "entrevistas.json", sim.fichas_entrevista())
+        escribir_json(config.DATOS / "narrador.json", narrador.datos_del_dia(sim))
     except Exception as err:
         print("Aviso al escribir el estado inicial:", err, flush=True)
     en_pausa = False
@@ -66,6 +68,10 @@ def main():
             escribir_json(config.DATOS / "entrevistas.json", sim.fichas_entrevista())
         except Exception as err:  # las entrevistas nunca deben parar el mundo
             print("No pude escribir las fichas de entrevista:", err, flush=True)
+        try:  # la «librería» del Narrador: se actualiza sola con cada día simulado
+            escribir_json(config.DATOS / "narrador.json", narrador.datos_del_dia(sim))
+        except Exception as err:
+            print("No pude escribir los datos del Narrador:", err, flush=True)
         escribir_json(config.DATOS / "latido.json", {
             "hora": time.time(), "fecha": datetime.now(timezone.utc).isoformat(), "dia": sim.dia, "estado": "en marcha",
             "ia": usar_ia, "llamadas": Gasto.llamadas, "fallos": Gasto.fallos, "gasto_usd_sesion": round(Gasto.dolares, 4),

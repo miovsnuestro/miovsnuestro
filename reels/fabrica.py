@@ -16,6 +16,7 @@ Cada reel lleva la etiqueta «Contenido generado con IA».
 import json
 import os
 import random
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -89,6 +90,53 @@ def hechos(mundo, dias):
     return res, ultimo
 
 
+# ---------- lo que se ve en cada escena: la acción que se narra ----------
+MATERIAL_A_OBJETO = {"comida": "frutos", "carne": "carne", "pieles": "pieles", "madera": "madera", "piedra": "piedra",
+                     "pescado": "pescado", "fibra": "fibra", "arcilla": "arcilla", "metal": "metal", "carbon": "carbon", "carbón": "carbon"}
+ACCIONES_DE_DOS = {"trueque", "trueque_rechazado", "regalo", "robo", "habla", "enseñanza", "pareja", "nacimiento"}
+
+
+def _objetos_del_texto(tipo, texto):
+    """Qué llevan en las manos según lo que dice el suceso («cambia madera por pescado» → madera y pescado)."""
+    t = (texto or "").lower()
+    m = re.search(r"cambia (\w+) por (\w+)", t)
+    if m:
+        return MATERIAL_A_OBJETO.get(m.group(1)), MATERIAL_A_OBJETO.get(m.group(2))
+    if tipo == "caza":
+        return "carne", "pieles"
+    for palabra in re.findall(r"\w+", t):
+        if palabra in MATERIAL_A_OBJETO:
+            return MATERIAL_A_OBJETO[palabra], None
+    return None, None
+
+
+def _companero(texto, foco, ag):
+    """El otro habitante que nombra el suceso (para ponerlos frente a frente)."""
+    nombre_foco = next((a["nombre"] for a in ag if a["id"] == foco), None)
+    resto = (texto or "").replace(nombre_foco, "", 1) if nombre_foco else (texto or "")
+    for a in sorted(ag, key=lambda a: -len(a["nombre"])):  # «Xabier 2» antes que «Xabier»
+        if a["id"] != foco and re.search(r"\b" + re.escape(a["nombre"]) + r"\b(?! \d)", resto):
+            return a["id"]
+    return None
+
+
+def _accion_de_escena(esc, s, ag):
+    """Añade a la escena qué hay que escenificar: accion, con (compañero) y los objetos (prop, prop2)."""
+    if not esc.get("foco"):
+        return esc
+    esc["accion"] = s["tipo"]
+    if s["tipo"] in ACCIONES_DE_DOS:
+        otro = _companero(s["texto"], esc["foco"], ag)
+        if otro:
+            esc["con"] = otro
+    p1, p2 = _objetos_del_texto(s["tipo"], s["texto"])
+    if p1:
+        esc["prop"] = p1
+    if p2 and s["tipo"] != "caza":
+        esc["prop2"] = p2
+    return esc
+
+
 def _escena_persona(ag, lado, usados):
     libres = [a for a in ag if a["lado"] == lado and a["edad"] >= 14 and a["id"] not in usados]
     if not libres:
@@ -98,7 +146,7 @@ def _escena_persona(ag, lado, usados):
     que = VERBO.get(a.get("accion") or "", "sigue con su día")
     texto = f"{a['nombre']}, {a['edad']} años, {que}."
     voz = texto + (f" Piensa: {a['piensa']}" if a.get("piensa") else "")
-    return {"lado": lado, "foco": a["id"], "plano": "personaje", "texto": texto, "narracion": voz[:220]}
+    return {"lado": lado, "foco": a["id"], "plano": "personaje", "texto": texto, "narracion": voz[:220], "accion": a.get("accion") or ""}
 
 
 def guion(mundo, n_escenas, instruccion=""):
@@ -122,7 +170,7 @@ def guion(mundo, n_escenas, instruccion=""):
                 usados.add(foco)
             plano = ("rio" if s["tipo"] in ("primer_contacto", "emigración") else "general" if s["tipo"] == "mundo_nuevo"
                      else "aldea" if s["tipo"] == "construccion_nueva" else "personaje" if foco else "aldea")
-            esc = {"lado": lado, "foco": foco, "plano": plano, "texto": s["texto"], "narracion": s["texto"]}
+            esc = _accion_de_escena({"lado": lado, "foco": foco, "plano": plano, "texto": s["texto"], "narracion": s["texto"]}, s, ag)
         esc = esc or _escena_persona(ag, lado, usados) or {
             "lado": lado, "foco": None, "plano": "aldea", "texto": f"Un día de trabajo entre {nombres[lado]}.",
             "narracion": f"Un día de trabajo entre {nombres[lado]}."}
@@ -131,7 +179,7 @@ def guion(mundo, n_escenas, instruccion=""):
     for lado in "AB":
         amplias = [x for x in escenas if x["lado"] == lado and x["plano"] == "aldea"]
         if not amplias:
-            cand = [x for x in escenas if x["lado"] == lado and x["plano"] == "personaje"]
+            cand = [x for x in escenas if x["lado"] == lado and x["plano"] == "personaje" and x.get("accion") not in ACCIONES_DE_DOS]
             if len(cand) > 1:
                 cand[-1]["plano"] = "aldea"
     apertura = {"lado": "C", "foco": None, "plano": "marcador", "texto": f"Año {ano}. {config.LEMA}",
@@ -238,8 +286,9 @@ def _guion_ia(base, h, e, orden, ano, dia, instruccion=""):
                                {"role": "user", "content": "Corrige estos problemas y devuelve el JSON completo otra vez: "
                                 + "; ".join(fallos)}]
     for nueva, b in zip(g["escenas"], base["escenas"]):
-        for k in ("lado", "foco", "plano"):
-            nueva[k] = b[k]  # qué se enseña lo decide el motor, no la IA
+        for k in ("lado", "foco", "plano", "accion", "con", "prop", "prop2"):
+            if k in b:
+                nueva[k] = b[k]  # qué se enseña lo decide el motor, no la IA
     for k in ("descripcion", "hashtags"):
         g[k] = g.get(k) or base[k]
     try:
@@ -404,6 +453,9 @@ def grabar(escenas, titular, carpeta):
                       "dur": f"{dur:.2f}", "semilla": str(i), "hora": e.get("hora", "0.3")}
             if e.get("foco"):
                 params["foco"] = e["foco"]
+                for k in ("accion", "con", "prop", "prop2"):  # que se vea la acción que se narra
+                    if e.get(k):
+                        params[k] = e[k]
             if params["plano"] in PLANOS_SIN_SOMBRAS:
                 params["sombras"] = "0"
             if i == 0:

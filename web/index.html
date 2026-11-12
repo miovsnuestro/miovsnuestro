@@ -125,6 +125,7 @@
 <div id="cronica" class="panel"><b>Crónica<span class="toca">▾</span> · </b><span id="ct">Cargando el mundo…</span></div>
 <script src="three.min.js"></script>
 <script src="obras.js"></script>
+<script src="acciones.js"></script>
 <script>
 "use strict";
 // ======================================================================
@@ -403,6 +404,7 @@ function animarPersona(g,dt,t){
   else if(['hablar','intercambiar','regalar','ensenar','enseñar','cortejar','nombrar'].includes(acc)){if(acc==='intercambiar')sacarObjeto(u,acc);u.bD.rotation.x=-.5+Math.sin(f*1.2)*.35;u.bD.rotation.z=.2;u.bI.rotation.x=-.2+Math.sin(f*.9+1)*.2;u.cuello.rotation.y=Math.sin(f*.5)*.3;}
   else if(acc==='inventar'||acc==='fabricar'||acc==='leer'){if(acc!=='inventar')sacarObjeto(u,acc);u.cuello.rotation.x=.35;u.bD.rotation.x=-1.0+Math.sin(f*2)*.2;u.bI.rotation.x=-.9;u.torso.rotation.x=.15;}
   else{u.cuello.rotation.y=Math.sin(f*.4)*.35;u.bI.rotation.z=-.05;u.bD.rotation.z=.05;u.torso.rotation.x=Math.sin(f*.5)*.02;}
+  if(REEL&&typeof animarEscena==='function')animarEscena(g,dt); // reels: que se vea la acción que se narra
 }
 
 // ---------------- pueblos: casas, hogueras, inventos visibles ----------------
@@ -493,6 +495,7 @@ function actualizar(e){
     const u=g.userData;u.a=a;if(!u.base||u.base.distanceTo(b)>.01){u.base=b;u.dest=b.clone();}}
   for(const[id,g]of gente)if(!vivos.has(id)){grupoGente.remove(g);gente.delete(id);const i=hits.indexOf(g.userData.toque);if(i>=0)hits.splice(i,1);if(foco===g)soltar();}
   if(REEL&&!foco){let g=gente.get(+q.get('foco'));if(!g&&q.get('lado')&&q.get('plano')==='personaje'){const del=[...gente.values()].filter(x=>x.userData.a.lado===q.get('lado')&&x.userData.a.edad>=14);g=del[(+q.get('semilla')||0)%Math.max(1,del.length)];}if(g)foco=g;}
+  if(REEL&&foco&&typeof prepararEscena==='function')prepararEscena(foco);
   if(!REEL&&q.get('foco')&&!foco&&!usuarioMovio&&!ultimaFicha){const g=gente.get(+q.get('foco'));if(g){seguir(g);Object.assign(cam,obj);}}
   if(foco&&!REEL)mostrarFicha(foco.userData.a);
 }
@@ -614,7 +617,8 @@ function angDespejado(p){const obst=[...pueblos.children,...S.children.filter(o=
     if(n<menos){menos=n;mejor=yaw;}}return mejor;}
 const PLANO=q.get('plano')||'general',DUR=+(q.get('dur')||6);let tReel=0;
 function camaraReel(dt){tReel+=dt;const k=clamp(tReel/DUR,0,1),e=k*k*(3-2*k),lado=q.get('lado')||'A',sg=lado==='B'?1:-1,valle=X(VALLE[lado]);
-  if(PLANO==='personaje'&&foco){if(yawLibre===null)yawLibre=angDespejado(foco.position);obj.x=foco.position.x;obj.z=foco.position.z;obj.dist=lerp(7.5,5.4,e);obj.pitch=lerp(.45,.34,e);obj.yaw=yawLibre+lerp(-.4,.4,e);}
+  if(PLANO==='personaje'&&foco){const ce=(typeof centroEscena==='function'&&centroEscena())||foco.position,dos=ce!==foco.position;
+    if(yawLibre===null)yawLibre=(dos&&yawEscena())||angDespejado(foco.position);obj.x=ce.x;obj.z=ce.z;obj.dist=lerp(7.5,5.4,e)*(dos?1.15:1);obj.pitch=lerp(.45,.34,e);obj.yaw=yawLibre+lerp(-.4,.4,e);}
   else if(PLANO==='aldea'){const pl=plazas[lado]||[VALLE[lado],MH/2];obj.x=X(pl[0]);obj.z=Z(pl[1]);obj.dist=lerp(19,14,e);obj.pitch=lerp(.62,.5,e);obj.yaw=sg*lerp(.2,.9,e);}
   else if(PLANO==='rio'){obj.x=0;obj.z=lerp(-6,6,e);obj.dist=lerp(34,26,e);obj.pitch=lerp(.55,.45,e);obj.yaw=lerp(-.25,.25,e);}
   else if(PLANO==='marcador'){obj.x=0;obj.z=0;obj.dist=lerp(105,92,e);obj.pitch=lerp(.85,.95,e);obj.yaw=lerp(-.08,.08,e);}
@@ -632,7 +636,7 @@ function paso(dt){t+=dt;
   C.position.set(cam.x+Math.sin(cam.yaw)*Math.cos(cam.pitch)*cam.dist,ty+Math.sin(cam.pitch)*cam.dist,cam.z+Math.cos(cam.yaw)*Math.cos(cam.pitch)*cam.dist);
   const minY=Math.max(suelo(C.position.x,C.position.z),NIVEL)+.5;if(C.position.y<minY)C.position.y=minY;
   C.lookAt(cam.x,ty+(cam.dist<10?.2:0),cam.z);
-  if(foco&&cam.dist<16){despejar(foco.position,C.position);despejarObras(foco.position,C.position);}else{if(apartados.length)restaurarVista();despejarObras(null);}
+  if(foco&&cam.dist<16){const pd=(REEL&&typeof centroEscena==='function'&&centroEscena())||foco.position;despejar(pd,C.position);despejarObras(pd,C.position);}else{if(apartados.length)restaurarVista();despejarObras(null);}
   const d=luzDelDia();
   for(const g of gente.values())animarPersona(g,dt,t);
   if(foco){anillo.visible=true;anillo.position.set(foco.position.x,foco.position.y+.03,foco.position.z);anillo.material.color.set(COLOR[foco.userData.a.lado]);anillo.scale.setScalar(1+Math.sin(t*3)*.06);}
@@ -655,5 +659,6 @@ function bucle(){const ahora=performance.now(),dt=Math.min(.1,(ahora-tPrevio)/10
 cargar().then(()=>{recolocar();if(REEL){for(let i=0;i<3;i++)paso(1/25);tReel=0;}window.listo=true;if(!REEL)bucle();});
 if(!REEL)setInterval(cargar,30000);
 </script>
+<script src="narrador.js"></script>
 </body>
 </html>

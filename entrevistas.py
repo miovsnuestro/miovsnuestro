@@ -17,7 +17,7 @@ import sys
 import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from sim import config, moderacion
+from sim import config, moderacion, narrador
 from sim.cerebro import Gasto, llamar_llm
 
 PUERTO = 8090
@@ -37,7 +37,21 @@ def ajustes():
         a = {}
     return {"presupuesto": float(a.get("PRESUPUESTO_ENTREVISTAS_EUR", 2.0)),
             "por_visitante": int(a.get("PREGUNTAS_POR_VISITANTE_DIA", 3)),
-            "activas": bool(a.get("ENTREVISTAS_ACTIVAS", True))}
+            "activas": bool(a.get("ENTREVISTAS_ACTIVAS", True)),
+            # El Narrador responde gratis con su banco; solo usa IA para lo que no sabe, con este tope por visitante y día.
+            "narrador_ia_por_visitante": int(a.get("NARRADOR_IA_POR_VISITANTE_DIA", 3)),
+            "narrador_ia": bool(a.get("NARRADOR_IA_ACTIVA", True))}
+
+
+def gastado_mes(mes):
+    """Gasto del público en el mes: entrevistas + preguntas del Narrador que necesitaron IA (comparten el tope)."""
+    c = bd()
+    g = c.execute("SELECT COALESCE(SUM(coste_eur),0) FROM preguntas WHERE mes=?", (mes,)).fetchone()[0]
+    try:
+        g += c.execute("SELECT COALESCE(SUM(coste_eur),0) FROM narrador WHERE mes=?", (mes,)).fetchone()[0]
+    except sqlite3.OperationalError:
+        pass
+    return g
 
 
 def bd():
@@ -94,11 +108,11 @@ def responder(agente_id, pregunta, quien):
     hechas = c.execute("SELECT COUNT(*) FROM preguntas WHERE visitante=? AND dia=? AND estado='ok'", (quien, dia)).fetchone()[0]
     if hechas >= aj["por_visitante"]:
         return 429, {"error": f"Ya has hecho tus {aj['por_visitante']} preguntas de hoy. Vuelve mañana.", "quedan": 0}
-    gastado_mes = c.execute("SELECT COALESCE(SUM(coste_eur),0) FROM preguntas WHERE mes=?", (mes,)).fetchone()[0]
+    gastado = gastado_mes(mes)
     gastado_dia = c.execute("SELECT COALESCE(SUM(coste_eur),0) FROM preguntas WHERE dia=?", (dia,)).fetchone()[0]
     dias_quedan = 31 - ahora.day + 1
-    tope_dia = max(0.0, aj["presupuesto"] - gastado_mes + gastado_dia) / dias_quedan
-    if gastado_mes >= aj["presupuesto"] or gastado_dia >= tope_dia:
+    tope_dia = max(0.0, aj["presupuesto"] - gastado + gastado_dia) / dias_quedan
+    if gastado >= aj["presupuesto"] or gastado_dia >= tope_dia:
         return 429, {"error": "Los habitantes descansan por hoy. Vuelve mañana para entrevistarlos.", "quedan": 0}
     _, motivos = moderacion.revisar(pregunta)
     if not motivos and _FUERA.search(moderacion._norm(pregunta)):
@@ -138,7 +152,11 @@ def resumen():
     c = bd()
     mes = datetime.now(timezone.utc).strftime("%Y-%m")
     n, gasto = c.execute("SELECT COUNT(*), COALESCE(SUM(coste_eur),0) FROM preguntas WHERE mes=? AND estado='ok'", (mes,)).fetchone()
-    return {"preguntas_mes": n, "gasto_mes_eur": round(gasto, 3), "presupuesto_eur": ajustes()["presupuesto"]}
+    nb = narrador.bd_narrador()
+    por_via = dict(nb.execute("SELECT via, COUNT(*) FROM narrador WHERE mes=? GROUP BY via", (mes,)).fetchall())
+    g_n = nb.execute("SELECT COALESCE(SUM(coste_eur),0) FROM narrador WHERE mes=?", (mes,)).fetchone()[0]
+    return {"preguntas_mes": n, "gasto_mes_eur": round(gasto, 3), "narrador_mes": por_via, "narrador_gasto_mes_eur": round(g_n, 4),
+            "gasto_publico_total_eur": round(gasto + g_n, 3), "presupuesto_eur": ajustes()["presupuesto"]}
 
 
 class Manejador(BaseHTTPRequestHandler):
@@ -152,12 +170,29 @@ class Manejador(BaseHTTPRequestHandler):
         self.wfile.write(cuerpo)
 
     def do_GET(self):
+        if self.path.startswith("/api/narrador/inicio"):
+            D = narrador.cargar_datos()
+            return self._json(200, {"saludo": narrador.F["hola"], "sugerencias": narrador.sugerencias(D, n=4),
+                                    "dia": D and D.get("dia"), "ano": D and D.get("ano")})
         if self.path.startswith("/api/entrevistas/estado"):
             aj = ajustes()
             return self._json(200, {"activas": aj["activas"] and bool(config.LLM_API_KEY), "por_visitante": aj["por_visitante"]})
         self._json(404, {"error": "no existe"})
 
     def do_POST(self):
+        if self.path.startswith("/api/narrador/preguntar"):
+            try:
+                largo = min(int(self.headers.get("Content-Length", "0")), 2000)
+                d = json.loads(self.rfile.read(largo) or b"{}")
+                mes = datetime.now(timezone.utc).strftime("%Y-%m")
+                datos = narrador.responder(str(d.get("pregunta", "")), visitante(self.headers, self.client_address[0]),
+                                           ajustes(), gastado_mes(mes), llamar_llm=llamar_llm, Gasto=Gasto)
+                return self._json(200, datos)
+            except (ValueError, TypeError):
+                return self._json(400, {"error": "Petición no válida."})
+            except Exception as err:
+                print("Narrador:", err, flush=True)
+                return self._json(500, {"respuesta": "Ahora mismo no puedo contestar. Prueba en un momento.", "sugerencias": []})
         if not self.path.startswith("/api/entrevistas/preguntar"):
             return self._json(404, {"error": "no existe"})
         try:
@@ -175,6 +210,7 @@ class Manejador(BaseHTTPRequestHandler):
 def main():
     config.DATOS.mkdir(exist_ok=True)
     bd()
+    narrador.bd_narrador()
     print(f"Entrevistas escuchando en 127.0.0.1:{PUERTO}", flush=True)
     ThreadingHTTPServer(("127.0.0.1", PUERTO), Manejador).serve_forever()
 
