@@ -2,6 +2,9 @@
 	encode gzip
 	@vivo path /estado.json /salud.txt
 	header @vivo Cache-Control "no-cache"
+	# Código, datos y modelos: el móvil comprueba siempre si hay versión nueva (si no la hay, responde 304 sin descargar nada).
+	@codigo path / *.html *.js *.json *.glb
+	header @codigo Cache-Control "no-cache"
 	# Entrevistas del público (servicio local, con límites de gasto)
 	handle /api/* {
 		reverse_proxy 127.0.0.1:8090

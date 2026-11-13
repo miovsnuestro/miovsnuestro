@@ -17,10 +17,11 @@
 
   const ALTURA = 1.05;                       // altura de un adulto en el visor (la figura sencilla mide lo mismo)
   const PIELES = ['#E2B795', '#CC9C77', '#A8734E', '#8A5A3C', '#D9A985', '#6E4733'];
-  const CUEROS = ['#4A3426', '#5B3F2A', '#3F382E', '#6A5A40', '#3B2F25', '#54402E'];  // pieles curtidas y fibras, más oscuras que la piel para que se distingan
+  const CUEROS = ['#7A5A3C', '#8A6A48', '#6B5034', '#9A7B55', '#5E4A36', '#86704E'];  // cuero curtido y fibra: tonos medios, que se lean como piel de animal y no como tela oscura
   const SUPERIOR = /^(spine_0[123]|neck_01|Head|clavicle_[lr]|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|(thumb|index|middle|ring|pinky)_0[123]_[lr])$/;
   const OCULTAR = /^(eyelashes|brows|tongue|teeth)$/;
   const VACIA = new THREE.BufferGeometry();
+  const CINTURON = new THREE.TorusGeometry(0.1, 0.014, 6, 24).rotateX(Math.PI / 2);
   // Textura de cuero curtido (manchas suaves, grano y costuras), común a toda la ropa: el color lo pone cada prenda.
   const TEX_CUERO = (() => { const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
     x.fillStyle = '#d8d8d8'; x.fillRect(0, 0, 256, 256);
@@ -37,6 +38,7 @@
   async function preparar() {
     if (!THREE.GLTFLoader) await script('GLTFLoader.js');
     if (!THREE.SkeletonUtils) await script('SkeletonUtils.js');
+    if (!THREE.BufferGeometryUtils) await script('BufferGeometryUtils.js');
     const [h, m, v, a] = await Promise.all(['hombre', 'mujer', 'mayor', 'andar'].map(n => glb('modelos/personas/' + n + '.glb')));
     for (const [k, g] of [['hombre', h], ['mujer', m], ['mayor', v]]) {
       const caja = new THREE.Box3().setFromObject(g.scene);
@@ -79,7 +81,7 @@
     for (const k of ['torso']) ocultarMalla(u[k]);
     u.cuello.traverse(ocultarMalla);
     for (const b of [u.bI, u.bD, u.pI, u.pD]) b.children.forEach(c => { if (c !== u.herr && c !== u.manoI) ocultarMalla(c); });
-    u.cad.children.forEach(c => { if (c.isMesh && c !== u.torso) { c.scale.set(0.6, 0.5, 0.72); c.position.y = 0.05; } });  // cinturón del color de su gente
+    u.cad.children.forEach(c => { if (c.isMesh && c !== u.torso) { c.geometry = CINTURON; c.scale.set(1, 1, 0.72); c.position.y = 0.06; } });  // cinturón fino del color de su gente
     const mezcla = new THREE.AnimationMixer(m), accion = mezcla.clipAction(andar);
     accion.play(); accion.time = azar(a.id, 3) * andar.duration; accion.paused = true;
     const reposo = Object.values(huesos).map(h => [h, (pose.get(h.name) || h.quaternion).clone()]);
@@ -130,6 +132,65 @@
   window.humanizar = humanizar;
   window.animarRealista = animarRealista;
   preparar().catch(e => { console.warn('Gráficos realistas no disponibles; sigo con las figuras sencillas.', e); R.activo = false; window.humanizar = () => {}; window.animarRealista = () => {}; });
+
+  // ---------- vegetación y rocas: mismas posiciones, formas más naturales y sombreado suave ----------
+  // Se cambia solo la forma de cada pieza instanciada (pinos, frondosos, arbustos, rocas, flores); dónde está cada
+  // una, su tamaño, su color y el apartarse para dejar ver a quien se sigue no cambian.
+  function semilla(n) { let a = n >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function deformar(g0, k, sem) {
+    const g = THREE.BufferGeometryUtils.mergeVertices(g0.index ? g0 : g0, 1e-4), r = semilla(sem), p = g.attributes.position, f = new Map();
+    for (let i = 0; i < p.count; i++) { const key = p.getX(i).toFixed(3) + ',' + p.getY(i).toFixed(3) + ',' + p.getZ(i).toFixed(3);
+      if (!f.has(key)) f.set(key, 1 + (r() - 0.5) * k); const m = f.get(key); p.setXYZ(i, p.getX(i) * m, p.getY(i) * (1 + (m - 1) * 0.5), p.getZ(i) * m); }
+    g.computeVertexNormals(); return g;
+  }
+  function soloPosicion(g) { const n = new THREE.BufferGeometry(); n.setAttribute('position', g.attributes.position.clone()); if (g.index) n.setIndex(g.index.clone()); return n; }
+  function unir(gs) { return THREE.BufferGeometryUtils.mergeBufferGeometries(gs.map(g => { const n = g.index ? g.toNonIndexed() : g; const o = new THREE.BufferGeometry();
+    o.setAttribute('position', n.attributes.position); o.setAttribute('normal', n.attributes.normal); return o; })); }
+  function piso(r, h, y, sem) {  // un piso de ramas de pino, con el borde caído
+    const g = deformar(soloPosicion(new THREE.ConeGeometry(r, h, 14, 3).translate(0, y, 0)), 0.18, sem), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) { const rr = Math.hypot(p.getX(i), p.getZ(i)); p.setY(i, p.getY(i) - Math.pow(rr / r, 3) * h * 0.22 + Math.sin(Math.atan2(p.getZ(i), p.getX(i)) * 7 + sem) * 0.04 * rr / r); }
+    g.computeVertexNormals(); return g;
+  }
+  let FORMAS = null;
+  function formas() {
+    if (FORMAS) return FORMAS;
+    FORMAS = {
+      // cono1 (r .52, alto 1.1, centro y 1.0) y cono2 (r .38, alto .85, centro y 1.55): dos pisos cada uno
+      cono1: unir([piso(0.56, 0.7, 0.75, 1), piso(0.46, 0.65, 1.12, 2)]),
+      cono2: unir([piso(0.38, 0.55, 1.45, 3), piso(0.26, 0.6, 1.8, 4)]),
+      copa: unir([deformar(soloPosicion(new THREE.IcosahedronGeometry(0.42, 2).translate(0, 1.05, 0)), 0.3, 5), deformar(soloPosicion(new THREE.IcosahedronGeometry(0.32, 2).translate(0.28, 0.92, 0.1)), 0.3, 6),
+        deformar(soloPosicion(new THREE.IcosahedronGeometry(0.3, 2).translate(-0.26, 0.98, -0.12)), 0.3, 7), deformar(soloPosicion(new THREE.IcosahedronGeometry(0.28, 2).translate(0.05, 1.32, 0)), 0.3, 8)]),
+      arbusto: deformar(soloPosicion(new THREE.IcosahedronGeometry(0.3, 2).translate(0, 0.18, 0)), 0.35, 9),
+      roca: deformar(soloPosicion(new THREE.IcosahedronGeometry(0.34, 2).scale(1, 0.7, 1).translate(0, 0.14, 0)), 0.4, 10),
+      flor: deformar(soloPosicion(new THREE.IcosahedronGeometry(0.03, 1).scale(1, 0.6, 1).translate(0, 0.05, 0)), 0.2, 11),
+    };
+    return FORMAS;
+  }
+  // Las piezas del visor son copias sin nombre de tipo: se reconocen por su forma (número de vértices y tamaño).
+  function firma(g) { g.computeBoundingBox(); const b = g.boundingBox; return g.attributes.position.count + '|' + [b.min.x, b.min.y, b.max.x, b.max.y, b.max.z].map(v => v.toFixed(3)).join(','); }
+  let FIRMAS = null;
+  function cual(g) {
+    if (!FIRMAS) {  // las mismas piezas que crea plantar() en index.html
+      FIRMAS = new Map([
+        [firma(new THREE.ConeGeometry(.52, 1.1, 7).translate(0, 1.0, 0)), 'cono1'], [firma(new THREE.ConeGeometry(.38, .85, 7).translate(0, 1.55, 0)), 'cono2'],
+        [firma(new THREE.IcosahedronGeometry(.55, 0).translate(0, 1.05, 0)), 'copa'], [firma(new THREE.IcosahedronGeometry(.3, 0).translate(0, .18, 0)), 'arbusto'],
+        [firma(new THREE.DodecahedronGeometry(.34, 0).translate(0, .16, 0)), 'roca'], [firma(new THREE.IcosahedronGeometry(.055, 0)), 'flor']]);
+    }
+    const esfera = g.boundingSphere, f = firma(g); g.boundingSphere = esfera;
+    return FIRMAS.get(f) || null;
+  }
+  function mejorarVegetacion() {
+    if (!R.listo || !THREE.BufferGeometryUtils || typeof S === 'undefined') return;
+    S.traverse(o => {
+      if (!o.isInstancedMesh || o.userData.mejorado) return;
+      o.userData.mejorado = true;
+      const k = cual(o.geometry); if (!k) return;
+      const esfera = o.geometry.boundingSphere, nueva = formas()[k];
+      o.geometry = nueva.clone(); o.geometry.boundingSphere = esfera;  // conserva la esfera de su trozo (la cámara dibuja solo lo que ve)
+      [].concat(o.material).forEach(m => { if (m.flatShading) { m.flatShading = false; m.needsUpdate = true; } });
+    });
+  }
+  setInterval(mejorarVegetacion, 2000);
 
   // ---------- suelo con textura de detalle ----------
   let matHecho = null;
