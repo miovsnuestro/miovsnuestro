@@ -1,0 +1,16 @@
+{
+ "_nota": "Modelos 3D hechos con Higgsfield (Tripo H3.1). 'clave' es como los busca el visor; 'usar': false = generado pero todavía sin sitio en el visor. Los descarga descargar_modelos.py.",
+ "modelos": [
+  {"nombre": "choza de palos y pieles", "clave": "estructura:casa@prehistoria", "usar": true, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_220810_5b8681a8-d83f-41c5-b28e-255b851c8ebb.glb"},
+  {"nombre": "hoguera con piedras", "clave": "estructura:hoguera", "usar": true, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224522_d8f5fec3-4202-4496-9923-43bd0e49d71f.glb"},
+  {"nombre": "almacén de troncos", "clave": "estructura:almacen@prehistoria", "usar": true, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224556_d431dd96-0e15-45eb-b613-3c2a48acf694.glb"},
+  {"nombre": "secadero de pieles", "clave": "estructura:taller@prehistoria", "usar": true, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224524_df0ace12-6707-4522-8484-079fee9aff63.glb"},
+  {"nombre": "cabaña de ramas", "clave": "estructura:casa@prehistoria-2", "usar": false, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224554_bd503cd1-d2f9-463c-b50a-e76a837d13e9.glb"},
+  {"nombre": "lanza", "clave": "objeto:lanza", "usar": false, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_220812_c41c5524-e00d-4f95-8dfe-d26c0233da32.glb"},
+  {"nombre": "cesta", "clave": "objeto:cesta", "usar": false, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_220813_595c5384-04b3-4c7c-a3bb-62cd8dbfe008.glb"},
+  {"nombre": "hacha de piedra", "clave": "objeto:hacha", "usar": false, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224515_3fd70ddb-35a0-4da0-916c-debda229e6cb.glb"},
+  {"nombre": "maza", "clave": "objeto:maza", "usar": false, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224516_c3d54a2e-cd67-4db2-a0da-eb750e807242.glb"},
+  {"nombre": "piedra afilada", "clave": "objeto:piedra afilada", "usar": false, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224518_d33abe38-fda9-45ec-8211-6ddf1cd217cd.glb"},
+  {"nombre": "cuenco de madera", "clave": "objeto:cuenco", "usar": false, "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3JrvGYxHToka5Kh2JDRO9KS6tMP/hf_20261113_224520_145e3b31-b699-43c5-8720-e4bf002117e6.glb"}
+ ]
+}
