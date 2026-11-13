@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
+<title>Mío vs Nuestro · Prototipo 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500&display=swap">
+<style>
+  /* Capa: el mundo ocupa toda la pantalla; encima, una barra de prueba translúcida (calidad, vistas, FPS). Tema único oscuro, a propósito. */
+  :root {
+    --tierra: #14110d; --panel: rgba(20, 17, 13, .72); --borde: rgba(240, 225, 200, .16);
+    --texto: #f1e8da; --suave: #b9ab95; --mio: #1d9e75; --nuestro: #d85a30; --activo: #e8c27a;
+    --f-titulo: "Space Grotesk", system-ui, sans-serif; --f-texto: Inter, system-ui, sans-serif;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  [hidden] { display: none !important; }
+  body { background: var(--tierra); color: var(--texto); font-family: var(--f-texto); overflow: hidden; }
+  #mundo { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  .hud { position: fixed; z-index: 2; display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+    top: calc(env(safe-area-inset-top, 0px) + 10px); left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); }
+  .barra { pointer-events: auto; align-self: flex-start; max-width: 100%; background: var(--panel); border: 1px solid var(--borde); border-radius: 10px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 8px 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  h1 { margin: 0; font: 600 15px/1.2 var(--f-titulo); letter-spacing: .01em; }
+  h1 .mio { color: var(--mio); } h1 .nuestro { color: var(--nuestro); }
+  .etq { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--suave); }
+  #fps { font: 500 12px/1 var(--f-titulo); font-variant-numeric: tabular-nums; color: var(--activo); min-width: 4.5ch; }
+  #cal-actual { font-size: 12px; color: var(--suave); }
+  .grupo { display: flex; gap: 4px; flex-wrap: wrap; }
+  button { font: 500 12px/1 var(--f-texto); color: var(--texto); background: transparent; border: 1px solid var(--borde); border-radius: 999px; padding: 7px 10px; cursor: pointer; }
+  button[aria-pressed="true"] { background: var(--activo); color: #1b150d; border-color: var(--activo); }
+  button:focus-visible { outline: 2px solid var(--activo); outline-offset: 2px; }
+  .nota { pointer-events: auto; position: fixed; z-index: 2; left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); font-size: 11px; line-height: 1.45; color: var(--suave); background: var(--panel); border: 1px solid var(--borde);
+    border-radius: 10px; padding: 8px 10px; max-width: 62ch; }
+  .nota b { color: var(--texto); font-weight: 500; }
+  #carga { position: fixed; inset: 0; z-index: 3; display: grid; place-items: center; background: var(--tierra); }
+  #carga > div { width: min(320px, 80vw); display: grid; gap: 10px; text-align: center; }
+  .pista { height: 4px; background: var(--borde); border-radius: 2px; overflow: hidden; }
+  #carga-barra { height: 100%; width: 4%; background: var(--activo); transition: width .3s; }
+  body.reel .hud, body.reel .nota, body.reel #carga { display: none; }
+  @media (prefers-reduced-motion: reduce) { #carga-barra { transition: none; } }
+</style>
+
+<canvas id="mundo" aria-label="Valle con un río y dos poblados prehistóricos"></canvas>
+
+<div class="hud">
+  <div class="barra">
+    <h1><span class="mio">Mío</span> vs <span class="nuestro">Nuestro</span> · prueba nivel 2</h1>
+    <span id="fps">…</span>
+  </div>
+  <div class="barra" role="group" aria-label="Calidad">
+    <span class="etq">Calidad</span>
+    <div class="grupo">
+      <button id="cal-auto" data-cal="auto" aria-pressed="true">Auto</button>
+      <button id="cal-alta" data-cal="alta" aria-pressed="false">Alta</button>
+      <button id="cal-media" data-cal="media" aria-pressed="false">Media</button>
+      <button id="cal-baja" data-cal="baja" aria-pressed="false">Baja</button>
+    </div>
+    <span id="cal-actual"></span>
+  </div>
+  <div class="barra" role="group" aria-label="Vista">
+    <span class="etq">Vista</span>
+    <div class="grupo">
+      <button id="v-valle" data-vista="valle">Valle</button>
+      <button id="v-poblado" data-vista="poblado">Poblado</button>
+      <button id="v-cerca" data-vista="cerca">De cerca</button>
+    </div>
+  </div>
+</div>
+
+<p class="nota"><b>Prueba técnica, no la versión final.</b> Personas MakeHuman y animaciones Quaternius (CC0); la ropa es provisional, recoloreada como cuero. Arrastra para girar y pellizca para acercar. La calidad baja sola si el móvil no llega a 28 fps.</p>
+
+<div id="carga"><div><span class="etq" id="carga-texto">Cargando el valle…</span><div class="pista"><div id="carga-barra"></div></div></div></div>
+
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+<script type="module" src="escena.js"></script>
+</body></html>
