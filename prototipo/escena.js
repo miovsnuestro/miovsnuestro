@@ -283,10 +283,10 @@ const glb = ruta => { pendientes++; total++; return bytesDe(ruta).then(buf => ne
 const PERSONAS = [], ANIMALES = [];
 const PIELES = [0xc89f80, 0x8a5c43, 0xb07f62, 0x6f4a36, 0xd5ad8e];
 const SUPERIOR = /^(spine_0[123]|neck_01|Head|clavicle_[lr]|upperarm_[lr]|lowerarm_[lr]|hand_[lr]|(thumb|index|middle|ring|pinky)_0[123]_[lr])\.quaternion$/;
-function clipQuieto(andar, t0) {  // la parte de arriba de un fotograma de «andar», con las piernas en reposo: de pie
-  const pistas = [];
-  for (const tr of andar.tracks) { if (!SUPERIOR.test(tr.name)) continue; const v = tr.createInterpolant().evaluate(t0).slice(); pistas.push(new THREE.QuaternionKeyframeTrack(tr.name, [0, 1], [...v, ...v])); }
-  return new THREE.AnimationClip('quieto', 1, pistas);
+function poseQuieto(andar, t0) {  // la parte de arriba de un fotograma de «andar», con las piernas en reposo: de pie
+  const pose = new Map();
+  for (const tr of andar.tracks) { if (!SUPERIOR.test(tr.name)) continue; const v = tr.createInterpolant().evaluate(t0); pose.set(tr.name.split('.')[0], new Q(v[0], v[1], v[2], v[3])); }
+  return pose;
 }
 const _pq = new Q(), _r = new Q(), _q = new Q();
 function rotarMundo(hueso, eje, ang) { hueso.parent.getWorldQuaternion(_pq); _r.setFromAxisAngle(eje, ang); _q.copy(_pq).invert().multiply(_r).multiply(_pq); hueso.quaternion.premultiply(_q); }
@@ -298,14 +298,17 @@ function persona(base, clips, opciones) {
     if (/garment_/.test(o.material.name)) { o.material = o.material.clone(); o.material.map = TEX_CUERO[opciones.ropa % TEX_CUERO.length]; o.material.envMapIntensity = 0.6; o.material.color.set(/shoes/.test(o.material.name) ? 0x8a7a6a : 0xffffff); o.material.roughness = 0.92; o.material.metalness = 0; o.material.normalMap = null; } } });
   m.scale.setScalar(opciones.escala || 1);
   const mezcla = new THREE.AnimationMixer(m);
-  const accion = mezcla.clipAction(opciones.modo === 'andar' ? clips.andar : clips.quieto); accion.play();
-  if (opciones.modo === 'andar') accion.time = (opciones.fase || 0) * clips.andar.duration;
+  if (opciones.modo === 'andar') { const accion = mezcla.clipAction(clips.andar); accion.play(); accion.time = (opciones.fase || 0) * clips.andar.duration; }
   escena.add(m);
-  const p = { m, huesos, mezcla, ...opciones }; PERSONAS.push(p); return p;
+  // Quien no anda no usa el mezclador: cada fotograma se parte de la postura «de pie» y se le suman los gestos.
+  // (El mezclador no vuelve a escribir un clip que no cambia, y los gestos se acumulaban: personajes que se retorcían.)
+  const reposo = Object.values(huesos).map(h => [h, (clips.quieto.get(h.name) || h.quaternion).clone()]);
+  const p = { m, huesos, mezcla, reposo, ...opciones }; PERSONAS.push(p); return p;
 }
 const EJE_Y = new V(0, 1, 0);
 function animarPersona(p, T, dt) {
-  p.mezcla.update(dt);
+  if (p.modo !== 'andar') for (const [h, q] of p.reposo) h.quaternion.copy(q);
+  else p.mezcla.update(dt);
   if (p.modo === 'andar') {
     const u = (T * p.vel / p.radio + p.fase * 6.283) % 6.283, c = p.centro;
     const x = c.x + Math.cos(u) * p.radio, z = c.z + Math.sin(u) * p.radio * 0.8;
@@ -416,7 +419,7 @@ async function montar() {
   terreno(); bosque(); CAMPOS.forEach(poblado);
   const [hombre, mujer, mayor, anim, zorro] = await Promise.all(['modelos/clothed-casual.glb', 'modelos/long-hair.glb', 'modelos/extreme-heavy.glb', 'modelos/clips.glb', 'modelos/zorro.glb'].map(glb));
   const andar = anim.animations.find(a => a.name === 'Walk_Loop');
-  const clips = { andar, quieto: clipQuieto(andar, andar.duration * 0.25) };
+  const clips = { andar, quieto: poseQuieto(andar, andar.duration * 0.25) };
   // Mismo reparto en los dos poblados: 5 personas, mismas tareas.
   CAMPOS.forEach((c, k) => {
     const y = c.h, o = k ? 2 : 0;
@@ -433,7 +436,7 @@ async function montar() {
     ANIMALES.push({ m, mezcla: mz, c: { x: c.x + (k ? 6 : -6), z: c.z + (k ? -10 : 10) }, r: 6, vel: 0.17, fase: k * 2 }); });
   aplicarCalidad(calidad);
   actualizar(0.016);
-  if (REEL) { camaraReel(0); dibujar(); window.paso = dt => { actualizar(dt); camaraReel(T); dibujar(); }; requestAnimationFrame(() => { window.listo = true; }); }
+  if (REEL) { camaraReel(0); dibujar(); window.paso = dt => { actualizar(dt); camaraReel(T); dibujar(); }; window.avanzar = dt => actualizar(dt); requestAnimationFrame(() => { window.listo = true; }); }
   else { $('#carga').hidden = true; requestAnimationFrame(bucle); }
 }
 ajustarTam();
