@@ -289,7 +289,7 @@ class CerebroIA:
             prompt_sistema(a.lado) +
             "Acciones posibles (elige UNA):\n" + "\n".join(f"- {k}: {v}" for k, v in ACCIONES.items()
                                                           if k not in ("fabricar", "construir") or k in ctx["puede"]) + "\n\n"
-            'Responde SOLO con JSON: {"accion": "...", "objetivo": id o número de idea o null, "recurso": null, '
+            'Responde SOLO con JSON: {"accion": "...", "objetivo": id o null, "recurso": null, '
             '"da": null, "pide": null, "cantidad": null, "idea": null, "objeto": null, "color": null, "material": null, "para": null, "dice": "lo que dices en voz alta o \\"\\"", "piensa": "tu pensamiento"}'
         )
         vecinos = "\n".join(
@@ -314,7 +314,12 @@ class CerebroIA:
             f"Lo que crees: {a.creencias or 'aún no lo tienes claro'}\n"
             f"Recuerdos recientes:\n" + "\n".join(f"- {m}" for m in a.memoria[-8:]) + "\n"
             f"Gente cerca:\n{vecinos}\n"
-            "Si quieres inventar algo, describe la idea con tus palabras, sin usar nombres de cosas que tu gente no conoce.\n¿Qué haces ahora?"
+            + (f"Tu gente todavía no ha inventado nada.\n" if not ctx["inventos_sociedad"]
+               else f"Tu gente ha inventado {len(ctx['inventos_sociedad'])} " + ("cosa" if len(ctx["inventos_sociedad"]) == 1 else "cosas") + " hasta ahora.\n")
+            + "Probar una idea nueva (una herramienta, una forma de hacer fuego o de guardar la comida, un refugio, una manera "
+            "de organizaros…) cuesta materiales y puede fallar, pero lo que se descubre puede hacer la vida más fácil.\n"
+            "Si quieres inventar algo, elige \"inventar\" y escribe en \"idea\" qué quieres hacer, con qué materiales y para qué, "
+            "con tus palabras, sin usar nombres de cosas que tu gente no conoce.\n¿Qué haces ahora?"
         )
         try:
             modelo = config.LLM_MODELO_LISTO if self.rnd.random() < config.FRACCION_MODELO_LISTO else config.LLM_MODELO

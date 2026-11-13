@@ -13,7 +13,7 @@ from pathlib import Path as _Path
 # Libros de los fundadores: mismos temas, mismo orden y extensión parecida para las dos sociedades.
 BIBLIOTECA = {l: json.loads((_Path(__file__).parent / "biblioteca" / f"{l}.json").read_text(encoding="utf-8")) for l in "AB"}
 IMPORTANCIA = {"primer_contacto": 10, "objeto_nuevo": 7, "invento_inedito": 10, "nombre_nuevo": 6, "construccion_nueva": 8, "fabrica": 2, "construccion": 3, "mundo_nuevo": 10, "horizonte": 7, "lectura": 5, "duda": 7, "emigración": 9, "territorio": 6, "exploración": 5, "invento": 10, "muerte": 9, "nacimiento": 8, "robo": 7, "pareja": 6, "refugio": 5, "caza": 3,
-               "enseñanza": 4, "regalo": 3, "trueque": 3, "invento_fallido": 2, "trueque_rechazado": 2, "almacén": 2, "habla": 1}
+               "enseñanza": 4, "regalo": 3, "trueque": 3, "invento_fallido": 2, "invento_rechazado": 2, "trueque_rechazado": 2, "almacén": 2, "habla": 1}
 ACTIVIDADES_LIBRES = {"recolectar", "talar", "picar_piedra", "cazar"}
 
 
@@ -496,9 +496,19 @@ class Simulacion:
                 a.recordar(f"Día {self.dia}: le quité {q} de {rec} a {otro.nombre}.")
                 self.suceso(fase, a, "robo", f"{a.nombre} roba {q} de {rec} a {otro.nombre}.")
 
+    def _intento(self, lado, clave):
+        """Cuenta los intentos de inventar de cada sociedad (para el marcador, el informe y el Narrador)."""
+        if not hasattr(self, "intentos_invento"):  # mundos guardados antes de existir el contador
+            self.intentos_invento = {l: {} for l in "AB"}
+        c = self.intentos_invento[lado]
+        c[clave] = c.get(clave, 0) + 1
+
     def _inventar(self, a, d, fase):
-        idea = (d.get("idea") or "").strip()[:400]
+        idea = (d.get("idea") or d.get("objeto") or "").strip()[:400]
+        self._intento(a.lado, "intentos")
         if len(idea) < 8:
+            self._intento(a.lado, "sin_idea")
+            a.recordar(f"Día {self.dia}: quise inventar algo, pero no llegué a concretar la idea.")
             return
         reg = self.inventos[a.lado]
         conocidos = sorted(a.conocimientos)
@@ -510,21 +520,27 @@ class Simulacion:
                 res = inventos.arbitrar_prueba(idea, a.conocimientos)
         except Exception:
             Gasto.fallos += 1
+            self._intento(a.lado, "error_arbitro")
             return
         if not res.get("aceptado"):
+            self._intento(a.lado, "rechazados")
             a.recordar(f"Día {self.dia}: probé \"{idea[:60]}\" y no funcionó. {res.get('motivo', '')}")
+            self.suceso(fase, a, "invento_rechazado", f"{a.nombre} prueba una idea nueva, pero no funciona.")
             return
         nombre = res["nombre"].strip().lower()[:40]
         nombre = next((n for n, i in reg.items() if nombre in i.get("antes", [])), nombre)  # ya tiene nombre propio en su gente
         if not all(a.inventario.get(k, 0) >= v for k, v in res["coste"].items()):
+            self._intento(a.lado, "sin_materiales")
             a.recordar(f"Día {self.dia}: para \"{idea[:50]}\" me faltan materiales: {res['coste']}.")
             return
         for k, v in res["coste"].items():
             a.quitar(k, v)
         if self.rnd.random() > (1 - res["dificultad"]) * config.FACTOR_EXITO_INVENTOS:
+            self._intento(a.lado, "fallidos")
             a.recordar(f"Día {self.dia}: intenté \"{idea[:60]}\"; casi lo consigo, pero falló.")
             self.suceso(fase, a, "invento_fallido", f"{a.nombre} intenta algo nuevo, pero de momento falla.")
             return
+        self._intento(a.lado, "conseguidos")
         a.conocimientos.add(nombre)
         a.recordar(f"Día {self.dia}: ¡he conseguido {nombre}! {res.get('descripcion_visual', '')}")
         if nombre in reg:
@@ -884,6 +900,7 @@ class Simulacion:
             "bienestar": round(sum(100 - a.hambre * 0.5 - (100 - a.salud) * 0.5 for a in vivos) / len(vivos)) if vivos else 0,
             "con_refugio": sum(a.refugio for a in vivos),
             "parejas": sum(1 for a in vivos if a.pareja) // 2,
+            "intentos_invento": dict(getattr(self, "intentos_invento", {}).get(lado, {})),
             **self.mundo.resumen(lado),
             **self.metricas_dia[lado],
         }
