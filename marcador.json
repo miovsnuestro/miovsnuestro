@@ -1,8 +1,8 @@
 {
  "proyecto": "Mío vs Nuestro",
  "mundo": "pruebas",
- "dia": 35,
- "ano": 2,
+ "dia": 68,
+ "ano": 3,
  "epoca": "prehistoria",
  "sociedades": {
   "A": {
@@ -11,17 +11,23 @@
    "color": "#1D9E75",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 189,
-    "desigualdad_gini": 0.09,
-    "inventos": 0,
-    "inventos_propios": 0,
+    "comida_total": 118,
+    "desigualdad_gini": 0.17,
+    "inventos": 8,
+    "inventos_propios": 8,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 79,
+    "bienestar": 83,
     "con_refugio": 0,
     "parejas": 0,
+    "intentos_invento": {
+     "intentos": 38,
+     "fallidos": 26,
+     "conseguidos": 9,
+     "sin_materiales": 3
+    },
     "explorado": 697,
     "territorio": 1360,
     "en_tierra_de_nadie": 0,
@@ -31,8 +37,89 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "En el día 35, Roi entregó a Sabela una ración de comida valorada en 5 unidades, gesto que quedó registrado en el reparto de recursos de la jornada. Horas más tarde, el mismo Roi volvió a ceder a Sabela otra cantidad, esta vez de 6 unidades de comida, ampliando la transferencia inicial. Al cierre del día, los registros de la sociedad «Los del Mío» contabilizaban un total de 11 unidades de comida transferidas de Roi a Sabela en dos actos separados.",
-   "inventos": [],
+   "cronica": "La jornada 68 en Los del Mío transcurrió sin incidentes destacables, con la mayoría de sus miembros dedicados a las labores cotidianas de mantenimiento y abastecimiento. Se observó una coordinación fluida en los turnos de cultivo y reparación de estructuras, lo que permitió cumplir los objetivos del día sin contratiempos. Al caer la noche, los registros indican un consumo racionado de recursos y un estado de ánimo general sereno.",
+   "inventos": [
+    {
+     "nombre": "palo con piedras atadas",
+     "categoria": "herramienta",
+     "dia": 58,
+     "inventor": "Xabier 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra atada a palo",
+     "categoria": "arma_caza",
+     "dia": 59,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "refugio de palos y pieles",
+     "categoria": "vivienda",
+     "dia": 62,
+     "inventor": "Xabier 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra afilada con mango",
+     "categoria": "herramienta",
+     "dia": 63,
+     "inventor": "Xabier 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "palo con piedra atada",
+     "categoria": "arma_caza",
+     "dia": 64,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra con mango",
+     "categoria": "herramienta",
+     "dia": 64,
+     "inventor": "Breogán",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra atada al palo",
+     "categoria": "herramienta",
+     "dia": 64,
+     "inventor": "Pablo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra de lado en palo largo",
+     "categoria": "herramienta",
+     "dia": 66,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    }
+   ],
    "epoca": "prehistoria",
    "libros_leidos": 0,
    "libros_total": 11
@@ -43,17 +130,24 @@
    "color": "#D85A30",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 192,
-    "desigualdad_gini": 0.07,
-    "inventos": 0,
-    "inventos_propios": 0,
+    "comida_total": 136,
+    "desigualdad_gini": 0.3,
+    "inventos": 15,
+    "inventos_propios": 15,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 74,
+    "bienestar": 78,
     "con_refugio": 0,
     "parejas": 0,
+    "intentos_invento": {
+     "intentos": 96,
+     "fallidos": 51,
+     "conseguidos": 21,
+     "sin_materiales": 22,
+     "rechazados": 2
+    },
     "explorado": 680,
     "territorio": 1360,
     "en_tierra_de_nadie": 0,
@@ -63,8 +157,159 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "Día 35. La jornada transcurrió sin incidentes: los turnos de recolección y mantenimiento se cumplieron según lo establecido, y cada miembro volvió a su refugio al caer la tarde.\n\nDía 35. Se observó un ritmo constante en el acopio de agua y en la reparación de los cercos; no hubo disputas ni llamadas de atención durante las horas de labor.\n\nDía 35. Al anochecer, las fogatas comunitarias se encendieron sin urgencia, y la mayoría compartió la cena en silencio antes de retirarse a descansar.",
-   "inventos": [],
+   "cronica": "[…]",
+   "inventos": [
+    {
+     "nombre": "piedra con mango",
+     "categoria": "arma_caza",
+     "dia": 56,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "techo de ramas y fibra",
+     "categoria": "vivienda",
+     "dia": 57,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra atada a palo",
+     "categoria": "arma_caza",
+     "dia": 58,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra con mango en palo largo",
+     "categoria": "arma_caza",
+     "dia": 59,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "refugio de ramas y fibras",
+     "categoria": "vivienda",
+     "dia": 61,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra con mango corto",
+     "categoria": "herramienta",
+     "dia": 61,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "refugio de ramas",
+     "categoria": "vivienda",
+     "dia": 61,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "ramas atadas para arrastrar",
+     "categoria": "herramienta",
+     "dia": 62,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra atada con fibra mojada",
+     "categoria": "herramienta",
+     "dia": 62,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "hueco fresco para comida",
+     "categoria": "almacen",
+     "dia": 63,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "bolsa de fibras trenzadas",
+     "categoria": "recipiente",
+     "dia": 64,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "hueco fresco para guardar comida",
+     "categoria": "almacen",
+     "dia": 64,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "cesta con barro seco",
+     "categoria": "recipiente",
+     "dia": 65,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "hoyo fresco",
+     "categoria": "almacen",
+     "dia": 67,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "palo con piedra atada",
+     "categoria": "arma_caza",
+     "dia": 68,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    }
+   ],
    "epoca": "prehistoria",
    "libros_leidos": 0,
    "libros_total": 11
@@ -72,11 +317,64 @@
  },
  "agentes": 20,
  "obras": {
-  "estructuras": [],
+  "estructuras": [
+   {
+    "id": 11,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 24,
+    "y": 32,
+    "lado": "B",
+    "dueno": 18,
+    "color": null,
+    "nombre": "hueco fresco para comida"
+   },
+   {
+    "id": 14,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 31,
+    "y": 3,
+    "lado": "B",
+    "dueno": 14,
+    "color": null,
+    "nombre": "hueco fresco para guardar comida"
+   },
+   {
+    "id": 19,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 35,
+    "y": 11,
+    "lado": "B",
+    "dueno": 2,
+    "color": null,
+    "nombre": "hoyo fresco"
+   }
+  ],
   "campos": []
  },
- "talado": [],
+ "talado": [
+  [
+   39,
+   13,
+   3
+  ],
+  [
+   115,
+   5,
+   1
+  ],
+  [
+   22,
+   4,
+   1
+  ]
+ ],
  "contacto": false,
- "inicio_dia": 1794520510.1784425,
+ "inicio_dia": 1794605016.1497276,
  "segundos_dia": 2880.0
 }

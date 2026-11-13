@@ -1,0 +1,17 @@
+{
+ "dias": 7,
+ "por_via": {
+  "banco": 9,
+  "ia": 2
+ },
+ "sin_respuesta_en_banco": [
+  {
+   "pregunta": "Si tuvieras que describir el carácter de los del Mío con un animal, ¿cuál sería y por qué?",
+   "veces": 1
+  },
+  {
+   "pregunta": "¿Por qué no inventan nada?",
+   "veces": 1
+  }
+ ]
+}

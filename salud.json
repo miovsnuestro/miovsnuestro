@@ -1,13 +1,16 @@
 {
-  "hora": 1794520502.1154032,
-  "dia": 34,
-  "retraso_min": 48.5,
+  "hora": 1794606902.0638793,
+  "dia": 68,
+  "retraso_min": 31.4,
   "web": "ok",
-  "saldo_ia": 9.44,
-  "disco_libre_gb": 97.6,
+  "saldo_ia": 8.68,
+  "disco_libre_gb": 97.4,
+  "copia_horas": 18.9,
+  "copia_mb": 0.3,
+  "copias_guardadas": 3,
   "miovsnuestro-motor": "activo",
   "miovsnuestro-bot": "activo",
   "miovsnuestro-entrevistas": "activo",
-  "ultimo_reel_horas": 13.0,
+  "ultimo_reel_horas": 3.9,
   "problemas": []
 }
