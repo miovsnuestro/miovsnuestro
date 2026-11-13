@@ -1117,7 +1117,7 @@ def resumen_para_ia(D):
         s = D["sociedades"][l]
         soc[s["nombre"]] = {"valores": s["subtitulo"], "epoca": s["epoca"], "metricas": {k: s["metricas"].get(k) for k in (
             "poblacion", "comida_total", "bienestar", "desigualdad_gini", "inventos", "con_refugio", "parejas", "nacimientos",
-            "muertes", "territorio", "en_tierra_de_nadie")}, "inventos": [i["nombre"] for i in s["inventos"]][-12:],
+            "muertes", "territorio", "en_tierra_de_nadie", "intentos_invento")}, "inventos": [i["nombre"] for i in s["inventos"]][-12:],
             "medias_habitantes": {"hambre": _media(_personas(D, l), "hambre", 0), "salud": _media(_personas(D, l), "salud", 100)},
             "almacen_comun": sum((s.get("almacen") or {}).values()),
             "hace_7_dias": {k: (s.get("hace7") or {}).get(k) for k in ("poblacion", "comida_total", "bienestar", "inventos")},
@@ -1133,7 +1133,8 @@ INSTRUCCION_IA = (
     "simulado con las mismas reglas y valores opuestos. Respondes al público en español, en 1 a 4 frases, con tono cercano.\n"
     "Contesta a lo que se pregunta. Si preguntan por qué, razona las causas con los datos: el bienestar es 100 menos la "
     "mitad del hambre media y menos la mitad de la salud que falta; la comida es lo que lleva cada habitante más el almacén "
-    "común; compara con hace 7 días y con los sucesos. Describe mecanismos y hechos de las dos sociedades; nunca atribuyas "
+    "común; un invento necesita que alguien lo intente (intentos_invento: intentos, sin_idea, rechazados por el árbitro de la "
+    "física, sin_materiales, fallidos al probar, conseguidos); compara con hace 7 días y con los sucesos. Describe mecanismos y hechos de las dos sociedades; nunca atribuyas "
     "una diferencia a que unos valores sean mejores o peores. Si una diferencia es pequeña o los datos no bastan, dilo.\n"
     "Reglas: usa SOLO los datos de abajo; si no está ahí, di que no lo sabes. Neutralidad absoluta: nunca digas ni insinúes "
     "qué sociedad es mejor; si comparas, da los datos de las dos. Nada de partidos, políticos, países ni personas reales. "
