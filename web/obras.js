@@ -102,7 +102,9 @@ const RADIO = { casa: 1.3, almacen: 1, granero: 1, escuela: 1.3, mercado: .9, mo
 const radioDe = (t, ep) => t !== 'casa' ? (RADIO[t] || .4) : ep === 'prehistoria' ? 1.05 : ep === 'aldeas' || ep === 'metal' ? 1.35 : 1.7;
 function pieza(e, ep) {
   const l = e.lado, t = e.tipo;
-  const glb = modeloGLB(e.modelo && e.modelo !== 'nuevo' ? e.modelo : 'estructura:' + t, t === 'casa' ? 1.8 : 1.4);
+  // Primero el modelo de su época («estructura:casa@prehistoria»); la casa genérica no se usa, porque cambia con la época.
+  const claveG = e.modelo && e.modelo !== 'nuevo' ? e.modelo : 'estructura:' + t;
+  const glb = modeloGLB(claveG + '@' + ep, t === 'casa' ? 1.8 : 1.4) || (t === 'casa' ? null : modeloGLB(claveG, 1.4));
   if (glb) return glb;
   switch (t) {
     case 'casa': return casaEpoca(ep, l);

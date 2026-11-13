@@ -126,6 +126,7 @@
 <script src="three.min.js"></script>
 <script src="obras.js"></script>
 <script src="acciones.js"></script>
+<script src="realista.js"></script>
 <script>
 "use strict";
 // ======================================================================
@@ -378,7 +379,7 @@ function crearPersona(a){
   g.traverse(o=>{if(o.isMesh)o.castShadow=true;});
   const toque=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,1.4,8),new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false}));toque.position.y=.7;toque.userData.id=a.id;g.add(toque);hits.push(toque);
   g.userData={a,cad,torso,cuello,bI,bD,pI,pD,herr,fase:h*6,espera:h*5,dest:null,base:null,toque,escala:1};
-  grupoGente.add(g);return g;}
+  grupoGente.add(g);if(window.humanizar)humanizar(g);return g;}
 function puntoBase(a){const ox=(hash(a.id,11)-.5)*.6,oz=(hash(a.id,12)-.5)*.6,p=new THREE.Vector3(X(a.x+.5+ox),0,Z(a.y+.5+oz));if(rejilla&&suelo(p.x,p.z)<NIVEL+.12){p.set(X(a.x+.5),0,Z(a.y+.5));if(suelo(p.x,p.z)<NIVEL+.12)for(let k=0;k<16;k++){const an=k/16*Math.PI*2,c=new THREE.Vector3(p.x+Math.cos(an)*.9,0,p.z+Math.sin(an)*.9);if(suelo(c.x,c.z)>NIVEL+.12){p.copy(c);break;}}}return p;}
 const anillo=new THREE.Mesh(new THREE.RingGeometry(.42,.55,32),new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.9,depthWrite:false}));anillo.rotation.x=-Math.PI/2;anillo.visible=false;S.add(anillo);
 function animarPersona(g,dt,t){
@@ -405,6 +406,7 @@ function animarPersona(g,dt,t){
   else if(acc==='inventar'||acc==='fabricar'||acc==='leer'){if(acc!=='inventar')sacarObjeto(u,acc);u.cuello.rotation.x=.35;u.bD.rotation.x=-1.0+Math.sin(f*2)*.2;u.bI.rotation.x=-.9;u.torso.rotation.x=.15;}
   else{u.cuello.rotation.y=Math.sin(f*.4)*.35;u.bI.rotation.z=-.05;u.bD.rotation.z=.05;u.torso.rotation.x=Math.sin(f*.5)*.02;}
   if(REEL&&typeof animarEscena==='function')animarEscena(g,dt); // reels: que se vea la acción que se narra
+  if(window.animarRealista)animarRealista(g,andando,dt); // gráficos nivel 2: el cuerpo realista copia la postura
 }
 
 // ---------------- pueblos: casas, hogueras, inventos visibles ----------------
