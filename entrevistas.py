@@ -114,7 +114,7 @@ def responder(agente_id, pregunta, quien):
     tope_dia = max(0.0, aj["presupuesto"] - gastado + gastado_dia) / dias_quedan
     if gastado >= aj["presupuesto"] or gastado_dia >= tope_dia:
         return 429, {"error": "Los habitantes descansan por hoy. Vuelve mañana para entrevistarlos.", "quedan": 0}
-    _, motivos = moderacion.revisar(pregunta)
+    _, motivos = moderacion.revisar(pregunta, estricto=True)
     if not motivos and _FUERA.search(moderacion._norm(pregunta)):
         motivos = ["fuera_del_mundo"]
     if motivos:

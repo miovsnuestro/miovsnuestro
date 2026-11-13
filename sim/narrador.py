@@ -1072,7 +1072,7 @@ def responder(texto, visitante, ajustes_publico, gastado_mes_eur, llamar_llm=Non
     base = {"sugerencias": sugerencias(D, texto), "quedan_ia": max(0, por_ia - hechas_ia), "personas": []}
     if len(q) < 2:
         return {**base, "respuesta": "Escríbeme una pregunta. Por ejemplo: «¿Qué ha pasado hoy?»", "via": "banco"}
-    _, motivos = moderacion.revisar(texto)
+    _, motivos = moderacion.revisar(texto, estricto=True)
     if motivos:
         guardar("moderada", "banco", "")
         return {**base, "respuesta": "Esa pregunta no la puedo responder aquí. Prueba con otra sobre el experimento.", "via": "banco"}
