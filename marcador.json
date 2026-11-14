@@ -1,7 +1,7 @@
 {
  "proyecto": "Mío vs Nuestro",
  "mundo": "pruebas",
- "dia": 68,
+ "dia": 100,
  "ano": 3,
  "epoca": "prehistoria",
  "sociedades": {
@@ -11,24 +11,25 @@
    "color": "#1D9E75",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 118,
-    "desigualdad_gini": 0.17,
-    "inventos": 8,
-    "inventos_propios": 8,
+    "comida_total": 140,
+    "desigualdad_gini": 0.28,
+    "inventos": 22,
+    "inventos_propios": 22,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 83,
-    "con_refugio": 0,
-    "parejas": 0,
+    "bienestar": 78,
+    "con_refugio": 2,
+    "parejas": 1,
     "intentos_invento": {
-     "intentos": 38,
-     "fallidos": 26,
-     "conseguidos": 9,
-     "sin_materiales": 3
+     "intentos": 119,
+     "fallidos": 70,
+     "conseguidos": 28,
+     "sin_materiales": 20,
+     "rechazados": 1
     },
-    "explorado": 697,
+    "explorado": 702,
     "territorio": 1360,
     "en_tierra_de_nadie": 0,
     "nacimientos": 0,
@@ -37,7 +38,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "La jornada 68 en Los del Mío transcurrió sin incidentes destacables, con la mayoría de sus miembros dedicados a las labores cotidianas de mantenimiento y abastecimiento. Se observó una coordinación fluida en los turnos de cultivo y reparación de estructuras, lo que permitió cumplir los objetivos del día sin contratiempos. Al caer la noche, los registros indican un consumo racionado de recursos y un estado de ánimo general sereno.",
+   "cronica": "En el día 100, Los del Mío dedicaron la jornada a reparar los canales de riego que abastecen los cultivos comunitarios, sin registrar disputas por el agua. Las tareas de caza y recolección se completaron antes del anochecer, y cada familia recibió una porción calculada según el número de integrantes. Al caer la tarde, los adultos se reunieron en la plaza central para revisar el inventario de semillas y programar las siembras de la siguiente semana.",
    "inventos": [
     {
      "nombre": "palo con piedras atadas",
@@ -118,6 +119,146 @@
      "antes": [],
      "tipo": "objeto",
      "inedito": false
+    },
+    {
+     "nombre": "bolsa de piel",
+     "categoria": "recipiente",
+     "dia": 71,
+     "inventor": "Xabier 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra atada a palo corto",
+     "categoria": "herramienta",
+     "dia": 72,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra afilada en palo largo",
+     "categoria": "arma_caza",
+     "dia": 74,
+     "inventor": "Pablo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra atada a palo con cuerda",
+     "categoria": "arma_caza",
+     "dia": 75,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "cuna de ramas y fibra",
+     "categoria": "vivienda",
+     "dia": 78,
+     "inventor": "Noa",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "palo largo con piedra afilada",
+     "categoria": "arma_caza",
+     "dia": 78,
+     "inventor": "Xabier 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra afilada en palo corto",
+     "categoria": "herramienta",
+     "dia": 78,
+     "inventor": "Pablo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra con mango corto",
+     "categoria": "herramienta",
+     "dia": 80,
+     "inventor": "Carla",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "bolsa de piel cosida",
+     "categoria": "recipiente",
+     "dia": 81,
+     "inventor": "Pablo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra atada con tiras apretadas",
+     "categoria": "herramienta",
+     "dia": 82,
+     "inventor": "Xabier",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "red para llevar",
+     "categoria": "recipiente",
+     "dia": 82,
+     "inventor": "Sabela",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "refugio de ramas y pieles",
+     "categoria": "vivienda",
+     "dia": 93,
+     "inventor": "Alba",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "piedras que hacen fuego",
+     "categoria": "fuego_y_cocina",
+     "dia": 96,
+     "inventor": "Xabier 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false
+    },
+    {
+     "nombre": "cesto de ramas trenzadas",
+     "categoria": "recipiente",
+     "dia": 99,
+     "inventor": "Carla",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
     }
    ],
    "epoca": "prehistoria",
@@ -130,23 +271,23 @@
    "color": "#D85A30",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 136,
-    "desigualdad_gini": 0.3,
-    "inventos": 15,
-    "inventos_propios": 15,
+    "comida_total": 162,
+    "desigualdad_gini": 0.24,
+    "inventos": 26,
+    "inventos_propios": 26,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
     "bienestar": 78,
-    "con_refugio": 0,
+    "con_refugio": 1,
     "parejas": 0,
     "intentos_invento": {
-     "intentos": 96,
-     "fallidos": 51,
-     "conseguidos": 21,
-     "sin_materiales": 22,
-     "rechazados": 2
+     "intentos": 160,
+     "fallidos": 81,
+     "conseguidos": 39,
+     "sin_materiales": 34,
+     "rechazados": 6
     },
     "explorado": 680,
     "territorio": 1360,
@@ -157,7 +298,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "[…]",
+   "cronica": "En el día 100, los habitantes de «Los del Nuestro» dedicaron la jornada a tareas rutinarias de recolección y mantenimiento de sus refugios. No se registraron conflictos internos ni incidentes de escasez que alteraran el orden establecido. Al caer la noche, los grupos se reunieron para repartir los recursos obtenidos y planificar las labores del día siguiente.",
    "inventos": [
     {
      "nombre": "piedra con mango",
@@ -308,6 +449,116 @@
      "antes": [],
      "tipo": "objeto",
      "inedito": false
+    },
+    {
+     "nombre": "vasija de barro secado al sol",
+     "categoria": "recipiente",
+     "dia": 69,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "hueco fresco con hojas",
+     "categoria": "almacen",
+     "dia": 70,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false
+    },
+    {
+     "nombre": "cesta con barro reforzado",
+     "categoria": "recipiente",
+     "dia": 76,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "hoyo fresco para comida",
+     "categoria": "almacen",
+     "dia": 77,
+     "inventor": "Xabier",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "hoyo fresco tapado",
+     "categoria": "almacen",
+     "dia": 78,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "cesta cubierta de barro seco",
+     "categoria": "recipiente",
+     "dia": 85,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "piel de ramas y hojas",
+     "categoria": "vivienda",
+     "dia": 91,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "bolsa de fibra con cordón",
+     "categoria": "recipiente",
+     "dia": 92,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "techo de ramas bien atado",
+     "categoria": "vivienda",
+     "dia": 93,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra con mango largo",
+     "categoria": "herramienta",
+     "dia": 96,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "cesta firme de barro",
+     "categoria": "recipiente",
+     "dia": 99,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
     }
    ],
    "epoca": "prehistoria",
@@ -353,6 +604,126 @@
     "dueno": 2,
     "color": null,
     "nombre": "hoyo fresco"
+   },
+   {
+    "id": 22,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 39,
+    "y": 18,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "hueco fresco con hojas"
+   },
+   {
+    "id": 30,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 38,
+    "y": 0,
+    "lado": "B",
+    "dueno": 16,
+    "color": null,
+    "nombre": "hoyo fresco para comida"
+   },
+   {
+    "id": 31,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 37,
+    "y": 0,
+    "lado": "B",
+    "dueno": 12,
+    "color": null,
+    "nombre": "hoyo fresco tapado"
+   },
+   {
+    "id": 40,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 27,
+    "y": 31,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hueco fresco para comida"
+   },
+   {
+    "id": 41,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 129,
+    "y": 19,
+    "lado": "A",
+    "dueno": 5,
+    "color": null,
+    "nombre": "refugio de palos y pieles"
+   },
+   {
+    "id": 44,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 37,
+    "y": 11,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "refugio de ramas"
+   },
+   {
+    "id": 45,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 32,
+    "y": 2,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "refugio de ramas"
+   },
+   {
+    "id": 48,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "objeto:herramienta",
+    "x": 131,
+    "y": 5,
+    "lado": "A",
+    "dueno": 13,
+    "color": null,
+    "nombre": "piedras que hacen fuego"
+   },
+   {
+    "id": 50,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 36,
+    "y": 14,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hueco fresco para guardar comida"
+   },
+   {
+    "id": 52,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 39,
+    "y": 4,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hoyo fresco para mi familia"
    }
   ],
   "campos": []
@@ -361,20 +732,90 @@
   [
    39,
    13,
+   6
+  ],
+  [
+   113,
+   2,
    3
   ],
   [
-   115,
-   5,
+   28,
+   31,
+   8
+  ],
+  [
+   129,
+   9,
+   1
+  ],
+  [
+   37,
+   1,
+   4
+  ],
+  [
+   32,
+   1,
+   5
+  ],
+  [
+   36,
+   14,
+   9
+  ],
+  [
+   39,
+   4,
+   6
+  ],
+  [
+   39,
+   2,
+   4
+  ],
+  [
+   113,
+   19,
+   1
+  ],
+  [
+   24,
+   9,
+   6
+  ],
+  [
+   117,
+   23,
+   1
+  ],
+  [
+   112,
+   18,
+   5
+  ],
+  [
+   36,
+   3,
+   1
+  ],
+  [
+   132,
+   2,
    1
   ],
   [
    22,
-   4,
+   10,
+   1
+  ],
+  [
+   33,
+   29,
    1
   ]
  ],
  "contacto": false,
- "inicio_dia": 1794605016.1497276,
+ "inicio_dia": 1794693447.5093427,
  "segundos_dia": 2880.0
 }

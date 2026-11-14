@@ -1,1 +1,1 @@
-0020efb 2026-11-13 Merge pull request #4 from miovsnuestro/inventos-registro-y-recordatorio
+0c30e76 2026-11-14 Merge pull request #8 from miovsnuestro/graficos-nivel2-mejoras
