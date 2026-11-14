@@ -518,8 +518,9 @@ class Simulacion:
                 res = inventos.arbitrar_ia(idea, inv, conocidos, llamar_llm)
             else:
                 res = inventos.arbitrar_prueba(idea, a.conocimientos)
-        except Exception:
+        except Exception as e:
             Gasto.fallos += 1
+            Gasto.anotar(e)
             self._intento(a.lado, "error_arbitro")
             return
         if not res.get("aceptado"):
@@ -984,8 +985,9 @@ class Simulacion:
                         {"role": "user", "content": f"Escribe 3 frases de crónica del día {dia} de la sociedad «{config.NOMBRE_SOCIEDAD[lado]}» con estos hechos:\n" + "\n".join(hechos)},
                     ], modelo=config.LLM_MODELO_LISTO, json_mode=False, max_tokens=180, temperatura=0.7)
                     texto = limpiar_cronica(texto, dia, config.NOMBRE_SOCIEDAD[lado]) or None
-                except Exception:
+                except Exception as e:
                     Gasto.fallos += 1
+                    Gasto.anotar(e)
             textos[lado] = texto or " ".join(hechos[:4])
             textos[lado], _ = moderacion.publicable(self, None, f"cronica_{lado}", textos[lado])
             if self.ia:

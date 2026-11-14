@@ -28,7 +28,9 @@ def comprobar():
             problemas.append(("motor_parado", f"El mundo lleva {retraso / 60:.0f} minutos sin avanzar. Reinicio el motor."))
             subprocess.run(["sudo", "systemctl", "restart", "miovsnuestro-motor"], check=False)
         if l.get("llamadas", 0) > 200 and l.get("fallos", 0) / l["llamadas"] > 0.1:
-            problemas.append(("ia_fallos", f"La IA falla en el {l['fallos'] / l['llamadas']:.0%} de las llamadas."))
+            motivos = ", ".join(f"{k}: {v}" for k, v in sorted((l.get("motivos_fallo") or {}).items(), key=lambda x: -x[1])[:3])
+            problemas.append(("ia_fallos", f"La IA falla en el {l['fallos'] / l['llamadas']:.0%} de las llamadas"
+                              + (f" ({motivos})." if motivos else ".")))
     except Exception:
         problemas.append(("sin_latido", "No encuentro el latido del motor."))
     # 2. ¿Responde la web?
