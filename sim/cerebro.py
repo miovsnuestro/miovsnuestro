@@ -67,8 +67,30 @@ class Gasto:
     tokens_in = 0
     tokens_out = 0
     llamadas = 0
-    fallos = 0
+    fallos = 0          # decisiones o tareas que se quedaron sin IA (deciden las reglas de respaldo)
+    reintentos = 0      # intentos fallidos que se arreglaron al reintentar (no son fallos)
+    motivos = {}        # por qué falla: tiempo agotado, HTTP 429, HTTP 5xx, respuesta vacía, JSON roto…
     dolares = 0.0
+
+    @classmethod
+    def anotar(cls, error):
+        """Cuenta el motivo de un fallo para el latido y el informe diario."""
+        import socket, urllib.error
+        if isinstance(error, urllib.error.HTTPError):
+            m = f"HTTP {error.code}"
+        elif isinstance(error, (socket.timeout, TimeoutError)) or "timed out" in str(error):
+            m = "tiempo agotado"
+        elif isinstance(error, urllib.error.URLError):
+            m = "sin conexión"
+        elif "vacía" in str(error) or "no devolvió JSON" in str(error):
+            m = "respuesta vacía o sin JSON"
+        elif isinstance(error, json.JSONDecodeError):
+            m = "JSON roto"
+        elif "acción no válida" in str(error):
+            m = "acción no válida"
+        else:
+            m = type(error).__name__
+        cls.motivos[m] = cls.motivos.get(m, 0) + 1
 
     @classmethod
     def sumar(cls, modelo, uso):
@@ -162,7 +184,8 @@ def llamar_json(mensajes, modelo=None, max_tokens=300, temperatura=0.9, registro
                                               timeout=timeout))
         except Exception as e:
             error = f"{e}{_describir_ultima()}"
-            Gasto.fallos += 1
+            Gasto.reintentos += 1
+            Gasto.anotar(e)
             if registro is not None:
                 registro.append(error)
             if ULTIMA.get("fin") == "length":
@@ -328,8 +351,9 @@ class CerebroIA:
             if d.get("accion") not in ACCIONES:
                 raise ValueError("acción no válida")
             return d
-        except Exception:
+        except Exception as e:
             Gasto.fallos += 1
+            Gasto.anotar(e)
             return self.respaldo.decidir(a, ctx)
 
     def reflexionar(self, a):
@@ -341,6 +365,7 @@ class CerebroIA:
                  "experiencia te hizo cambiar:\n" + "\n".join(a.memoria[-25:])},
             ], json_mode=False, max_tokens=120)
             a.creencias = texto.strip()
-        except Exception:
+        except Exception as e:
             Gasto.fallos += 1
+            Gasto.anotar(e)
             self.respaldo.reflexionar(a)

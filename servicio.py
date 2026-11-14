@@ -74,7 +74,8 @@ def main():
             print("No pude escribir los datos del Narrador:", err, flush=True)
         escribir_json(config.DATOS / "latido.json", {
             "hora": time.time(), "fecha": datetime.now(timezone.utc).isoformat(), "dia": sim.dia, "estado": "en marcha",
-            "ia": usar_ia, "llamadas": Gasto.llamadas, "fallos": Gasto.fallos, "gasto_usd_sesion": round(Gasto.dolares, 4),
+            "ia": usar_ia, "llamadas": Gasto.llamadas, "fallos": Gasto.fallos,
+            "reintentos": Gasto.reintentos, "motivos_fallo": dict(Gasto.motivos), "gasto_usd_sesion": round(Gasto.dolares, 4),
             "segundos_ultimo_dia": round(time.time() - t0, 1)})
         print(f"Día {sim.dia} listo en {time.time() - t0:.1f} s", flush=True)
         time.sleep(max(0, SEGUNDOS_POR_DIA - (time.time() - t0)))
