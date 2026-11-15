@@ -1,8 +1,8 @@
 {
  "proyecto": "Mío vs Nuestro",
  "mundo": "pruebas",
- "dia": 100,
- "ano": 3,
+ "dia": 130,
+ "ano": 4,
  "epoca": "prehistoria",
  "sociedades": {
   "A": {
@@ -10,24 +10,24 @@
    "subtitulo": "propiedad privada y libre intercambio",
    "color": "#1D9E75",
    "metricas": {
-    "poblacion": 10,
-    "comida_total": 140,
-    "desigualdad_gini": 0.28,
-    "inventos": 22,
-    "inventos_propios": 22,
+    "poblacion": 11,
+    "comida_total": 160,
+    "desigualdad_gini": 0.27,
+    "inventos": 29,
+    "inventos_propios": 29,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
     "bienestar": 78,
-    "con_refugio": 2,
+    "con_refugio": 3,
     "parejas": 1,
     "intentos_invento": {
-     "intentos": 119,
-     "fallidos": 70,
-     "conseguidos": 28,
-     "sin_materiales": 20,
-     "rechazados": 1
+     "intentos": 184,
+     "fallidos": 106,
+     "conseguidos": 39,
+     "sin_materiales": 37,
+     "rechazados": 2
     },
     "explorado": 702,
     "territorio": 1360,
@@ -38,7 +38,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "En el día 100, Los del Mío dedicaron la jornada a reparar los canales de riego que abastecen los cultivos comunitarios, sin registrar disputas por el agua. Las tareas de caza y recolección se completaron antes del anochecer, y cada familia recibió una porción calculada según el número de integrantes. Al caer la tarde, los adultos se reunieron en la plaza central para revisar el inventario de semillas y programar las siembras de la siguiente semana.",
+   "cronica": "En el día 130, los miembros de «Los del Mío» se levantaron con el sol para repartirse las tareas de cultivo y reparación de los tejados dañados por la última lluvia. Las conversaciones durante el almuerzo giraron en torno a la mejor manera de almacenar el grano para evitar pérdidas, y cada familia aportó su experiencia sin que nadie alzara la voz. Al caer la tarde, los niños aprendían a reconocer plantas comestibles mientras los adultos revisaban las lindes y se deseaban un descanso reparador.",
    "inventos": [
     {
      "nombre": "palo con piedras atadas",
@@ -259,6 +259,76 @@
      "antes": [],
      "tipo": "objeto",
      "inedito": false
+    },
+    {
+     "nombre": "fuego por frotación",
+     "categoria": "fuego_y_cocina",
+     "dia": 103,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false
+    },
+    {
+     "nombre": "palo que hace fuego",
+     "categoria": "fuego_y_cocina",
+     "dia": 106,
+     "inventor": "Pablo",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false
+    },
+    {
+     "nombre": "red de ramas",
+     "categoria": "herramienta",
+     "dia": 106,
+     "inventor": "Carla",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": true
+    },
+    {
+     "nombre": "bolsa de fibra trenzada",
+     "categoria": "recipiente",
+     "dia": 111,
+     "inventor": "Breogán",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "cuenco de barro cocido",
+     "categoria": "recipiente",
+     "dia": 119,
+     "inventor": "Xabier 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "corro de piedras para el fuego",
+     "categoria": "fuego_y_cocina",
+     "dia": 120,
+     "inventor": "Pablo",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "barro cocido en forma de cuenco",
+     "categoria": "recipiente",
+     "dia": 124,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
     }
    ],
    "epoca": "prehistoria",
@@ -271,22 +341,22 @@
    "color": "#D85A30",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 162,
-    "desigualdad_gini": 0.24,
-    "inventos": 26,
-    "inventos_propios": 26,
+    "comida_total": 224,
+    "desigualdad_gini": 0.17,
+    "inventos": 40,
+    "inventos_propios": 40,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 78,
-    "con_refugio": 1,
+    "bienestar": 81,
+    "con_refugio": 2,
     "parejas": 0,
     "intentos_invento": {
-     "intentos": 160,
-     "fallidos": 81,
-     "conseguidos": 39,
-     "sin_materiales": 34,
+     "intentos": 239,
+     "fallidos": 116,
+     "conseguidos": 57,
+     "sin_materiales": 60,
      "rechazados": 6
     },
     "explorado": 680,
@@ -298,7 +368,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "En el día 100, los habitantes de «Los del Nuestro» dedicaron la jornada a tareas rutinarias de recolección y mantenimiento de sus refugios. No se registraron conflictos internos ni incidentes de escasez que alteraran el orden establecido. Al caer la noche, los grupos se reunieron para repartir los recursos obtenidos y planificar las labores del día siguiente.",
+   "cronica": "El día 130 en la sociedad «Los del Nuestro» transcurrió sin incidentes destacables, marcado por las rutinas de trabajo y las tareas de supervivencia. Los miembros dedicaron la jornada a mantener los cultivos, reparar herramientas y asegurar las reservas de agua. Al caer la noche, se registró un ambiente de calma y orden en los espacios comunes.",
    "inventos": [
     {
      "nombre": "piedra con mango",
@@ -559,6 +629,146 @@
      "antes": [],
      "tipo": "objeto",
      "inedito": false
+    },
+    {
+     "nombre": "cesta con tapa de barro",
+     "categoria": "recipiente",
+     "dia": 103,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "bolsa colgada de palo",
+     "categoria": "herramienta",
+     "dia": 105,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "ramas atadas en cruz",
+     "categoria": "vivienda",
+     "dia": 106,
+     "inventor": "Uxío",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "cuenco de barro cocido",
+     "categoria": "recipiente",
+     "dia": 106,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "cruz de ramas en palo",
+     "categoria": "vivienda",
+     "dia": 106,
+     "inventor": "Uxío",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "techo de hojas",
+     "categoria": "vivienda",
+     "dia": 107,
+     "inventor": "Uxío",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "cesta embarrada",
+     "categoria": "recipiente",
+     "dia": 109,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "pared de ramas y barro",
+     "categoria": "vivienda",
+     "dia": 110,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "pared de ramas atadas",
+     "categoria": "vivienda",
+     "dia": 114,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "cuenco de barro seco",
+     "categoria": "recipiente",
+     "dia": 118,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "refugio de estacas y hojas",
+     "categoria": "vivienda",
+     "dia": 118,
+     "inventor": "Uxío",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "cesto de ramas y barro",
+     "categoria": "recipiente",
+     "dia": 124,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "montículo de barro con boca para fuego",
+     "categoria": "fuego_y_cocina",
+     "dia": 124,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "hoyo con paredes de barro",
+     "categoria": "almacen",
+     "dia": 127,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
     }
    ],
    "epoca": "prehistoria",
@@ -566,7 +776,7 @@
    "libros_total": 11
   }
  },
- "agentes": 20,
+ "agentes": 21,
  "obras": {
   "estructuras": [
    {
@@ -690,18 +900,6 @@
     "nombre": "refugio de ramas"
    },
    {
-    "id": 48,
-    "tipo": "hoguera",
-    "categoria": "fuego_y_cocina",
-    "modelo": "objeto:herramienta",
-    "x": 131,
-    "y": 5,
-    "lado": "A",
-    "dueno": 13,
-    "color": null,
-    "nombre": "piedras que hacen fuego"
-   },
-   {
     "id": 50,
     "tipo": "almacen",
     "categoria": "almacen",
@@ -724,6 +922,162 @@
     "dueno": "comun",
     "color": null,
     "nombre": "hoyo fresco para mi familia"
+   },
+   {
+    "id": 54,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 33,
+    "y": 29,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hueco fresco para comida"
+   },
+   {
+    "id": 55,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 38,
+    "y": 15,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hueco fresco con hojas"
+   },
+   {
+    "id": 56,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 116,
+    "y": 1,
+    "lado": "A",
+    "dueno": 15,
+    "color": null,
+    "nombre": "fuego por frotación"
+   },
+   {
+    "id": 58,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 115,
+    "y": 1,
+    "lado": "A",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "choza de palos y pieles"
+   },
+   {
+    "id": 64,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 34,
+    "y": 5,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hoyo fresco para comida"
+   },
+   {
+    "id": 66,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 38,
+    "y": 3,
+    "lado": "B",
+    "dueno": 12,
+    "color": null,
+    "nombre": "hoyo fresco tapado"
+   },
+   {
+    "id": 70,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "objeto:herramienta",
+    "x": 122,
+    "y": 3,
+    "lado": "A",
+    "dueno": 13,
+    "color": null,
+    "nombre": "refugio de palos y pieles"
+   },
+   {
+    "id": 71,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 35,
+    "y": 9,
+    "lado": "B",
+    "dueno": 8,
+    "color": null,
+    "nombre": "pared de ramas atadas"
+   },
+   {
+    "id": 75,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 114,
+    "y": 16,
+    "lado": "A",
+    "dueno": 5,
+    "color": null,
+    "nombre": "corro de piedras para el fuego"
+   },
+   {
+    "id": 78,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 25,
+    "y": 12,
+    "lado": "B",
+    "dueno": 4,
+    "color": null,
+    "nombre": "mi refugio de ramas"
+   },
+   {
+    "id": 80,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 39,
+    "y": 0,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hoyo fresco para comida"
+   },
+   {
+    "id": 82,
+    "tipo": "horno",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:horno",
+    "x": 39,
+    "y": 10,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "montículo de barro con boca para fuego"
+   },
+   {
+    "id": 83,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 33,
+    "y": 8,
+    "lado": "B",
+    "dueno": 2,
+    "color": null,
+    "nombre": "hoyo con paredes de barro"
    }
   ],
   "campos": []
@@ -732,72 +1086,107 @@
   [
    39,
    13,
-   6
-  ],
-  [
-   113,
-   2,
-   3
+   9
   ],
   [
    28,
    31,
-   8
-  ],
-  [
-   129,
-   9,
-   1
+   4
   ],
   [
    37,
    1,
-   4
+   12
   ],
   [
    32,
    1,
-   5
+   2
   ],
   [
    36,
    14,
-   9
+   7
   ],
   [
    39,
    4,
-   6
+   8
   ],
   [
    39,
    2,
-   4
+   6
   ],
   [
    113,
    19,
-   1
+   3
   ],
   [
    24,
    9,
-   6
-  ],
-  [
-   117,
-   23,
-   1
+   3
   ],
   [
    112,
    18,
+   10
+  ],
+  [
+   33,
+   29,
+   1
+  ],
+  [
+   36,
+   2,
+   8
+  ],
+  [
+   34,
+   5,
+   2
+  ],
+  [
+   37,
+   18,
+   3
+  ],
+  [
+   25,
+   12,
    5
+  ],
+  [
+   115,
+   28,
+   2
   ],
   [
    36,
    3,
+   6
+  ],
+  [
+   112,
+   30,
    1
+  ],
+  [
+   129,
+   14,
+   1
+  ],
+  [
+   119,
+   2,
+   1
+  ],
+  [
+   114,
+   33,
+   2
   ],
   [
    132,
@@ -805,17 +1194,17 @@
    1
   ],
   [
-   22,
-   10,
+   33,
+   2,
    1
   ],
   [
-   33,
-   29,
-   1
+   116,
+   31,
+   2
   ]
  ],
  "contacto": false,
- "inicio_dia": 1794693447.5093427,
+ "inicio_dia": 1794779850.8118422,
  "segundos_dia": 2880.0
 }
