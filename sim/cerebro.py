@@ -308,7 +308,7 @@ class CerebroIA:
             + (f"Cosas que sabes construir: {', '.join(ctx['sabe_construir'])}.\n" if ctx.get("sabe_construir") else "")
             + (f"Llevas encima: {', '.join(ctx['objetos'])}.\n" if ctx.get("objetos") else "")
             + (f"Cerca de aquí tu gente ha levantado: {', '.join(f'{n} ({q})' for n, q in ctx['obras_cerca'].items())}.\n" if ctx.get("obras_cerca") else "")
-            + (f"Libros de tu gente que aún no has leído: {', '.join('«' + t + '»' for t in ctx['libros'])}.\n" if ctx.get("libros") else "") +
+            + (f"Libros de tu gente que aún no has leído: {', '.join('«' + t + '»' for t in ctx['libros'])}.\n" if ctx.get("libros") else "")
             + (f"{ctx['te_dijeron']['nombre']} (id {ctx['te_dijeron']['id']}) te ha dicho: «{ctx['te_dijeron']['frase']}». "
                "Si quieres, contéstale (hablar, con su id) o sigue con lo tuyo.\n" if ctx.get("te_dijeron") else "") +
             f"Estás en: {ctx['lugar']}. {ctx['sobre_otros']}\n"
