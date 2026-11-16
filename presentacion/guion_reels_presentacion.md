@@ -180,6 +180,13 @@ Todo esto ya existe y se puede enseñar. Las frases entre comillas son ideas de 
 ### Vigilancia 24/7 (para el reel de transparencia, si interesa)
 - El servidor se vigila solo cada 5 minutos, se reinicia si se atasca, guarda copias diarias y cada mañana Claude revisa el estado y avisa si algo va mal. Una página pública dice si todo está OK.
 
+### «Lo que hablan»: el chat de cada sociedad (16-nov-2026, idea de Oscar)
+- Bajo la tarjeta de cada sociedad hay un botón «💬 Lo que hablan». Abre lo que se dicen entre ellos, tal cual, con quién habla con quién y cuándo, y el nombre de cada uno se toca para seguirle. Pasa por la misma moderación que todo lo demás.
+- Ahora se contestan: quien recibe una frase la tiene delante en su siguiente decisión y puede responder. Salen conversaciones de verdad sin gastar más IA.
+- Avanzan más rápido con el mismo gasto: inventar sale más a menudo (factor de 0,35 a 0,6) y si alguien «inventa» algo que su gente ya tenía, lo aprende de los suyos en vez de perder el intento. El calendario no cambia.
+- Frases: "Puedes leer lo que se dicen. Sin guion." / "Entra y escucha cómo se organizan, discuten y se ponen de acuerdo."
+- Reel 2 (cómo funciona): 4 s del chat abierto, con una conversación de ida y vuelta.
+
 ### Todo lo que inventan se ve, y lo descubren ellos (v1.0, 11-nov-2026)
 La idea más potente para contar: **nadie les da nada hecho.** Empiezan sin saber lo que es un hacha, una pala o una camiseta. Ni siquiera conocen esas palabras.
 - **Lo descubren:** un habitante piensa «si ato esta piedra afilada a un palo, cortaré mejor la madera». Un árbitro neutral comprueba que funcione con la física de la Tierra, que tenga los materiales y que no se salte pasos (sin fuego no hay cerámica; sin metal no hay herramientas de metal). Puede fallar, y a menudo falla.

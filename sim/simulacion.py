@@ -120,7 +120,9 @@ class Simulacion:
         cron = {l: (self.bd.execute("SELECT texto FROM cronicas WHERE mundo=? AND lado=? ORDER BY dia DESC LIMIT 1",
                                     (self.nombre, l)).fetchone() or [""])[0] for l in "AB"}
         explorado = m.explorado["A"] | m.explorado["B"]
+        charla = getattr(self, "charla", {"A": [], "B": []})
         return {
+            "charla": {l: charla.get(l, [])[-40:] for l in "AB"},
             "proyecto": config.PROYECTO, "mundo": self.nombre, "dia": self.dia, "ano": int(self.ano) + 1, "epoca": self.epoca(),
             "sociedades": {l: {"nombre": config.NOMBRE_SOCIEDAD[l], "subtitulo": config.SUBTITULO_SOCIEDAD[l],
                                "color": config.COLOR_SOCIEDAD[l], "metricas": self.metricas(l), "cronica": cron[l],
@@ -261,10 +263,34 @@ class Simulacion:
                     d = cerebro.decidir(a, ctx)
                     a.ultimo_dicho = (d.get("dice") or "")[:160]
                     a.ultimo_pensamiento = (d.get("piensa") or "")[:200]
+                    a.oido = None  # lo que le dijeron ya lo ha tenido delante al decidir
                     self._ejecutar(a, d, ctx, fase)
+                    self._charla(a, d, fase)
                 else:
                     self._nino(a)
         self._fin_de_dia()
+
+    ACCIONES_CON_OTRO = ("hablar", "intercambiar", "regalar", "cortejar", "ensenar", "robar")
+
+    def _charla(self, a, d, fase):
+        """Lo que dicen queda en el chat público de su sociedad (moderado), con a quién se lo dicen.
+        Igual para los dos lados: mismo formato, mismos filtros, mismo número de mensajes guardados."""
+        texto = (a.ultimo_dicho or "").strip()
+        if len(texto) < 2:
+            return
+        limpio, motivos = moderacion.publicable(self, a, "charla", texto)
+        if motivos or not limpio:
+            return
+        otro = self.agentes.get(d.get("objetivo")) if d.get("accion") in self.ACCIONES_CON_OTRO else None
+        if not hasattr(self, "charla"):
+            self.charla = {"A": [], "B": []}
+        m = {"dia": self.dia, "fase": fase, "de": a.id, "nombre": a.nombre, "texto": limpio, "accion": d.get("accion"),
+             "a": otro.id if otro else None, "a_nombre": otro.nombre if otro else None,
+             "a_lado": otro.lado if otro else None}
+        self.charla[a.lado] = (self.charla[a.lado] + [m])[-60:]
+        self.bd.execute("CREATE TABLE IF NOT EXISTS charla(mundo TEXT, dia INT, fase TEXT, lado TEXT, de TEXT, a TEXT, accion TEXT, texto TEXT)")
+        self.bd.execute("INSERT INTO charla VALUES(?,?,?,?,?,?,?,?)",
+                        (self.nombre, self.dia, fase, a.lado, a.nombre, m["a_nombre"], m["accion"], limpio))
 
     def _contexto(self, a, fase):
         vecinos = [v for v in self.vivos(a.lado) if v.id != a.id and v.adulto and abs(v.x - a.x) + abs(v.y - a.y) <= 8]
@@ -289,6 +315,7 @@ class Simulacion:
             "dia": self.dia, "fase": fase, "vecinos": vecinos[:8], "almacen": self.mundo.almacen[a.lado],
             "zona": zona, "dueno": dueno, "lugar": lugar, "sobre_otros": sobre_otros,
             "puede": self.puede(a), "sabe_refugio": self.sabe_refugio(a), "inventos_sociedad": sociedad,
+            "te_dijeron": getattr(a, "oido", None) if (getattr(a, "oido", None) or {}).get("dia", -9) >= self.dia - 1 else None,
             "libros": [b["titulo"] for b in self.libros_pendientes(a)][:6] if self.sabe_leer(a) else [],
             "descripciones": {n: d.get("descripcion_visual", "") for n, d in reg.items()},
             "sabe_fabricar": self.fab.puede_fabricar(self, a), "sabe_construir": self.fab.puede_construir(self, a),
@@ -439,6 +466,8 @@ class Simulacion:
             otro.relaciones[a.id] = otro.relaciones.get(a.id, 0) + 3
             frase = a.ultimo_dicho or "charlan un rato"
             otro.recordar(f"Día {self.dia}: {a.nombre} me dijo: {frase}")
+            if a.ultimo_dicho:  # en su próxima decisión lo tiene delante y puede contestarle (sin llamadas de más)
+                otro.oido = {"id": a.id, "nombre": a.nombre, "frase": frase, "dia": self.dia}
             a.recordar(f"Día {self.dia}: hablé con {otro.nombre}.")
             self.suceso(fase, a, "habla", f"{a.nombre} a {otro.nombre}: {frase}")
         elif acc == "intercambiar" and otro:
@@ -516,12 +545,20 @@ class Simulacion:
         inv = {k: v for k, v in a.inventario.items() if v}
         try:
             if self.ia and a.con_cerebro:
-                res = inventos.arbitrar_ia(idea, inv, conocidos, llamar_llm)
+                res = inventos.arbitrar_ia(idea, inv, conocidos, llamar_llm, sociedad=sorted(reg))
             else:
                 res = inventos.arbitrar_prueba(idea, a.conocimientos)
         except Exception:
             Gasto.fallos += 1
             self._intento(a.lado, "error_arbitro")
+            return
+        ya = (res.get("ya_existe") or "").strip().lower()
+        ya = next((n for n, i in reg.items() if ya and (n == ya or ya in i.get("antes", []))), None)
+        if ya and ya not in a.conocimientos:  # su gente ya lo hace: lo aprende mirando a los suyos, sin gastar el intento
+            self._intento(a.lado, "aprendidos")
+            a.conocimientos.add(ya)
+            a.recordar(f"Día {self.dia}: quería probar \"{idea[:50]}\", pero los míos ya hacen {ya}: me fijé en ellos y aprendí.")
+            self.suceso(fase, a, "aprende", f"{a.nombre} aprende de los suyos a hacer {ya}.")
             return
         if not res.get("aceptado"):
             self._intento(a.lado, "rechazados")

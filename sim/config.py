@@ -37,7 +37,7 @@ DIAS_POR_ANO = 30               # en la prehistoria: 30 días simulados = 1 año
 RITMO_POR_EPOCA = {"prehistoria": 30, "aldeas": 60, "metal": 105, "industrial": 105, "moderna": 105, "espacial": 105}
 FRENO_GRANDES_MOMENTOS = 2.0     # tras un gran momento, el tiempo va el doble de lento...
 DIAS_FRENO = 30                  # ...durante este número de días simulados (1 día real)
-FACTOR_EXITO_INVENTOS = 0.35     # calibra cuánto cuesta inventar (más bajo = progreso más lento)
+FACTOR_EXITO_INVENTOS = 0.6      # calibra cuánto cuesta inventar (más bajo = progreso más lento). 16-nov: 0,35 → 0,6, aprobado por Oscar
 
 # --- Cerebros (IA) ---
 # Máximo de agentes con cerebro de IA por lado. El resto son "relleno" con reglas.
