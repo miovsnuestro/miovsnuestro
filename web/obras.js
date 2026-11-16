@@ -15,16 +15,22 @@ Promise.all(['indice', 'subidos'].map(n => fetch('modelos/' + n + '.json?t=' + D
   GLB = Object.assign({}, a || {}, b || {});
   if (Object.keys(GLB).length) { const s = document.createElement('script'); s.src = 'GLTFLoader.js'; s.onload = () => { firmaObras = ''; glbVersion++; if (est && est.obras) construirObras(est); }; document.head.appendChild(s); }
 }).catch(() => {});
-function modeloGLB(clave, altura) {
+// tam: alto máximo, o [ancho máximo de planta, alto máximo]. El modelo se encaja sin deformarlo en esa caja,
+// para que cada cosa tenga su tamaño real junto a las personas (una hoguera no puede ser más grande que una choza).
+function modeloGLB(clave, tam) {
   const ruta = GLB[clave]; if (!ruta || !THREE.GLTFLoader) return null;
-  if (glbListo[clave]) { const g = glbListo[clave].clone(true); g.scale.multiplyScalar(altura || 1); return g; }
+  if (glbListo[clave]) {
+    const g = glbListo[clave].clone(true), [ancho, alto] = Array.isArray(tam) ? tam : [Infinity, tam || 1];
+    g.scale.multiplyScalar(Math.min(alto, ancho / glbListo[clave].userData.planta)); return g;
+  }
   if (!glbPidiendo[clave]) {
     glbPidiendo[clave] = true;
     new THREE.GLTFLoader().load('modelos/' + (typeof ruta === 'string' ? ruta : ruta.archivo), gl => {
       const m = gl.scene, caja = new THREE.Box3().setFromObject(m), tam = caja.getSize(new THREE.Vector3());
-      const k = 1 / Math.max(tam.y, tam.x * .6, tam.z * .6, .001); m.scale.setScalar(k);
-      m.position.y = -caja.min.y * k; m.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
-      const g = new THREE.Group(); g.add(m); glbListo[clave] = g; glbVersion++; firmaObras = ''; if (est && est.obras) construirObras(est);
+      const k = 1 / Math.max(tam.y, .001); m.scale.setScalar(k);  // alto 1; se guarda cuánto ocupa de planta
+      m.position.set(-(caja.min.x + caja.max.x) / 2 * k, -caja.min.y * k, -(caja.min.z + caja.max.z) / 2 * k);
+      m.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+      const g = new THREE.Group(); g.add(m); g.userData.planta = Math.max(tam.x, tam.z, .001) * k; glbListo[clave] = g; glbVersion++; firmaObras = ''; if (est && est.obras) construirObras(est);
     }, undefined, () => {});
   }
   return null;
@@ -98,13 +104,18 @@ function generica(lado, cat) {  // algo que el catálogo aún no sabe dibujar: u
   g.add(B(.95, .05, .95, '#D8C7A0', 0, .82, 0), B(.4, .4, .4, '#9A6B42', 0, .2, 0), B(.42, .06, .42, COLOR[lado], 0, .42, 0)); return sombra(g); }
 
 const RADIO = { casa: 1.3, almacen: 1, granero: 1, escuela: 1.3, mercado: .9, molino: .6, torre: .6, observatorio: .7, fabrica: 1.5, maquina: .6,
-  cohete: .7, enfermeria: 1.3, monumento: .5, horno: .5, pozo: .5, muralla: 1, taller: .9, corral: 1.4, hoguera: .75, carro: .8 };
+  cohete: .7, enfermeria: 1.3, monumento: .5, horno: .5, pozo: .5, muralla: 1, taller: .9, corral: 1.4, hoguera: .5, carro: .8 };
+// Tamaño real de cada pieza [ancho de planta, alto], en las mismas unidades que las personas (un adulto mide ~1).
+const TAM = { casa: [2.2, 1.9], hoguera: [.85, .8], almacen: [1.8, 1.4], granero: [1.9, 1.7], taller: [1.6, 1.3], corral: [2.4, .9],
+  carro: [1.4, 1], barco: [1.7, 1], molino: [1.4, 2.6], torre: [1.1, 2.8], escuela: [2.4, 1.6], mercado: [1.6, 1.3], horno: [.9, .8],
+  pozo: [.9, 1.2], monumento: [.8, 1.8], fabrica: [2.8, 2.4], muralla: [2.2, 1.1], observatorio: [1.3, 1.8], enfermeria: [2.2, 1.6] };
+const tamDe = (t, ep) => t === 'casa' ? [radioDe(t, ep) * 1.75, ep === 'prehistoria' ? 1.5 : 1.9] : (TAM[t] || [1.4, 1.5]);
 const radioDe = (t, ep) => t !== 'casa' ? (RADIO[t] || .4) : ep === 'prehistoria' ? 1.05 : ep === 'aldeas' || ep === 'metal' ? 1.35 : 1.7;
 function pieza(e, ep) {
   const l = e.lado, t = e.tipo;
   // Primero el modelo de su época («estructura:casa@prehistoria»); la casa genérica no se usa, porque cambia con la época.
   const claveG = e.modelo && e.modelo !== 'nuevo' ? e.modelo : 'estructura:' + t;
-  const glb = modeloGLB(claveG + '@' + ep, t === 'casa' ? 1.8 : 1.4) || (t === 'casa' ? null : modeloGLB(claveG, 1.4));
+  const glb = modeloGLB(claveG + '@' + ep, tamDe(t, ep)) || (t === 'casa' ? null : modeloGLB(claveG, tamDe(t, ep)));
   if (glb) return glb;
   switch (t) {
     case 'casa': return casaEpoca(ep, l);
@@ -221,7 +232,7 @@ const IZQUIERDA = new Set(['cesta', 'saco', 'vasija', 'cuenco', 'odre', 'jarra',
 const MATERIAL = { piedra: '#8E8A80', hueso: '#E6DDC8', madera: '#8A6038', cobre: '#B87333', bronce: '#B08D57', hierro: '#6E7377', metal: '#9AA3A8', oro: '#D4AF37', arcilla: '#B5653A', barro: '#9A6440' };
 function objeto3d(o) {
   const g = new THREE.Group(), cab = o.color || MATERIAL[o.material] || '#8C8A86', mango = '#6E4A2C';
-  const glb = modeloGLB(o.modelo && o.modelo !== 'nuevo' ? o.modelo : 'objeto:' + o.tipo, .45); if (glb) { glb.rotation.x = Math.PI; g.add(glb); return g; }
+  const glb = modeloGLB(o.modelo && o.modelo !== 'nuevo' ? o.modelo : 'objeto:' + o.tipo, [.5, .5]); if (glb) { glb.rotation.x = Math.PI; g.add(glb); return g; }
   const palo = (len, y = -len / 2) => B(.035, len, .035, mango, 0, y, 0);
   switch (o.tipo) {
     case 'hacha': g.add(palo(.5), B(.16, .11, .03, cab, .07, -.44, 0)); break;
