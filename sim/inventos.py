@@ -74,12 +74,16 @@ Reglas:
    - Si lo que hace de verdad no cabe en la lista de efectos, pon los efectos más cercanos (o ninguno) y explica
      su función real en 'efecto_nuevo' (una frase). Se estudiará añadirla a las reglas, igual para las dos sociedades.
 
+11. Si la idea es en esencia algo que YA EXISTE en su sociedad (aunque lo describa con otras palabras), no lo inventes otra vez:
+   pon "ya_existe": "nombre exacto de la lista" (el habitante lo aprenderá de los suyos). Si es una mejora real de algo
+   que existe, sí es un invento nuevo.
+
 Responde SOLO con JSON:
 {{"aceptado": true/false, "motivo": "...", "nombre": "...", "categoria": "...", "efectos": [{{"tipo": "...", "objetivo": "...", "valor": 1.5}}],
  "requiere": ["inventos previos en los que se apoya"], "coste": {{"material": cantidad}}, "dificultad": 0.5,
  "hito": false, "modelo": "clave de la lista o nuevo", "descripcion_visual": "cómo se ve, en una frase",
  "tipo_creacion": "objeto", "inedito": false, "diseno": {{"forma": "...", "partes": "...", "materiales": "...", "tamano": "...", "como_se_usa": "..."}},
- "efecto_nuevo": null}}"""
+ "efecto_nuevo": null, "ya_existe": null}}"""
 
 
 def _limpiar(res, conocidos):
@@ -113,12 +117,13 @@ def _limpiar(res, conocidos):
     return res
 
 
-def arbitrar_ia(idea, inventario, conocidos, llamar_llm):
+def arbitrar_ia(idea, inventario, conocidos, llamar_llm, sociedad=None):
     sistema = REGLAS_ARBITRO.format(efectos=json.dumps(EFECTOS, ensure_ascii=False),
                                     actividades=", ".join(ACTIVIDADES), categorias=", ".join(CATEGORIAS), tipos=", ".join(TIPOS_CREACION),
                                     modelos=", ".join(__import__("sim.fabricacion", fromlist=["x"]).claves_modelo()))
     usuario = (f"Idea del habitante: {idea}\nSu inventario: {inventario}\n"
-               f"Inventos que ya existen en su sociedad: {', '.join(conocidos) or 'ninguno'}")
+               f"Lo que este habitante ya sabe hacer: {', '.join(conocidos) or 'nada'}\n"
+               f"Todo lo que ya existe en su sociedad: {', '.join(sociedad if sociedad is not None else conocidos) or 'nada'}")
     from .cerebro import llamar_json
     res = llamar_json([{"role": "system", "content": sistema}, {"role": "user", "content": usuario}],
                       modelo=config.LLM_MODELO_LISTO, max_tokens=800, temperatura=0.3)
