@@ -1,7 +1,893 @@
 {
+ "charla": {
+  "A": [
+   {
+    "dia": 158,
+    "fase": "mediodía",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva seguro que saco peces del río.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "mediodía",
+    "de": 15,
+    "nombre": "Roi",
+    "texto": "Voy a buscar comida. Con el hambre que llevo y poca energía, mejor llenar la tripa antes de nada.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "mediodía",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Voy a buscar fibra y algo de comer. Sin fibra no hay forma de atar nada.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "mediodía",
+    "de": 17,
+    "nombre": "Noa",
+    "texto": "A juntar fibra. Con el cuenco nuevo y más fibra, pronto tendré algo que ofrecer en un buen trueque.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "tarde",
+    "de": 17,
+    "nombre": "Noa",
+    "texto": "Voy a juntar fibra, que buena falta hace.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "tarde",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva, a ver si saco pescado para todos.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "tarde",
+    "de": 15,
+    "nombre": "Roi",
+    "texto": "Voy a buscar raíces y frutos antes de que anochezca.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "tarde",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Voy a por fibra y algo de comer. Sin fibra no hay forma de atar nada.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 158,
+    "fase": "tarde",
+    "de": 9,
+    "nombre": "Sabela",
+    "texto": "Ya tengo lanza. Ahora necesito un techo para mí.",
+    "accion": "construir_refugio",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva y el estómago vacío, al agua. A ver si traigo pescado para hoy y para guardar.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 17,
+    "nombre": "Noa",
+    "texto": "Voy a juntar fibra, que buena falta nos hace",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Voy a juntar fibra y piedras. Con lo que tengo no me llega para atar bien la piedra al palo largo.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 15,
+    "nombre": "Roi",
+    "texto": "A buscar frutos y raíces. Hay que llenar la panza y el almacén.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Con estas ramas y pieles me hago un cobijo. No pienso pasar otra noche al raso.",
+    "accion": "construir_refugio",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva en el río, a ver si saco pescado para hoy y para guardar.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 5,
+    "nombre": "Pablo",
+    "texto": "Voy a buscar comida y fibra por el bosque antes de que caiga la tarde.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 15,
+    "nombre": "Roi",
+    "texto": "Estoy agotado. Voy a sentarme un rato a la sombra.",
+    "accion": "descansar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "tarde",
+    "de": 5,
+    "nombre": "Pablo",
+    "texto": "Voy a buscar frutos y raíces antes de que se haga de noche.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "tarde",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Otra vez. Cruzaré la fibra como me enseñó mi madre al coser pieles, apretando bien cada vuelta.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "tarde",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva y el río cerca, hoy toca pescar.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 15,
+    "nombre": "Roi",
+    "texto": "Otra vez, pero con las ramas remojadas. Tiene que salir.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Voy a por fibra y algún fruto. Con la lanza nueva me siento más seguro, pero hay que llenar la cesta.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 9,
+    "nombre": "Sabela",
+    "texto": "Voy a buscar frutos y fibras antes de que suba el sol.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy a por fibra y algo de comer. Tengo poca comida y con la fibra puedo atar mejor mis lanzas.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 5,
+    "nombre": "Pablo",
+    "texto": "Voy a probar otra vez con el barro, pero esta vez lo dejaré secar junto al fuego poco a poco",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 11,
+    "nombre": "Breogán",
+    "texto": "Voy a comer algo antes de nada, que las fuerzas se me acaban.",
+    "accion": "comer",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva voy a probar suerte en el río.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 9,
+    "nombre": "Sabela",
+    "texto": "Voy a comer algo, que llevo el estómago vacío y las piernas me tiemblan.",
+    "accion": "comer",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 15,
+    "nombre": "Roi",
+    "texto": "Voy a por frutos y raíces, que la tripa aprieta.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva y el día claro, hoy toca pescar.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy a intentar hacerme un refugio con ramas y pieles. Ya va siendo hora de tener donde guarecerme.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 5,
+    "nombre": "Pablo",
+    "texto": "Voy a por comida, que la despensa está baja.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 17,
+    "nombre": "Noa",
+    "texto": "Me falta fibra para mis cosas. Voy a juntar más.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Voy a buscar frutos y fibra por el valle. Con la lanza nueva me siento más seguro.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 5,
+    "nombre": "Pablo",
+    "texto": "Voy a buscar frutos y raíces antes de que caiga la tarde.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 11,
+    "nombre": "Breogán",
+    "texto": "Voy a buscar raíces y frutos antes de que se apague el día.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Voy a juntar fibra y algo de comer antes de que anochezca.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Con la red nueva y el río tranquilo, hoy toca pescar.",
+    "accion": "pescar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 9,
+    "nombre": "Sabela",
+    "texto": "Voy a buscar frutos y raíces antes de que oscurezca.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 13,
+    "nombre": "Xabier 2",
+    "texto": "Voy a por fibra y algo de comer antes de que anochezca.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   }
+  ],
+  "B": [
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a buscar comida y fibra antes de que suba el sol.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 20,
+    "nombre": "Mar",
+    "texto": "Voy a buscar frutos y raíces. Hay que llenar el almacén antes de que apriete el hambre.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a por frutos y raíces, que el almacén está bajo de comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Voy a probar a cocer una vasija grande. Si sale bien, la dejamos en el almacén para todos.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mañana",
+    "de": 4,
+    "nombre": "Roi",
+    "texto": "Voy a por frutos y raíces, y luego llevo mi parte al almacén.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 14,
+    "nombre": "Iago",
+    "texto": "Voy a por frutos, que el almacén se ve vacío.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 16,
+    "nombre": "Xabier",
+    "texto": "Voy a por frutos y raíces, que la despensa está casi vacía y hay quien pasa hambre.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a por fibras y algo de comida. El almacén está bajo y hay gente con hambre.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 18,
+    "nombre": "Eva",
+    "texto": "Voy a por madera. Sin madera no hay refugio, y sin refugio no aguantamos el frío.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 4,
+    "nombre": "Roi",
+    "texto": "Voy a por frutos y raíces. Llevo mucho cogido del almacén y poco dado; hoy toca llenar.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 2,
+    "nombre": "Xiana",
+    "texto": "Voy a por madera. Llevo dos días queriendo acabar mi hoyo de barro y no puedo sin troncos.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a buscar frutos y raíces por el valle, que el almacén está bajo y hay que llenarlo entre todos.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "mediodía",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Voy a por frutos y raíces, que el almacén anda corto.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "tarde",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Mar, Iago, tengo una idea para guardar mejor la comida. Pero no quiero gastar lo del común sin hablarlo antes. ¿Me escucháis?",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "tarde",
+    "de": 4,
+    "nombre": "Roi",
+    "texto": "Voy a por madera. Llevo días cogiendo del almacén y quiero devolver algo.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "tarde",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a por frutos y raíces, que el almacén está bajo y hay que llenarlo entre todos.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 159,
+    "fase": "tarde",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a por frutos y raíces antes de que se haga de noche.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a por frutos y raíces, que el almacén está bajo de comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a coger un poco del almacén. Nadie debe pasar hambre, y yo tampoco puedo rendirme en el camino.",
+    "accion": "tomar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 4,
+    "nombre": "Roi",
+    "texto": "Voy a por frutos y raíces. Hoy aporto yo al almacén.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 18,
+    "nombre": "Eva",
+    "texto": "Ya está bien de que falte madera para todo. Voy a por ella.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 2,
+    "nombre": "Xiana",
+    "texto": "Voy a por madera. Llevo dos días queriendo acabar mi hoyo de barro y siempre me falta.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a buscar arcilla y algo de comer por la orilla. Hay que llenar el almacén entre todos.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 14,
+    "nombre": "Iago",
+    "texto": "Voy a juntar raíces y frutos, que la despensa común está flaca y hay bocas que alimentar.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mañana",
+    "de": 16,
+    "nombre": "Xabier",
+    "texto": "Voy a por madera. Ya van muchas veces que me falta.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 14,
+    "nombre": "Iago",
+    "texto": "Voy a buscar raíces y fibra, que ando bajo de fuerzas.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a probar otra vez la tapa. Con asa de fibra será más fácil de levantar.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a echarme un rato a la sombra del techo. Tengo el cuerpo vacío.",
+    "accion": "descansar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 4,
+    "nombre": "Roi",
+    "texto": "Voy a por frutos y raíces. Así tengo qué llevar al almacén.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Voy a por frutos y raíces antes de que se acabe el día.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a buscar raíces y frutos. Con lo que saque, una parte pal almacén y otra pa la boca.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 16,
+    "nombre": "Xabier",
+    "texto": "Voy a por madera, que no hay y hace falta para todo.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 18,
+    "nombre": "Eva",
+    "texto": "Ya van dos veces que me falta madera. Hoy toca madera.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "mediodía",
+    "de": 20,
+    "nombre": "Mar",
+    "texto": "Voy a juntar frutos y fibras antes de que se acabe el día.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a buscar frutos y raíces, que hay que llenar el almacén.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 18,
+    "nombre": "Eva",
+    "texto": "Voy a por madera. Sin madera no hay refugio, y ya van dos veces que me quedo sin poder construirlo.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a por fibra y algo de comer. Luego lo reparto.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 20,
+    "nombre": "Mar",
+    "texto": "Voy a por madera, que sin ella no levanto nada.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a coger comida del almacén. Tengo hambre y no sirve de nada guardarla si luego no puedo ni moverme.",
+    "accion": "tomar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 160,
+    "fase": "tarde",
+    "de": 16,
+    "nombre": "Xabier",
+    "texto": "Voy a buscar raíces y frutos. Con el hambre que llevo, algo encontraré.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   }
+  ]
+ },
  "proyecto": "Mío vs Nuestro",
  "mundo": "pruebas",
- "dia": 130,
+ "dia": 160,
  "ano": 4,
  "epoca": "prehistoria",
  "sociedades": {
@@ -11,25 +897,26 @@
    "color": "#1D9E75",
    "metricas": {
     "poblacion": 11,
-    "comida_total": 160,
-    "desigualdad_gini": 0.27,
-    "inventos": 29,
-    "inventos_propios": 29,
+    "comida_total": 189,
+    "desigualdad_gini": 0.24,
+    "inventos": 38,
+    "inventos_propios": 38,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
     "bienestar": 78,
-    "con_refugio": 3,
+    "con_refugio": 6,
     "parejas": 1,
     "intentos_invento": {
-     "intentos": 184,
-     "fallidos": 106,
-     "conseguidos": 39,
-     "sin_materiales": 37,
-     "rechazados": 2
+     "intentos": 239,
+     "fallidos": 134,
+     "conseguidos": 50,
+     "sin_materiales": 50,
+     "rechazados": 3,
+     "aprendidos": 2
     },
-    "explorado": 702,
+    "explorado": 711,
     "territorio": 1360,
     "en_tierra_de_nadie": 0,
     "nacimientos": 0,
@@ -38,7 +925,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "En el día 130, los miembros de «Los del Mío» se levantaron con el sol para repartirse las tareas de cultivo y reparación de los tejados dañados por la última lluvia. Las conversaciones durante el almuerzo giraron en torno a la mejor manera de almacenar el grano para evitar pérdidas, y cada familia aportó su experiencia sin que nadie alzara la voz. Al caer la tarde, los niños aprendían a reconocer plantas comestibles mientras los adultos revisaban las lindes y se deseaban un descanso reparador.",
+   "cronica": "En el día 160, Roi presentó ante el grupo un cuenco de ramas trenzadas, el primer recipiente fabricado en «Los del Mío», que permitió transportar agua y frutos sin derramarlos. Ese mismo día, Xabier terminó de levantar una vivienda para su familia, usando troncos, barro y hojas secas para protegerse del viento y la lluvia. Ambos avances fueron observados por los demás miembros, que se acercaron a examinar las técnicas sin que mediara ninguna orden colectiva.",
    "inventos": [
     {
      "nombre": "palo con piedras atadas",
@@ -329,6 +1216,96 @@
      "antes": [],
      "tipo": "objeto",
      "inedito": false
+    },
+    {
+     "nombre": "red entre palos",
+     "categoria": "herramienta",
+     "dia": 131,
+     "inventor": "Carla",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "tejido de ramas para techo",
+     "categoria": "vivienda",
+     "dia": 141,
+     "inventor": "Noa",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "piedra con mango largo",
+     "categoria": "herramienta",
+     "dia": 142,
+     "inventor": "Breogán",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "lanza con piedra que aprieta",
+     "categoria": "arma_caza",
+     "dia": 142,
+     "inventor": "Sabela",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "red de fibra con mango",
+     "categoria": "herramienta",
+     "dia": 149,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "red de fibra entre palos cruzados",
+     "categoria": "herramienta",
+     "dia": 152,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": true
+    },
+    {
+     "nombre": "red con mango largo",
+     "categoria": "herramienta",
+     "dia": 154,
+     "inventor": "Telmo",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "cuenco de fibra apretada",
+     "categoria": "recipiente",
+     "dia": 158,
+     "inventor": "Noa",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "cuenco de ramas trenzadas",
+     "categoria": "recipiente",
+     "dia": 160,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
     }
    ],
    "epoca": "prehistoria",
@@ -341,22 +1318,22 @@
    "color": "#D85A30",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 224,
-    "desigualdad_gini": 0.17,
-    "inventos": 40,
-    "inventos_propios": 40,
+    "comida_total": 225,
+    "desigualdad_gini": 0.21,
+    "inventos": 49,
+    "inventos_propios": 49,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 81,
+    "bienestar": 77,
     "con_refugio": 2,
     "parejas": 0,
     "intentos_invento": {
-     "intentos": 239,
-     "fallidos": 116,
-     "conseguidos": 57,
-     "sin_materiales": 60,
+     "intentos": 289,
+     "fallidos": 142,
+     "conseguidos": 67,
+     "sin_materiales": 74,
      "rechazados": 6
     },
     "explorado": 680,
@@ -368,7 +1345,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "El día 130 en la sociedad «Los del Nuestro» transcurrió sin incidentes destacables, marcado por las rutinas de trabajo y las tareas de supervivencia. Los miembros dedicaron la jornada a mantener los cultivos, reparar herramientas y asegurar las reservas de agua. Al caer la noche, se registró un ambiente de calma y orden en los espacios comunes.",
+   "cronica": "La mañana del día 160 transcurrió entre labores de mantenimiento y turnos de cultivo, sin que se registraran incidentes destacables. Los equipos de vigilancia reportaron movimientos rutinarios en el perímetro y una distribución de raciones acorde al plan semanal. Al caer la noche, los registros comunitarios indicaban un saldo estable de recursos y una baja asistencia a la enfermería.",
    "inventos": [
     {
      "nombre": "piedra con mango",
@@ -769,6 +1746,96 @@
      "antes": [],
      "tipo": "estructura",
      "inedito": false
+    },
+    {
+     "nombre": "palos que hacen fuego",
+     "categoria": "fuego_y_cocina",
+     "dia": 146,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false
+    },
+    {
+     "nombre": "tronco quemado y raspado",
+     "categoria": "recipiente",
+     "dia": 151,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "comida colgada al humo",
+     "categoria": "fuego_y_cocina",
+     "dia": 152,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false
+    },
+    {
+     "nombre": "hoyo fresco con barro y hojas",
+     "categoria": "almacen",
+     "dia": 153,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "tapa de ramas y hojas",
+     "categoria": "recipiente",
+     "dia": 154,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "refugio de ramas y barro",
+     "categoria": "vivienda",
+     "dia": 154,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
+    },
+    {
+     "nombre": "tronco arrastrador",
+     "categoria": "vehiculo_tierra",
+     "dia": 155,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": true
+    },
+    {
+     "nombre": "vasija grande de barro con boca ancha",
+     "categoria": "recipiente",
+     "dia": 155,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false
+    },
+    {
+     "nombre": "pared baja de barro y hierba",
+     "categoria": "vivienda",
+     "dia": 158,
+     "inventor": "Uxío",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false
     }
    ],
    "epoca": "prehistoria",
@@ -948,18 +2015,6 @@
     "nombre": "hueco fresco con hojas"
    },
    {
-    "id": 56,
-    "tipo": "hoguera",
-    "categoria": "fuego_y_cocina",
-    "modelo": "estructura:hoguera",
-    "x": 116,
-    "y": 1,
-    "lado": "A",
-    "dueno": 15,
-    "color": null,
-    "nombre": "fuego por frotación"
-   },
-   {
     "id": 58,
     "tipo": "hoguera",
     "categoria": "fuego_y_cocina",
@@ -994,18 +2049,6 @@
     "dueno": 12,
     "color": null,
     "nombre": "hoyo fresco tapado"
-   },
-   {
-    "id": 70,
-    "tipo": "hoguera",
-    "categoria": "fuego_y_cocina",
-    "modelo": "objeto:herramienta",
-    "x": 122,
-    "y": 3,
-    "lado": "A",
-    "dueno": 13,
-    "color": null,
-    "nombre": "refugio de palos y pieles"
    },
    {
     "id": 71,
@@ -1078,6 +2121,150 @@
     "dueno": 2,
     "color": null,
     "nombre": "hoyo con paredes de barro"
+   },
+   {
+    "id": 86,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 36,
+    "y": 3,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hueco fresco para guardar comida"
+   },
+   {
+    "id": 91,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 122,
+    "y": 1,
+    "lado": "A",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "un refugio para los míos, con palos y pi"
+   },
+   {
+    "id": 92,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 117,
+    "y": 18,
+    "lado": "A",
+    "dueno": 7,
+    "color": null,
+    "nombre": "refugio de palos y pieles"
+   },
+   {
+    "id": 93,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 35,
+    "y": 14,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "palos que hacen fuego"
+   },
+   {
+    "id": 95,
+    "tipo": "horno",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:horno",
+    "x": 37,
+    "y": 14,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "horno de barro para el fuego"
+   },
+   {
+    "id": 97,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 30,
+    "y": 0,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hoyo fresco tapado para guardar comida"
+   },
+   {
+    "id": 98,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 115,
+    "y": 18,
+    "lado": "A",
+    "dueno": 17,
+    "color": null,
+    "nombre": "cuna de ramas y fibra"
+   },
+   {
+    "id": 102,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 28,
+    "y": 5,
+    "lado": "B",
+    "dueno": 20,
+    "color": null,
+    "nombre": "comida colgada al humo"
+   },
+   {
+    "id": 103,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 39,
+    "y": 16,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "hoyo fresco con barro y hojas"
+   },
+   {
+    "id": 106,
+    "tipo": "tronco arrastrador",
+    "categoria": "vehiculo_tierra",
+    "modelo": "nuevo",
+    "x": 33,
+    "y": 15,
+    "lado": "B",
+    "dueno": 8,
+    "color": null,
+    "nombre": "tronco arrastrador"
+   },
+   {
+    "id": 108,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 117,
+    "y": 22,
+    "lado": "A",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "palo que hace fuego"
+   },
+   {
+    "id": 112,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 131,
+    "y": 4,
+    "lado": "A",
+    "dueno": 3,
+    "color": null,
+    "nombre": "refugio de palos y pieles"
    }
   ],
   "campos": []
@@ -1086,12 +2273,12 @@
   [
    39,
    13,
-   9
+   10
   ],
   [
    28,
    31,
-   4
+   2
   ],
   [
    37,
@@ -1101,110 +2288,135 @@
   [
    32,
    1,
-   2
+   7
   ],
   [
    36,
    14,
-   7
+   10
   ],
   [
    39,
    4,
-   8
+   12
   ],
   [
    39,
    2,
-   6
-  ],
-  [
-   113,
-   19,
-   3
-  ],
-  [
-   24,
-   9,
    3
   ],
   [
    112,
    18,
-   10
-  ],
-  [
-   33,
-   29,
-   1
+   6
   ],
   [
    36,
    2,
-   8
-  ],
-  [
-   34,
-   5,
-   2
-  ],
-  [
-   37,
-   18,
-   3
+   4
   ],
   [
    25,
    12,
-   5
-  ],
-  [
-   115,
-   28,
-   2
+   9
   ],
   [
    36,
    3,
-   6
+   12
+  ],
+  [
+   36,
+   15,
+   5
+  ],
+  [
+   117,
+   23,
+   2
+  ],
+  [
+   25,
+   33,
+   3
+  ],
+  [
+   113,
+   24,
+   5
+  ],
+  [
+   30,
+   0,
+   1
   ],
   [
    112,
-   30,
+   22,
+   1
+  ],
+  [
+   22,
+   28,
+   8
+  ],
+  [
+   25,
+   16,
    1
   ],
   [
    129,
-   14,
+   16,
    1
   ],
   [
-   119,
+   30,
    2,
    1
   ],
   [
-   114,
-   33,
+   22,
+   27,
+   7
+  ],
+  [
+   22,
+   12,
+   6
+  ],
+  [
+   22,
+   10,
    2
   ],
   [
-   132,
-   2,
-   1
+   30,
+   8,
+   4
   ],
   [
-   33,
-   2,
-   1
-  ],
-  [
-   116,
-   31,
+   127,
+   12,
    2
+  ],
+  [
+   123,
+   0,
+   1
+  ],
+  [
+   24,
+   9,
+   1
+  ],
+  [
+   20,
+   28,
+   3
   ]
  ],
  "contacto": false,
- "inicio_dia": 1794779850.8118422,
+ "inicio_dia": 1794865504.0282233,
  "segundos_dia": 2880.0
 }

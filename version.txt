@@ -1,1 +1,1 @@
-0c30e76 2026-11-14 Merge pull request #8 from miovsnuestro/graficos-nivel2-mejoras
+5acddd3 2026-11-16 Merge pull request #12 from miovsnuestro/cursor/hotfix-unary-plus-decidir-656b
