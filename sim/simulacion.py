@@ -81,6 +81,7 @@ class Simulacion:
         if not hasattr(sim, "fab"):  # mundos guardados antes de que existieran los objetos
             sim.fab = Fabricacion()
             sim._poner_lo_que_ya_habia()
+        sim.fab.juntar_hogueras()  # mundos con hogueras pegadas de antes: se queda una por sitio
         return sim
 
     def _poner_lo_que_ya_habia(self):

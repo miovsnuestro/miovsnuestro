@@ -194,6 +194,19 @@ class Fabricacion:
         if modelo == "nuevo":
             self._quizas_pedir_modelo(sim, "objeto", tipo, cat, obj, a)
 
+    def juntar_hogueras(self):
+        """Hogueras pegadas de la misma sociedad (de antes de compartirlas): se queda una, la común o la más antigua.
+        Solo cambia el dibujo; el fuego como saber no depende de cuántas hogueras haya."""
+        quedan = []
+        for e in sorted(self.estructuras, key=lambda e: (e["tipo"] != "hoguera", e["dueno"] != "comun", e.get("dia", 0), e["id"])):
+            if e["tipo"] == "hoguera" and any(q["tipo"] == "hoguera" and q["lado"] == e["lado"]
+                                              and abs(q["x"] - e["x"]) + abs(q["y"] - e["y"]) <= 3 for q in quedan):
+                continue
+            quedan.append(e)
+        quitadas = len(self.estructuras) - len(quedan)
+        self.estructuras = sorted(quedan, key=lambda e: e["id"])
+        return quitadas
+
     def primera_pieza(self, sim, a, invento, fase):
         """Al descubrir algo, lo primero que existe es la pieza del inventor (la primera hoguera, la primera piedra con mango)."""
         cat = sim.inventos[a.lado].get(invento, {}).get("categoria")
@@ -242,8 +255,10 @@ class Fabricacion:
         dueno = "comun" if str(d.get("para") or d.get("dueno") or "").lower() in ("comun", "común", "todos", "almacen") else a.id
         if not gratis and tipo not in ("camino", "campo"):
             # Si ya tiene uno igual al lado, el trabajo va a cuidarlo (avivar el fuego, reparar el corral): no aparece otro.
-            igual = next((e for e in self.estructuras if e["tipo"] == tipo and e["lado"] == a.lado and e["dueno"] == dueno
-                          and abs(e["x"] - a.x) + abs(e["y"] - a.y) <= 2), None)
+            # Una hoguera a pocos pasos se comparte (sea de quien sea de su gente): se aviva esa en vez de encender otra al lado.
+            igual = next((e for e in self.estructuras if e["tipo"] == tipo and e["lado"] == a.lado
+                          and (e["dueno"] == dueno or tipo == "hoguera")
+                          and abs(e["x"] - a.x) + abs(e["y"] - a.y) <= (3 if tipo == "hoguera" else 2)), None)
             if igual:
                 for k, v in coste.items():
                     a.quitar(k, (v + 1) // 2)
