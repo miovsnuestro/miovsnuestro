@@ -1,8 +1,8 @@
 {
  "dias": 7,
  "por_via": {
-  "banco": 10,
-  "ia": 2
+  "banco": 11,
+  "ia": 4
  },
  "sin_respuesta_en_banco": [
   {
@@ -10,7 +10,15 @@
    "veces": 1
   },
   {
+   "pregunta": "quien tuvo hijos",
+   "veces": 1
+  },
+  {
    "pregunta": "¿Por qué no inventan nada?",
+   "veces": 1
+  },
+  {
+   "pregunta": "Por que los del mio tienen mejores casas que los del nuestro?",
    "veces": 1
   }
  ]

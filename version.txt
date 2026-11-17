@@ -1,1 +1,1 @@
-5acddd3 2026-11-16 Merge pull request #12 from miovsnuestro/cursor/hotfix-unary-plus-decidir-656b
+924d3c9 2026-11-17 Merge pull request #14 from miovsnuestro/fichas-de-obras
