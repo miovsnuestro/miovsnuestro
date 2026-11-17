@@ -51,6 +51,9 @@
   #ia{position:absolute;left:10px;bottom:84px;font-size:10px;background:rgba(14,20,24,.55);padding:3px 7px;border-radius:7px}
   #ayuda{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:13px;text-align:center;line-height:1.5;transition:opacity 1s;pointer-events:none}
   .oculto{display:none!important}
+  .bfila{display:flex;gap:4px;margin-top:5px;min-width:0}.bfila .corto{display:none}
+  @media (max-width:600px){.bfila .largo{display:none}.bfila .corto{display:inline}.bfila .bchat{padding:4px 3px}}
+  #marcador .lado{min-width:0}.bfila .bchat{margin-top:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .bchat{display:block;width:100%;margin-top:5px;padding:4px 6px;border:0;border-radius:8px;background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:11.5px;cursor:pointer}
   .bchat:hover{background:rgba(255,255,255,.24)}
   #charla{left:10px;right:10px;top:205px;max-height:52vh;display:flex;flex-direction:column;z-index:6;padding:8px 10px}
@@ -61,6 +64,11 @@
   #chcerrar{border:0;background:none;color:#fff;font-size:16px;cursor:pointer;padding:2px 6px}
   #chlista{overflow-y:auto;-webkit-overflow-scrolling:touch;font-size:12.5px;line-height:1.4;flex:1;min-height:60px}
   #chlista .m{padding:4px 2px;border-bottom:1px solid rgba(255,255,255,.07)}#chlista .q{font-size:10.5px;opacity:.6}
+  #chlista .inv{display:flex;gap:8px;align-items:flex-start;padding:6px 2px;border-bottom:1px solid rgba(255,255,255,.07)}
+  #chlista .inv .ic{flex:0 0 30px;height:30px;border-radius:8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:17px}
+  #chlista .inv .nm{font-weight:700;padding:0}#chlista .inv .ef{font-size:11.5px;opacity:.85}#chlista .inv .q{margin-top:1px}
+  #chlista .inv .tg{display:inline-block;font-size:9.5px;padding:0 5px;border-radius:6px;background:rgba(255,255,255,.12);margin-left:4px;vertical-align:1px;font-weight:600}
+  #chlista .cab{font-size:11px;opacity:.7;padding:2px 2px 4px}
   #chlista .nom{font-weight:700;cursor:pointer;text-decoration:underline dotted rgba(255,255,255,.4)}#chlista .vac{opacity:.7;padding:10px 2px}
   .chnota{font-size:10px;opacity:.6;margin-top:5px}
   @media (min-width:900px){#charla{left:auto;right:10px;width:520px;top:215px}}
@@ -118,13 +126,13 @@
 <div id="marcador" class="panel" title="Toca para plegar">
   <div class="lado" style="background:rgba(216,90,48,.28);border:1.5px solid var(--B)"><h3><span id="nB">Los del Nuestro</span><span class="res" id="rB"></span></h3><div class="sub" id="sB"></div>
     <div class="fila"><span>Población</span><span id="pB">-</span></div><div class="fila"><span>Inventos</span><span id="iB">-</span></div>
-    <div class="fila"><span>Bienestar</span><span id="wB">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tB">-</span></div><button class="bchat" data-chat="B">💬 Lo que hablan</button></div>
+    <div class="fila"><span>Bienestar</span><span id="wB">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tB">-</span></div><div class="bfila"><button class="bchat" data-chat="B" title="Lo que se dicen entre ellos">💬 <span class="largo">Lo que hablan</span><span class="corto">Hablan</span></button><button class="bchat" data-chat="B" data-modo="inv" title="Lo que han inventado">💡 Inventos</button></div></div>
   <div class="lado" style="background:rgba(29,158,117,.28);border:1.5px solid var(--A)"><h3><span id="nA">Los del Mío</span><span class="res" id="rA"></span></h3><div class="sub" id="sA"></div>
     <div class="fila"><span>Población</span><span id="pA">-</span></div><div class="fila"><span>Inventos</span><span id="iA">-</span></div>
-    <div class="fila"><span>Bienestar</span><span id="wA">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tA">-</span></div><button class="bchat" data-chat="A">💬 Lo que hablan</button></div>
+    <div class="fila"><span>Bienestar</span><span id="wA">-</span></div><div class="fila"><span>Tierra reclamada</span><span id="tA">-</span></div><div class="bfila"><button class="bchat" data-chat="A" title="Lo que se dicen entre ellos">💬 <span class="largo">Lo que hablan</span><span class="corto">Hablan</span></button><button class="bchat" data-chat="A" data-modo="inv" title="Lo que han inventado">💡 Inventos</button></div></div>
 </div>
 <div id="charla" class="panel oculto"><div class="ch"><div class="pes"><button data-chat="B">Los del Nuestro</button><button data-chat="A">Los del Mío</button></div><button id="chcerrar" title="Cerrar">✕</button></div>
-  <div id="chlista"></div><div class="chnota">Lo que se dicen entre ellos, tal cual. Toca un nombre para seguirle. Contenido generado con IA.</div></div>
+  <div id="chlista"></div><div class="chnota" id="chnota">Lo que se dicen entre ellos, tal cual. Toca un nombre para seguirle. Contenido generado con IA.</div></div>
 <div id="ficha" class="panel"><div class="n"><i id="fc"></i><span id="fn"></span></div><div class="s" id="fs"></div>
   <div class="barras"><div>Hambre<span><b id="bh"></b></span></div><div>Energía<span><b id="be"></b></span></div><div>Salud<span><b id="bs"></b></span></div></div>
   <div class="p" id="fp"></div>
@@ -557,9 +565,40 @@ $('bcerrar').onclick=soltar;$('bseguir').onclick=()=>{if(foco){foco=null;anillo.
 // ---- Lo que hablan: el chat de cada sociedad (lo que dicen, a quién, y cuándo) ----
 let chatLado=null;
 const FASE_TXT={manana:'mañana',mañana:'mañana',mediodia:'mediodía',tarde:'tarde',noche:'noche'};
+let chatModo='chat';
+const NOTA_PANEL={chat:'Lo que se dicen entre ellos, tal cual. Toca un nombre para seguirle. Contenido generado con IA.',
+  inv:'Todo lo que ha inventado o aprendido cada sociedad, lo más reciente arriba. Lo inventan ellos con IA; para qué sirve lo decide el árbitro, con las mismas reglas para los dos lados.'};
+const ICONO_CAT={herramienta:'🔨',arma_caza:'🏹',ropa:'🧥',fuego_y_cocina:'🔥',recipiente:'🏺',cultivo:'🌾',animal_domestico:'🐐',vivienda:'🛖',
+  taller:'⚒️',almacen:'📦',fabrica:'🏭',vehiculo_tierra:'🛒',barco:'⛵',maquina:'⚙️',camino_o_puente:'🌉',medicina:'🌿',escritura_y_conocimiento:'📜',
+  moneda_o_comercio:'🪙',instrumento:'🥁',observacion_del_cielo:'🔭',energia:'⚡',comunicacion:'📣',transporte_aereo:'🎈',espacial:'🚀',
+  oficio:'👷',organizacion:'🤝',norma_o_costumbre:'📏',sistema:'🧩',otro:'💡'};
+const TIPO_TXT={objeto:'objeto',estructura:'construcción',tecnica:'técnica',sistema:'idea'};
+const act=o=>String(o||'').replace(/_/g,' ');
+const num=v=>(Math.round(v*10)/10).toString().replace('.',',');
+function paraQue(efs){
+  const t=(efs||[]).map(e=>{switch(e.tipo){
+    case'habilita':return'permite '+act(e.objetivo);
+    case'rendimiento':return'rinde ×'+num(e.valor)+(e.objetivo?' al '+act(e.objetivo):'');
+    case'saciedad':return'la comida llena más';case'abrigo':return'da abrigo';case'conservacion':return'la comida dura más';
+    case'salud':return'ayuda a recuperarse';case'ahorro_energia':return'cansa menos';case'alcance':return'llega '+num(e.valor)+' casillas más lejos';
+    case'refugio':return'sirve de casa';case'defensa':return'protege';case'comunicacion':return'las ideas se extienden más rápido';
+    case'energia':return'da fuerza para fabricar';default:return'';}}).filter(Boolean);
+  return t.length?t.join(' · ').replace(/^./,c=>c.toUpperCase())+'.':'';
+}
+function pintarInventos(l){
+  const s=est.sociedades[chatLado],invs=(s.inventos||[]).map((i,k)=>({...i,k})).sort((a,b)=>(b.dia||0)-(a.dia||0)||b.k-a.k);
+  if(!invs.length){l.innerHTML='<div class="vac">Todavía no han inventado nada. Vuelve en un rato.</div>';return;}
+  l.innerHTML='<div class="cab">'+invs.length+' inventos</div>'+invs.map(i=>'<div class="inv"><div class="ic">'+(ICONO_CAT[i.categoria]||'💡')+'</div><div>'+
+    '<span class="nm">'+colorear(i.nombre.replace(/^./,c=>c.toUpperCase()))+'</span>'+(TIPO_TXT[i.tipo]?'<span class="tg">'+TIPO_TXT[i.tipo]+'</span>':'')+
+    (paraQue(i.efectos)?'<div class="ef">'+colorear(paraQue(i.efectos))+'</div>':'')+
+    '<div class="q">Día '+(i.dia??'?')+(i.origen?' · aprendido de '+colorear(i.origen):i.inventor?' · '+colorear(i.inventor):'')+'</div></div></div>').join('');
+  if(!l.dataset.visto){l.scrollTop=0;l.dataset.visto=1;}
+}
 function pintarCharla(){
   if(!chatLado||!est)return;const l=$('chlista'),abajo=l.scrollHeight-l.scrollTop-l.clientHeight<40;
   document.querySelectorAll('#charla .pes button').forEach(b=>b.classList.toggle('on',b.dataset.chat===chatLado));
+  $('chnota').textContent=NOTA_PANEL[chatModo];
+  if(chatModo==='inv')return pintarInventos(l);
   const ms=((est.charla||{})[chatLado]||[]);
   if(!ms.length){l.innerHTML='<div class="vac">Todavía no se han dicho nada que se pueda leer aquí. Vuelve en un rato.</div>';return;}
   const nom=(id,n)=>'<span class="nom" data-id="'+id+'">'+colorear(n)+'</span>';
@@ -568,8 +607,9 @@ function pintarCharla(){
   if(abajo||!l.dataset.visto){l.scrollTop=l.scrollHeight;l.dataset.visto=1;}
 }
 function situarCharla(){const mk=$('marcador').getBoundingClientRect(),c=$('charla');c.style.top=Math.round(mk.bottom+6)+'px';c.style.maxHeight=Math.max(160,Math.round(innerHeight-mk.bottom-150))+'px';}
-function abrirCharla(lado){chatLado=lado;$('charla').classList.remove('oculto');situarCharla();$('chlista').dataset.visto='';pintarCharla();}
-document.querySelectorAll('[data-chat]').forEach(b=>b.addEventListener('click',ev=>{ev.stopPropagation();abrirCharla(b.dataset.chat);}));
+function abrirCharla(lado,modo){if(modo)chatModo=modo;chatLado=lado;$('charla').classList.remove('oculto');situarCharla();$('chlista').dataset.visto='';pintarCharla();}
+document.querySelectorAll('.bchat[data-chat]').forEach(b=>b.addEventListener('click',ev=>{ev.stopPropagation();abrirCharla(b.dataset.chat,b.dataset.modo||'chat');}));
+document.querySelectorAll('#charla .pes button').forEach(b=>b.addEventListener('click',ev=>{ev.stopPropagation();abrirCharla(b.dataset.chat);}));
 $('chcerrar').onclick=()=>{chatLado=null;$('charla').classList.add('oculto');};
 $('charla').addEventListener('pointerdown',ev=>ev.stopPropagation());$('charla').addEventListener('wheel',ev=>ev.stopPropagation());
 $('chlista').onclick=ev=>{const t=ev.target.closest('.nom');if(!t)return;const g=gente.get(+t.dataset.id);if(g){seguir(g);if(movil()){chatLado=null;$('charla').classList.add('oculto');}}};

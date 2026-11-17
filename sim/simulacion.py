@@ -128,7 +128,8 @@ class Simulacion:
                                "color": config.COLOR_SOCIEDAD[l], "metricas": self.metricas(l), "cronica": cron[l],
                                "inventos": [{"nombre": n, "categoria": d.get("categoria"), "dia": d.get("dia"),
                                              "inventor": d.get("inventor"), "origen": d.get("origen"), "antes": d.get("antes", []),
-                                             "tipo": d.get("tipo_creacion", "objeto"), "inedito": bool(d.get("inedito"))}
+                                             "tipo": d.get("tipo_creacion", "objeto"), "inedito": bool(d.get("inedito")),
+                                             "efectos": d.get("efectos", [])}
                                             for n, d in self.inventos[l].items()],
                                "epoca": self.epoca_de(l),
                                "libros_leidos": len(getattr(self, "libros_leidos", {}).get(l, ())),
