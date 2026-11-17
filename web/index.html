@@ -42,6 +42,7 @@
   #ficha .barras div{font-size:10.5px;opacity:.9}
   #ficha .barras span{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.18);margin-top:3px;overflow:hidden}
   #ficha .barras span b{display:block;height:100%;border-radius:3px}
+  #fp .od{font-style:normal;font-size:12.5px;line-height:1.45;margin:2px 0}#fp .od b{font-weight:650}
   #ficha .acc{display:flex;gap:6px;margin-top:8px}
   #ficha button,#botones button{pointer-events:auto;background:rgba(14,20,24,.78);color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:8px 11px;font-size:12.5px;cursor:pointer}
   #ficha button{background:rgba(255,255,255,.12)}
@@ -134,7 +135,7 @@
 <div id="charla" class="panel oculto"><div class="ch"><div class="pes"><button data-chat="B">Los del Nuestro</button><button data-chat="A">Los del Mío</button></div><button id="chcerrar" title="Cerrar">✕</button></div>
   <div id="chlista"></div><div class="chnota" id="chnota">Lo que se dicen entre ellos, tal cual. Toca un nombre para seguirle. Contenido generado con IA.</div></div>
 <div id="ficha" class="panel"><div class="n"><i id="fc"></i><span id="fn"></span></div><div class="s" id="fs"></div>
-  <div class="barras"><div>Hambre<span><b id="bh"></b></span></div><div>Energía<span><b id="be"></b></span></div><div>Salud<span><b id="bs"></b></span></div></div>
+  <div class="barras" id="fbarras"><div>Hambre<span><b id="bh"></b></span></div><div>Energía<span><b id="be"></b></span></div><div>Salud<span><b id="bs"></b></span></div></div>
   <div class="p" id="fp"></div>
   <div id="entrevista" class="oculto"><div id="eresp"></div><div class="epreg"><input id="epreg" maxlength="200" placeholder="Pregúntale algo sobre su vida…" autocomplete="off"><button id="eenv">Preguntar</button></div><div id="enota">Responde con sus recuerdos. Tu pregunta no cambia nada en el experimento. Contenido generado con IA.</div></div>
   <div class="acc"><button id="bentrevistar" style="display:none">🎤 Entrevistar</button><button id="bseguir">Dejar de seguir</button><button id="bcerrar">Cerrar</button></div></div>
@@ -556,12 +557,18 @@ const rc=new THREE.Raycaster(),mv=new THREE.Vector2(),plano=new THREE.Plane(new 
 function sobreSuelo(cx,cy){mv.set(cx/W*2-1,-cy/H*2+1);rc.setFromCamera(mv,C);plano.constant=-Math.max(suelo(cam.x,cam.z),0);const p=new THREE.Vector3();return rc.ray.intersectPlane(plano,p)?p:null;}
 function tocar(e){mv.set(e.clientX/W*2-1,-e.clientY/H*2+1);rc.setFromCamera(mv,C);
   const h=rc.intersectObjects(hits,false)[0];if(h){const g=gente.get(h.object.userData.id);if(g){seguir(g);return;}}
-  const hc=rc.intersectObjects(pueblos.children,true).find(i=>{let o=i.object;while(o&&!o.userData.casa)o=o.parent;return o;});
+  const hc=est&&est.obras?null:rc.intersectObjects(pueblos.children,true).find(i=>{let o=i.object;while(o&&!o.userData.casa)o=o.parent;return o;});
   if(hc){let o=hc.object;while(!o.userData.casa)o=o.parent;mostrarTexto('Casa de '+(o.userData.casa.join(' y ')||'una familia'));return;}
+  const ho=rc.intersectObjects(pueblos.children,true).map(i=>{let o=i.object;while(o&&!o.userData.obra)o=o.parent;return o;}).find(Boolean);
+  if(ho){mostrarObra(ho.userData.obra,ho.userData.casa);return;}
+  if(est&&est.obras){let mejor=null,dmin=34;const v=new THREE.Vector3();  // las cosas pequeñas (una hoguera) se aciertan aunque el dedo caiga al lado
+    for(const o of pueblos.children){if(!o.userData.obra)continue;v.copy(o.position);v.y+=.35;v.project(C);if(v.z>1)continue;
+      const d=Math.hypot((v.x+1)/2*W-e.clientX,(1-v.y)/2*H-e.clientY);if(d<dmin){dmin=d;mejor=o;}}
+    if(mejor){mostrarObra(mejor.userData.obra,mejor.userData.casa);return;}}
   const ahora=performance.now();if(ahora-ultimoToque<350){const p=sobreSuelo(e.clientX,e.clientY);if(p){obj.x=p.x;obj.z=p.z;obj.dist=Math.max(6,obj.dist*.45);limitar();}}ultimoToque=ahora;}
 document.querySelectorAll('#botones [data-ir]').forEach(b=>b.onclick=()=>irA(b.dataset.ir));
 $('girI').onclick=()=>{obj.yaw+=Math.PI/4;};$('girD').onclick=()=>{obj.yaw-=Math.PI/4;};$('zMas').onclick=()=>{obj.dist*=.65;limitar();};$('zMenos').onclick=()=>{obj.dist*=1.5;limitar();};
-$('bcerrar').onclick=soltar;$('bseguir').onclick=()=>{if(foco){foco=null;anillo.visible=false;$('bseguir').textContent='Seguir';}else if(ultimaFicha){const g=gente.get(ultimaFicha.id);if(g)seguir(g);}};
+$('bcerrar').onclick=soltar;$('bseguir').onclick=()=>{if(obraAutor){const g=gente.get(obraAutor);obraAutor=null;if(g)seguir(g);return;}if(foco){foco=null;anillo.visible=false;$('bseguir').textContent='Seguir';}else if(ultimaFicha){const g=gente.get(ultimaFicha.id);if(g)seguir(g);}};
 // ---- Lo que hablan: el chat de cada sociedad (lo que dicen, a quién, y cuándo) ----
 let chatLado=null;
 const FASE_TXT={manana:'mañana',mañana:'mañana',mediodia:'mediodía',tarde:'tarde',noche:'noche'};
@@ -642,14 +649,49 @@ async function preguntar(){const t=$('epreg').value.trim();if(!t||!ultimaFicha)r
   catch(err){$('eresp').textContent='No hay conexión con el mundo ahora mismo.';}
   $('eenv').disabled=false;}
 $('eenv').onclick=preguntar;$('epreg').addEventListener('keydown',e=>{if(e.key==='Enter')preguntar();});
-function mostrarFicha(a){if(!ultimaFicha||ultimaFicha.id!==a.id){$('entrevista').classList.add('oculto');$('eresp').textContent='';}ultimaFicha=a;$('bentrevistar').style.display=(entrevistas&&a.edad>=14)?'':'none';const s=est.sociedades[a.lado],f=$('ficha');f.style.display='block';$('ia').style.display='none';$('bseguir').textContent=foco?'Dejar de seguir':'Seguir';
+function mostrarFicha(a){$('fbarras').style.display='';$('bseguir').style.display='';obraAutor=null;if(!ultimaFicha||ultimaFicha.id!==a.id){$('entrevista').classList.add('oculto');$('eresp').textContent='';}ultimaFicha=a;$('bentrevistar').style.display=(entrevistas&&a.edad>=14)?'':'none';const s=est.sociedades[a.lado],f=$('ficha');f.style.display='block';$('ia').style.display='none';$('bseguir').textContent=foco?'Dejar de seguir':'Seguir';
   $('fc').style.background=COLOR[a.lado];$('fn').textContent=a.nombre+' · '+a.edad+' años';
   const pareja=a.pareja&&est.agentes.find(o=>o.id===a.pareja),inv=Object.entries(a.inventario||{}).filter(([,v])=>v>=1).map(([k,v])=>Math.floor(v)+' '+k).slice(0,4);
   conColor($('fs'),s.nombre+(a.oficios&&a.oficios.length?' · oficio: '+a.oficios.join(', '):'')+' · '+(VERBO[a.accion]||'anda por ahí')+(a.casa?' · tiene casa':' · sin casa')+(pareja?' · pareja: '+pareja.nombre:'')+(a.hijos&&a.hijos.length?' · '+a.hijos.length+' hijo'+(a.hijos.length>1?'s':''):'')
     +(a.conocimientos.length?' · sabe: '+a.conocimientos.slice(0,4).join(', '):'')+(inv.length?' · tiene: '+inv.join(', '):'')+(a.objetos&&a.objetos.length?' · lleva: '+[...new Set(a.objetos.map(o=>o.nombre))].slice(-4).join(', '):''));
   const bar=(id,v,c)=>{$(id).style.width=clamp(v,0,100)+'%';$(id).style.background=c;};bar('bh',a.hambre,'#E8A33A');bar('be',a.energia,'#5DB3E0');bar('bs',a.salud,'#6CC66C');
   conColor($('fp'),a.dice?'Dice: «'+a.dice+'»':(a.piensa?'Piensa: «'+a.piensa+'»':(a.creencias?'Cree: «'+a.creencias+'»':'')));recolocar();}
-function mostrarTexto(t){setTimeout(recolocar,0);$('bentrevistar').style.display='none';$('entrevista').classList.add('oculto');const f=$('ficha');f.style.display='block';$('ia').style.display='none';$('fc').style.background='#FAC775';$('fn').textContent=t;$('fs').textContent='';$('fp').textContent='';['bh','be','bs'].forEach(i=>$(i).style.width='0');ultimaFicha=null;$('bseguir').textContent='Seguir';}
+// ---- Ficha de una obra: al tocar una casa, una hoguera o cualquier cosa que hayan levantado ----
+let obraAutor=null;
+const TIPO_OBRA={casa:'vivienda',hoguera:'fuego',almacen:'almacén',horno:'horno',taller:'taller',corral:'corral',campo:'campo',camino:'camino',
+  barco:'embarcación',carro:'carro',monumento:'monumento',puente:'puente',pozo:'pozo'};
+const ord=n=>n+'.ª';
+function mostrarObra(o,habitantes){
+  if(!est)return;foco=null;anillo.visible=false;setTimeout(recolocar,0);
+  $('bentrevistar').style.display='none';$('entrevista').classList.add('oculto');$('fbarras').style.display='none';ultimaFicha=null;
+  const f=$('ficha');f.style.display='block';$('ia').style.display='none';
+  const s=est.sociedades[o.lado]||{},vivo=id=>est.agentes.find(a=>a.id===id),autor=vivo(o.autor),dueno=o.dueno==='comun'?null:vivo(o.dueno);
+  const inv=(s.inventos||[]).find(i=>i.nombre===o.invento)||(s.inventos||[]).find(i=>i.nombre===o.nombre);
+  const mayus=t=>String(t||'').replace(/^./,c=>c.toUpperCase());
+  $('fc').style.background=COLOR[o.lado];$('fn').textContent=(ICONO_CAT[o.categoria]||'🏗️')+' '+mayus(o.nombre||o.tipo);
+  conColor($('fs'),'Construcción de '+s.nombre+' · '+(TIPO_OBRA[o.tipo]||String(o.tipo||'').replace(/_/g,' ')));
+  const datos=[];
+  const quien=autor?autor.nombre:'alguien que ya no vive';
+  if(o.dia!=null){const d=est.dia-o.dia;datos.push('🔨 La levantó <b>'+colorear(quien)+'</b> el día '+o.dia+(d>0?' (hace '+d+' día'+(d>1?'s':'')+')':' (hoy)')+'.');}
+  else if(autor)datos.push('🔨 La levantó <b>'+colorear(quien)+'</b>.');
+  if(o.dueno==='comun')datos.push('🚩 Es de todos: la hicieron para el común.');
+  else if(dueno&&(!autor||dueno.id!==autor.id))datos.push('👤 Es de <b>'+colorear(dueno.nombre)+'</b>.');
+  else if(autor)datos.push('👤 Es de <b>'+colorear(autor.nombre)+'</b>, que la hizo para sí.');
+  if(habitantes&&habitantes.length)datos.push('🏠 Viven aquí: '+habitantes.map(colorear).join(', ')+'.');
+  if(inv){const pq=paraQue(inv.efectos);
+    if(inv.inventor&&inv.inventor!==quien)datos.push('💡 La idea fue de <b>'+colorear(inv.inventor)+'</b>, que la inventó el día '+inv.dia+'.');
+    else if(inv.origen)datos.push('💡 La aprendieron de '+colorear(inv.origen)+' el día '+inv.dia+'.');
+    else if(inv.dia!=null)datos.push('💡 Se inventó el día '+inv.dia+'.');
+    if(pq)datos.push('⚙️ '+colorear(pq));}
+  const iguales=((est.obras&&est.obras.estructuras)||[]).filter(e=>e.lado===o.lado&&e.tipo===o.tipo).sort((a,b)=>a.id-b.id);
+  if(iguales.length>1){const k=iguales.findIndex(e=>e.id===o.id)+1;
+    datos.push('🔢 Hay '+iguales.length+' de este tipo en pie en su sociedad'+(k===1?'; esta es la más antigua.':k===iguales.length?'; esta es la más reciente.':'; esta es la '+ord(k)+' por antigüedad.'));}
+  else if(iguales.length===1)datos.push('✨ Es la única de este tipo que tienen en pie.');
+  $('fp').innerHTML=datos.map(t=>'<div class="od">'+t+'</div>').join('');
+  obraAutor=autor&&gente.get(autor.id)?autor.id:null;
+  $('bseguir').style.display=obraAutor?'':'none';if(obraAutor)$('bseguir').textContent='Ver a '+autor.nombre;
+}
+function mostrarTexto(t){$('fbarras').style.display='';$('bseguir').style.display='';obraAutor=null;setTimeout(recolocar,0);$('bentrevistar').style.display='none';$('entrevista').classList.add('oculto');const f=$('ficha');f.style.display='block';$('ia').style.display='none';$('fc').style.background='#FAC775';$('fn').textContent=t;$('fs').textContent='';$('fp').textContent='';['bh','be','bs'].forEach(i=>$(i).style.width='0');ultimaFicha=null;$('bseguir').textContent='Seguir';}
 function ocultarAyuda(){$('ayuda').style.opacity=0;}setTimeout(ocultarAyuda,7000);
 
 // ---------------- etiquetas y bocadillos ----------------

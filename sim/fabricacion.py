@@ -386,6 +386,7 @@ class Fabricacion:
 
     # ---------- lo que ve la web ----------
     def publico(self):
-        return {"estructuras": [{k: e.get(k) for k in ("id", "tipo", "categoria", "modelo", "x", "y", "lado", "dueno", "color", "nombre")}
+        return {"estructuras": [{k: e.get(k) for k in ("id", "tipo", "categoria", "modelo", "x", "y", "lado", "dueno", "color", "nombre",
+                                                            "autor", "dia", "invento")}
                                 for e in self.estructuras],
                 "campos": [[x, y, l] for (x, y), l in self.campos.items()]}
