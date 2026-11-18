@@ -69,7 +69,7 @@
   #chlista .inv .ic{flex:0 0 30px;height:30px;border-radius:8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:17px}
   #chlista .inv .nm{font-weight:700;padding:0}#chlista .inv .ef{font-size:11.5px;opacity:.85}#chlista .inv .q{margin-top:1px}
   #chlista .inv .tg{display:inline-block;font-size:9.5px;padding:0 5px;border-radius:6px;background:rgba(255,255,255,.12);margin-left:4px;vertical-align:1px;font-weight:600}
-  #chlista .cab{font-size:11px;opacity:.7;padding:2px 2px 4px}
+  #chlista .cab{font-size:11px;opacity:.85;padding:2px 2px 4px}#chlista .cab .v3d{color:#FAC775;font-weight:700;text-decoration:none}
   #chlista .nom{font-weight:700;cursor:pointer;text-decoration:underline dotted rgba(255,255,255,.4)}#chlista .vac{opacity:.7;padding:10px 2px}
   .chnota{font-size:10px;opacity:.6;margin-top:5px}
   @media (min-width:900px){#charla{left:auto;right:10px;width:520px;top:215px}}
@@ -559,10 +559,11 @@ function tocar(e){mv.set(e.clientX/W*2-1,-e.clientY/H*2+1);rc.setFromCamera(mv,C
   const h=rc.intersectObjects(hits,false)[0];if(h){const g=gente.get(h.object.userData.id);if(g){seguir(g);return;}}
   const hc=est&&est.obras?null:rc.intersectObjects(pueblos.children,true).find(i=>{let o=i.object;while(o&&!o.userData.casa)o=o.parent;return o;});
   if(hc){let o=hc.object;while(!o.userData.casa)o=o.parent;mostrarTexto('Casa de '+(o.userData.casa.join(' y ')||'una familia'));return;}
+  const hm=rc.intersectObjects(Object.values(MUSEOS),true)[0];if(hm){let o=hm.object;while(o&&!o.userData.museo)o=o.parent;if(o){abrirVitrina(o.userData.museo);return;}}
   const ho=rc.intersectObjects(pueblos.children,true).map(i=>{let o=i.object;while(o&&!o.userData.obra)o=o.parent;return o;}).find(Boolean);
   if(ho){mostrarObra(ho.userData.obra,ho.userData.casa);return;}
   if(est&&est.obras){let mejor=null,dmin=34;const v=new THREE.Vector3();  // las cosas pequeñas (una hoguera) se aciertan aunque el dedo caiga al lado
-    for(const o of pueblos.children){if(!o.userData.obra)continue;v.copy(o.position);v.y+=.35;v.project(C);if(v.z>1)continue;
+    for(const o of pueblos.children){if(!o.userData.obra||o.userData.museo)continue;v.copy(o.position);v.y+=.35;v.project(C);if(v.z>1)continue;
       const d=Math.hypot((v.x+1)/2*W-e.clientX,(1-v.y)/2*H-e.clientY);if(d<dmin){dmin=d;mejor=o;}}
     if(mejor){mostrarObra(mejor.userData.obra,mejor.userData.casa);return;}}
   const ahora=performance.now();if(ahora-ultimoToque<350){const p=sobreSuelo(e.clientX,e.clientY);if(p){obj.x=p.x;obj.z=p.z;obj.dist=Math.max(6,obj.dist*.45);limitar();}}ultimoToque=ahora;}
@@ -595,7 +596,7 @@ function paraQue(efs){
 function pintarInventos(l){
   const s=est.sociedades[chatLado],invs=(s.inventos||[]).map((i,k)=>({...i,k})).sort((a,b)=>(b.dia||0)-(a.dia||0)||b.k-a.k);
   if(!invs.length){l.innerHTML='<div class="vac">Todavía no han inventado nada. Vuelve en un rato.</div>';return;}
-  l.innerHTML='<div class="cab">'+invs.length+' inventos</div>'+invs.map(i=>'<div class="inv"><div class="ic">'+(ICONO_CAT[i.categoria]||'💡')+'</div><div>'+
+  l.innerHTML='<div class="cab">'+invs.length+' inventos · <a href="#" class="v3d" data-l="'+chatLado+'">🏛️ Verlos en 3D</a></div>'+invs.map(i=>'<div class="inv" data-n="'+colorear(i.nombre)+'" style="cursor:pointer"><div class="ic">'+(ICONO_CAT[i.categoria]||'💡')+'</div><div>'+
     '<span class="nm">'+colorear(i.nombre.replace(/^./,c=>c.toUpperCase()))+'</span>'+(TIPO_TXT[i.tipo]?'<span class="tg">'+TIPO_TXT[i.tipo]+'</span>':'')+
     (paraQue(i.efectos)?'<div class="ef">'+colorear(paraQue(i.efectos))+'</div>':'')+
     '<div class="q">Día '+(i.dia??'?')+(i.origen?' · aprendido de '+colorear(i.origen):i.inventor?' · '+colorear(i.inventor):'')+'</div></div></div>').join('');
@@ -619,7 +620,7 @@ document.querySelectorAll('.bchat[data-chat]').forEach(b=>b.addEventListener('cl
 document.querySelectorAll('#charla .pes button').forEach(b=>b.addEventListener('click',ev=>{ev.stopPropagation();abrirCharla(b.dataset.chat);}));
 $('chcerrar').onclick=()=>{chatLado=null;$('charla').classList.add('oculto');};
 $('charla').addEventListener('pointerdown',ev=>ev.stopPropagation());$('charla').addEventListener('wheel',ev=>ev.stopPropagation());
-$('chlista').onclick=ev=>{const t=ev.target.closest('.nom');if(!t)return;const g=gente.get(+t.dataset.id);if(g){seguir(g);if(movil()){chatLado=null;$('charla').classList.add('oculto');}}};
+$('chlista').onclick=ev=>{const v3=ev.target.closest('.v3d');if(v3){ev.preventDefault();abrirVitrina(v3.dataset.l);return;}const iv=ev.target.closest('.inv[data-n]');if(iv){abrirVitrina(chatLado,iv.dataset.n);return;}const t=ev.target.closest('.nom');if(!t)return;const g=gente.get(+t.dataset.id);if(g){seguir(g);if(movil()){chatLado=null;$('charla').classList.add('oculto');}}};
 $('marcador').onclick=()=>{$('marcador').classList.toggle('min');setTimeout(()=>{recolocar();if(chatLado)situarCharla();},30);};
 addEventListener('resize',()=>{if(chatLado)situarCharla();});
 // Los nombres de las sociedades siempre en su color, en cualquier texto
@@ -759,7 +760,7 @@ function paso(dt){t+=dt;
   const d=luzDelDia();
   for(const g of gente.values())animarPersona(g,dt,t);
   if(foco){anillo.visible=true;anillo.position.set(foco.position.x,foco.position.y+.03,foco.position.z);anillo.material.color.set(COLOR[foco.userData.a.lado]);anillo.scale.setScalar(1+Math.sin(t*3)*.06);}
-  moverFauna(dt);animarAgua(t);animarObras(t,dt);
+  moverFauna(dt);animarAgua(t);animarObras(t,dt);if(typeof animarMuseos==='function')animarMuseos(t);
   nubes.visible=C.position.y<46;for(const n of nubes.children){n.position.x+=n.userData.v*dt;if(n.position.x>130)n.position.x=-130;}
   for(const p of pajaros){const u=p.userData,a=t*u.vel+u.fase;p.position.set(u.cx+Math.cos(a)*u.r,u.alt+Math.sin(t*.7+u.fase)*.4,u.cz+Math.sin(a)*u.r);p.rotation.y=-a+(u.vel>0?0:Math.PI);
     const w=Math.sin(t*9+u.fase*3)*.5,pa=p.geometry.attributes.position.array;pa[4]=w;pa[13]=w;p.geometry.attributes.position.needsUpdate=true;}
@@ -778,6 +779,7 @@ function bucle(){const ahora=performance.now(),dt=Math.min(.1,(ahora-tPrevio)/10
 cargar().then(()=>{recolocar();if(REEL){for(let i=0;i<3;i++)paso(1/25);tReel=0;}window.listo=true;if(!REEL)bucle();});
 if(!REEL)setInterval(cargar,30000);
 </script>
+<script src="museo.js"></script>
 <script src="narrador.js"></script>
 </body>
 </html>
