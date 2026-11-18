@@ -441,42 +441,102 @@ def duracion_wav(ruta):
 
 
 # ---------- 3. grabación fotograma a fotograma ----------
+# Con el render por CPU, cargar una escena o sacar una captura puede tardar mucho. Los tiempos son generosos y, si
+# una escena falla, se repite una vez (con navegador nuevo si el anterior se ha caído) antes de dar el reel por perdido.
+ESPERA_CARGA_MS = int(os.getenv("REEL_ESPERA_CARGA_MS", "240000"))
+ESPERA_CAPTURA_MS = int(os.getenv("REEL_ESPERA_CAPTURA_MS", "120000"))
+INTENTOS_ESCENA = int(os.getenv("REEL_INTENTOS_ESCENA", "2"))
+ARGS_CHROMIUM = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
+
+
+def _params_escena(e, i, titular):
+    params = {"reel": "1", "plano": e.get("plano", "general"), "lado": e["lado"] if e["lado"] in "AB" else "A",
+              "dur": f"{e['dur']:.2f}", "semilla": str(i), "hora": e.get("hora", "0.3")}
+    if e.get("foco"):
+        params["foco"] = e["foco"]
+        for k in ("accion", "con", "prop", "prop2"):  # que se vea la acción que se narra
+            if e.get(k):
+                params[k] = e[k]
+    if params["plano"] in PLANOS_SIN_SOMBRAS:
+        params["sombras"] = "0"
+    if i == 0:
+        params.update({"titular": titular, "marcador": "1"})
+    return params
+
+
+def _grabar_escena(nav, e, i, titular, ruta):
+    """Graba una escena en `ruta`. Pase lo que pase, cierra la página y ffmpeg. Si falla, el error lleva lo que
+    la página dijo por consola, para que en reels.log se vea la causa."""
+    errores_js = []
+    pg = ff = None
+    try:
+        pg = nav.new_page(viewport={"width": RENDER[0], "height": RENDER[1]}, device_scale_factor=1)
+        pg.on("pageerror", lambda err: errores_js.append(f"error JS: {err}"))
+        pg.on("console", lambda m: errores_js.append(f"consola: {m.text}") if m.type == "error" else None)
+        pg.set_default_timeout(ESPERA_CAPTURA_MS)
+        t0 = time.time()
+        pg.goto(URL_WEB + "?" + urllib.parse.urlencode(_params_escena(e, i, titular)), timeout=ESPERA_CARGA_MS)
+        pg.wait_for_function("window.listo === true", timeout=ESPERA_CARGA_MS)
+        carga = time.time() - t0
+        ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", str(FPS), "-i", "-",
+                               "-vf", f"scale={ANCHO}:{ALTO}:flags=lanczos,format=yuv420p", "-c:v", "libx264",
+                               "-preset", "veryfast", "-crf", "19", ruta], stdin=subprocess.PIPE)
+        for _ in range(int(round(e["dur"] * FPS))):
+            pg.evaluate(f"paso({1 / FPS})")
+            ff.stdin.write(pg.screenshot(type="jpeg", quality=90, timeout=ESPERA_CAPTURA_MS))
+        ff.stdin.close()
+        if ff.wait() != 0:
+            raise RuntimeError(f"ffmpeg falló al grabar la escena {i + 1}")
+        ff = None
+        return carga
+    except Exception as err:
+        if errores_js:
+            raise RuntimeError(f"{err}\n    lo que dijo la página: " + " | ".join(errores_js[-5:])) from err
+        raise
+    finally:
+        if ff is not None:
+            try:
+                ff.stdin.close()
+            except Exception:
+                pass
+            ff.kill()
+            ff.wait()
+        if pg is not None:
+            try:
+                pg.close()
+            except Exception:
+                pass
+
+
 def grabar(escenas, titular, carpeta):
     from playwright.sync_api import sync_playwright
     clips = []
     with sync_playwright() as p:
-        nav = p.chromium.launch(args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
-                                executable_path=os.getenv("CHROME") or None)
-        for i, e in enumerate(escenas):
-            dur = e["dur"]
-            params = {"reel": "1", "plano": e.get("plano", "general"), "lado": e["lado"] if e["lado"] in "AB" else "A",
-                      "dur": f"{dur:.2f}", "semilla": str(i), "hora": e.get("hora", "0.3")}
-            if e.get("foco"):
-                params["foco"] = e["foco"]
-                for k in ("accion", "con", "prop", "prop2"):  # que se vea la acción que se narra
-                    if e.get(k):
-                        params[k] = e[k]
-            if params["plano"] in PLANOS_SIN_SOMBRAS:
-                params["sombras"] = "0"
-            if i == 0:
-                params.update({"titular": titular, "marcador": "1"})
-            pg = nav.new_page(viewport={"width": RENDER[0], "height": RENDER[1]}, device_scale_factor=1)
-            pg.goto(URL_WEB + "?" + urllib.parse.urlencode(params))
-            pg.wait_for_function("window.listo === true", timeout=120000)
-            ruta = str(carpeta / f"clip{i}.mp4")
-            ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", str(FPS), "-i", "-",
-                                   "-vf", f"scale={ANCHO}:{ALTO}:flags=lanczos,format=yuv420p", "-c:v", "libx264",
-                                   "-preset", "veryfast", "-crf", "19", ruta], stdin=subprocess.PIPE)
-            for _ in range(int(round(dur * FPS))):
-                pg.evaluate(f"paso({1 / FPS})")
-                ff.stdin.write(pg.screenshot(type="jpeg", quality=90))
-            ff.stdin.close()
-            if ff.wait() != 0:
-                raise RuntimeError(f"ffmpeg falló al grabar la escena {i}")
-            pg.close()
-            clips.append(ruta)
-            print(f"  escena {i + 1}/{len(escenas)} grabada ({dur:.1f} s)", flush=True)
-        nav.close()
+        lanzar = lambda: p.chromium.launch(args=ARGS_CHROMIUM, executable_path=os.getenv("CHROME") or None)
+        nav = lanzar()
+        try:
+            for i, e in enumerate(escenas):
+                ruta = str(carpeta / f"clip{i}.mp4")
+                for intento in range(1, INTENTOS_ESCENA + 1):
+                    try:
+                        carga = _grabar_escena(nav, e, i, titular, ruta)
+                        break
+                    except Exception as err:
+                        print(f"  escena {i + 1}/{len(escenas)} falló (intento {intento}/{INTENTOS_ESCENA}): "
+                              f"{str(err).splitlines()[0]}", flush=True)
+                        if " lo que dijo la página:" in str(err):
+                            print("   " + str(err).split("lo que dijo la página:", 1)[1].strip(), flush=True)
+                        if intento == INTENTOS_ESCENA:
+                            raise
+                        if not nav.is_connected():
+                            nav = lanzar()
+                clips.append(ruta)
+                print(f"  escena {i + 1}/{len(escenas)} grabada ({e['dur']:.1f} s, cargó en {carga:.0f} s)", flush=True)
+        finally:
+            try:
+                nav.close()
+            except Exception:
+                pass
     return clips
 
 

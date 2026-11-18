@@ -211,7 +211,10 @@ function construirObras(e) {
       if (RADIO[o.tipo]) obstaculos.push({ x: p.position.x, z: p.position.z, r: radioDe(o.tipo, ep) });
     }
   }
-  if (typeof ponerMuseo === 'function') for (const l of 'AB') ponerMuseo(e, l, estiloDe(e, l));  // casa de los inventos (solo para quien visita la web)
+  // Casa de los inventos: solo para quien visita la web. En modo reel no se pone: no sale en ningún plano y, dibujada
+  // por CPU (swiftshader), alargaba tanto la carga que la fábrica se rendía esperando window.listo (18-nov).
+  const enReel = typeof REEL !== 'undefined' && REEL;
+  if (!enReel && typeof ponerMuseo === 'function') for (const l of 'AB') ponerMuseo(e, l, estiloDe(e, l));
   pueblos.add(campos(listaCampos, ocupado));
   setTimeout(() => { for (const o of obstaculos) talar(o.x, o.z, o.r + .9); for (const l of 'AB') { const pl = plazas[l]; if (pl) talar(X(pl[0]), Z(pl[1]), 2.4); } }, 0);
 }
