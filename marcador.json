@@ -2,65 +2,164 @@
  "charla": {
   "A": [
    {
-    "dia": 188,
-    "fase": "mañana",
-    "de": 5,
-    "nombre": "Pablo",
-    "texto": "Voy a por fibra y algo de comer por el valle.",
+    "dia": 219,
+    "fase": "mediodía",
+    "de": 9,
+    "nombre": "Sabela",
+    "texto": "Voy a juntar ramas y fibra. Un cesto bajo me vendrá bien para guardar lo que recoja.",
+    "accion": "fabricar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 219,
+    "fase": "tarde",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Sabela tenía razón: el barro blando está en la orilla. Voy a por él antes de que anochezca.",
+    "accion": "extraer_arcilla",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 219,
+    "fase": "tarde",
+    "de": 13,
+    "nombre": "Xabier 2",
+    "texto": "Voy a buscar fibra y algo de comer antes de que anochezca.",
     "accion": "recolectar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 188,
+    "dia": 219,
+    "fase": "tarde",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Voy a hacerme un cesto con barro seco. Así podré llevar más cosas cuando salga a recolectar.",
+    "accion": "fabricar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 219,
+    "fase": "tarde",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Otra vez, pero esta vez la boca más estrecha y bien atada.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 219,
+    "fase": "tarde",
+    "de": 5,
+    "nombre": "Pablo",
+    "texto": "Voy a por fibras y raíces antes de que anochezca.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 219,
+    "fase": "tarde",
+    "de": 17,
+    "nombre": "Noa",
+    "texto": "Voy a por fibras, que buena falta me hacen.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mañana",
+    "de": 13,
+    "nombre": "Xabier 2",
+    "texto": "Me falta barro y fibra para el recipiente grande. Voy a por fibra.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
     "fase": "mañana",
     "de": 19,
     "nombre": "Carla",
-    "texto": "Voy a probar otra vez lo del filo, pero con las tiras mojadas para que aprieten bien.",
-    "accion": "inventar",
+    "texto": "A por fibra y ramas, que la trampa no se va a hacer sola.",
+    "accion": "recolectar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 188,
-    "fase": "mediodía",
+    "dia": 220,
+    "fase": "mañana",
+    "de": 11,
+    "nombre": "Breogán",
+    "texto": "Voy a buscar frutos y raíces antes de que apriete el sol.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mañana",
     "de": 7,
     "nombre": "Telmo",
-    "texto": "Voy a probar otra vez con el barro. Si le hago agujeritos al fondo, quizá sirva para colar el agua.",
-    "accion": "inventar",
+    "texto": "Voy a buscar arcilla y frutos por la orilla. Un cuenco con agujero me vendría bien para colar y guardar.",
+    "accion": "recolectar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 188,
+    "dia": 220,
+    "fase": "mañana",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy al río a por barro blando, como dijo Sabela. Quiero mi cuenco hondo.",
+    "accion": "extraer_arcilla",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
     "fase": "mediodía",
     "de": 13,
     "nombre": "Xabier 2",
-    "texto": "Voy a por fibra y lo que encuentre. Hay que llenar la despensa antes de pensar en inventos.",
-    "accion": "recolectar",
+    "texto": "Voy a la orilla a por barro. Quiero acabar ese recipiente grande de una vez.",
+    "accion": "extraer_arcilla",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 188,
+    "dia": 220,
     "fase": "mediodía",
-    "de": 5,
-    "nombre": "Pablo",
-    "texto": "Voy a buscar frutos y raíces. Con el hambre que llevo, algo habrá que llevarse a la boca.",
-    "accion": "recolectar",
+    "de": 15,
+    "nombre": "Roi",
+    "texto": "Voy a levantar un refugio de palos y pieles para los míos. Hace falta techo donde guarecerse.",
+    "accion": "construir",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 188,
+    "dia": 220,
     "fase": "mediodía",
-    "de": 19,
-    "nombre": "Carla",
+    "de": 7,
+    "nombre": "Telmo",
     "texto": "Voy a buscar frutos y raíces antes de que caiga la tarde.",
     "accion": "recolectar",
     "a": null,
@@ -68,208 +167,661 @@
     "a_lado": null
    },
    {
-    "dia": 188,
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 9,
+    "nombre": "Sabela",
+    "texto": "Voy a juntar fibra antes de que se haga de noche. Con lo que tengo y lo que junte, mañana haré un refugio bajo para guardar la comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy a la orilla a por barro. Sabela bien me dijo dónde está.",
+    "accion": "extraer_arcilla",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 17,
+    "nombre": "Noa",
+    "texto": "Voy a buscar raíces y frutos antes de que caiga el sol.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 17,
+    "nombre": "Noa",
+    "texto": "Voy a por raíces y fibra, que la bolsa se me queda corta.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 11,
+    "nombre": "Breogán",
+    "texto": "Voy a hacer otro palo bueno. Con lo que tengo de sobra, puedo cambiar por comida cuando llegue el hambre.",
+    "accion": "fabricar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy a la orilla, a por barro y a por lo que se pueda comer.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 13,
+    "nombre": "Xabier 2",
+    "texto": "Voy a por fibra y algo de comer, que la tarde aún da.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
     "fase": "tarde",
     "de": 19,
     "nombre": "Carla",
-    "texto": "Otra vez a las piedras. Esta vez la aprieto entre dos palos, a ver si aguanta.",
+    "texto": "Voy a por fibras y ramas finas para mi trampa de peces.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 11,
+    "nombre": "Breogán",
+    "texto": "Alba, te traigo otro palo con filo bien apretado. Tengo de sobra. ¿Me lo cambias por comida?",
+    "accion": "intercambiar",
+    "a": 1,
+    "a_nombre": "Alba",
+    "a_lado": "A"
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Esta vez lo consigo. Ya he fallado muchas veces, pero he aprendido de cada fallo.",
     "accion": "inventar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 188,
+    "dia": 221,
+    "fase": "mañana",
+    "de": 7,
+    "nombre": "Telmo",
+    "texto": "Voy a buscar frutos y raíces antes de que apriete el sol.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy al río a por barro. Sabela dijo que está donde el agua deja el lodo blando.",
+    "accion": "extraer_arcilla",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 13,
+    "nombre": "Xabier 2",
+    "texto": "Voy a por fibra y algo de comer por la orilla. Hay que llenar la despensa antes de que apriete el frío.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 9,
+    "nombre": "Sabela",
+    "texto": "Voy a juntar madera y fibras para hacerme un refugio bajo donde guardar la comida.",
+    "accion": "construir_refugio",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy a la orilla del río. Sabela dijo bien claro dónde está el barro blando.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 19,
+    "nombre": "Carla",
+    "texto": "Ya van muchas veces que me sale casi. Esta vez aprieto más la garganta y la dejo bien honda.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 1,
+    "nombre": "Alba",
+    "texto": "Voy a probar una cosa nueva con ramas y barro, para guardar mejor la comida.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 13,
+    "nombre": "Xabier 2",
+    "texto": "Voy a por barro y fibra. Con lo que tengo y lo que junte, otra vez el recipiente grande.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
     "fase": "tarde",
     "de": 5,
     "nombre": "Pablo",
-    "texto": "Voy a por barro a la orilla. Necesito arcilla para la tapa.",
+    "texto": "Voy a la orilla a por barro. Llevo días queriendo hacer esa tapa y siempre me falta arcilla.",
     "accion": "extraer_arcilla",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 188,
-    "fase": "tarde",
-    "de": 13,
-    "nombre": "Xabier 2",
-    "texto": "Voy a por arcilla y fibra a la orilla. Me hacen falta para lo del recipiente grande.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 188,
+    "dia": 221,
     "fase": "tarde",
     "de": 7,
     "nombre": "Telmo",
-    "texto": "Voy a la orilla a por barro; con esto podré acabar el cuenco de agujeros para colar.",
+    "texto": "Voy a probar una red más grande, que barra el agua de la orilla.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "tarde",
+    "de": 3,
+    "nombre": "Xabier",
+    "texto": "Voy al río, donde el barro se pega a los pies, como dijo Sabela. Necesito arcilla para mi cuenco.",
     "accion": "extraer_arcilla",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mañana",
+    "dia": 221,
+    "fase": "tarde",
     "de": 13,
     "nombre": "Xabier 2",
-    "texto": "Voy a por fibra y de paso busco algo de comer.",
+    "texto": "Voy a por frutos y raíces antes de que anochezca.",
     "accion": "recolectar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 15,
-    "nombre": "Roi",
-    "texto": "Voy a por comida y fibra al bosque. Con el hambre que llevo, no me quedo quieto.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 17,
-    "nombre": "Noa",
-    "texto": "Voy a por fibra y frutos. Hay que llenar la despensa antes de que apriete el hambre.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 7,
-    "nombre": "Telmo",
-    "texto": "Voy a la orilla a por barro. Sin barro no hay cuenco.",
-    "accion": "extraer_arcilla",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mañana",
+    "dia": 221,
+    "fase": "tarde",
     "de": 19,
     "nombre": "Carla",
-    "texto": "Hoy lo consigo. La piedra en la muesca, la fibra mojada y a apretar.",
+    "texto": "Ya tengo la trampa de cesto. Ahora probaré una red fija en el río.",
     "accion": "inventar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mediodía",
+    "dia": 221,
+    "fase": "tarde",
     "de": 15,
     "nombre": "Roi",
-    "texto": "Voy a probar a colgar carne sobre el fuego y taparla con ramas para que el humo la guarde",
-    "accion": "inventar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 17,
-    "nombre": "Noa",
-    "texto": "Voy a por fibra, que la bolsa se me está quedando vacía.",
+    "texto": "Voy a por frutos y raíces antes de que anochezca.",
     "accion": "recolectar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mediodía",
+    "dia": 221,
+    "fase": "tarde",
     "de": 11,
     "nombre": "Breogán",
-    "texto": "Voy a por frutos y raíces. La energía la tengo baja, pero algo se saca.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
+    "texto": "Alba, tengo un palo con filo de piedras bien apretado. Te lo cambio por comida, si te sirve.",
+    "accion": "intercambiar",
+    "a": 1,
+    "a_nombre": "Alba",
+    "a_lado": "A"
+   }
+  ],
+  "B": [
    {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 9,
-    "nombre": "Sabela",
-    "texto": "Voy a juntar fibra, que me hace falta para el refugio.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 19,
-    "nombre": "Carla",
-    "texto": "Ya van varios días que la piedra se me escapa del palo. Hoy la afilo primero y la ato con fibra mojada.",
+    "dia": 219,
+    "fase": "tarde",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Mar, voy a probar otra vez con la vasija de boca estrecha. Esta vez le haré una tapa que encaje bien.",
     "accion": "inventar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 13,
-    "nombre": "Xabier 2",
-    "texto": "Voy a por fibra y raíces, que falta hace en casa.",
+    "dia": 220,
+    "fase": "mañana",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a buscar frutos y raíces antes de que el sol apriete.",
     "accion": "recolectar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 7,
-    "nombre": "Telmo",
-    "texto": "Voy a la orilla a por barro. Sin barro no hay cuenco que valga.",
-    "accion": "extraer_arcilla",
+    "dia": 220,
+    "fase": "mañana",
+    "de": 2,
+    "nombre": "Xiana",
+    "texto": "Voy a probar otra vasija. Esta con dos bocas y asa, para llevar agua sin derramarla.",
+    "accion": "inventar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 15,
+    "dia": 220,
+    "fase": "mañana",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Otra vez con la vasija de boca estrecha. Esta vez el palo redondo dentro, y lo saco antes de cocer.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mañana",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a por fibras y raíces; el almacén tiene comida, pero fibra nunca sobra para atar vasijas.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mañana",
+    "de": 14,
+    "nombre": "Iago",
+    "texto": "Otra vez con la vasija de agujeros. Esta vez aprieto bien el barro con fibra para que no se raje.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mañana",
+    "de": 20,
+    "nombre": "Mar",
+    "texto": "Voy a por frutos y fibras, que el almacén tiene poca comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mañana",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a por frutos y fibra. Con la tripa a medias no se puede hacer nada bueno.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 14,
+    "nombre": "Iago",
+    "texto": "Voy a probar otra vez la vasija agujereada. Si sale, tendremos forma de colar y guardar mejor la comida.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 20,
+    "nombre": "Mar",
+    "texto": "Voy a probar otra vez lo de juntar dos vasijas. Si sale, tendremos dónde guardar el agua fresca.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 18,
+    "nombre": "Eva",
+    "texto": "Voy a por fibras y algo de comer. Hay que llenar el almacén antes de que apriete el hambre.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a probar otra cosa con el barro. Si sale, tendremos agua fresca sin que se derrame.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 4,
     "nombre": "Roi",
-    "texto": "Voy a levantar otro armazón para ahumar. Con la carne que traigamos, mejor tener dónde colgarla.",
-    "accion": "construir",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 9,
-    "nombre": "Sabela",
-    "texto": "Voy a buscar fibra y algo de comer. Con las manos vacías no se construye nada.",
+    "texto": "Voy a por fibra y algún fruto. El almacén anda bajo de comida y siempre hace falta fibra para trenzar.",
     "accion": "recolectar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a por fibra y algún fruto. Con lo que junte, lleno el almacén.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 2,
+    "nombre": "Xiana",
+    "texto": "Voy a por frutos y fibras, que el almacén anda bajo de comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "mediodía",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Mar, préstame tus manos un rato para esta vasija de boca estrecha. Juntos sale mejor.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
     "fase": "tarde",
-    "de": 19,
-    "nombre": "Carla",
+    "de": 2,
+    "nombre": "Xiana",
+    "texto": "Voy a probar otra vez lo de la vasija doble. Esta vez con un caño para verter.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Mar, voy a probar otra vez lo de la vasija de boca estrecha. Esta vez apretaré el barro alrededor de un palo liso, a ver si así sale el cuello alto sin que se m",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a probar otra vez el horno bajo. Si la piedra plana aguanta el fuego, cabrán más vasijas.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 18,
+    "nombre": "Eva",
+    "texto": "Voy a probar otra vez lo del techo, pero más bajo y apoyado en la pared.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 220,
+    "fase": "tarde",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a probar una tapa de barro para el hoyo de la comida, así estará más a salvo.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 20,
+    "nombre": "Mar",
+    "texto": "Voy a probar algo nuevo con el barro: si el agua se conserva fresca, todos beberemos mejor en verano",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 14,
+    "nombre": "Iago",
+    "texto": "Voy a por frutos y fibras, que el almacén anda justo de comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a por madera. Llevo días queriendo hacer más hoyos para guardar comida y siempre me falta.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 4,
+    "nombre": "Roi",
+    "texto": "Voy a por frutos y raíces, que el hambre aprieta y hay que llenar el cesto.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Voy a por frutos y raíces, que el almacén anda corto de comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mañana",
+    "de": 12,
+    "nombre": "Rubén",
+    "texto": "Voy a probar a tapar la vasija del cuello apretado con una tapadera de barro, atada con fibra. Así la comida aguanta más.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 8,
+    "nombre": "Uxío 2",
+    "texto": "Xabier está con el hambre a cero. Esto va al almacén, que es de todos.",
+    "accion": "depositar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 20,
+    "nombre": "Mar",
+    "texto": "Voy a buscar frutos y raíces antes de que pase más el sol.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 18,
+    "nombre": "Eva",
+    "texto": "Ya van dos veces que se me cae el techo. Lo haré más simple: ramas sobre la pared baja, bien atadas, y barro encima.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 2,
+    "nombre": "Xiana",
+    "texto": "Voy a por madera; me hace falta para el hoyo de barro.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 6,
+    "nombre": "Uxío",
+    "texto": "Voy a por madera, que la necesitamos para los techos y los hoyos de guardar.",
+    "accion": "talar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "mediodía",
+    "de": 10,
+    "nombre": "Uxía",
+    "texto": "Voy a por frutos y raíces, que el almacén necesita comida.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "tarde",
+    "de": 4,
+    "nombre": "Roi",
+    "texto": "Voy a por fibra y algún fruto antes de que oscurezca.",
+    "accion": "recolectar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "tarde",
+    "de": 20,
+    "nombre": "Mar",
     "texto": "Voy a buscar frutos y raíces antes de que anochezca.",
     "accion": "recolectar",
     "a": null,
@@ -277,608 +829,56 @@
     "a_lado": null
    },
    {
-    "dia": 189,
+    "dia": 221,
     "fase": "tarde",
-    "de": 7,
-    "nombre": "Telmo",
-    "texto": "Voy a por barro a la orilla; con arcilla podré seguir probando el cuenco con agujero.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 3,
-    "nombre": "Xabier",
-    "texto": "Voy a probar con barro. Si se cuece y aguanta, tendremos dónde guardar caldo.",
-    "accion": "inventar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 13,
-    "nombre": "Xabier 2",
-    "texto": "Voy a por fibra y algo de comer, que falta en la despensa.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mañana",
-    "de": 13,
-    "nombre": "Xabier 2",
-    "texto": "Voy a buscar fibra y algo de comer por el valle.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mañana",
-    "de": 5,
-    "nombre": "Pablo",
-    "texto": "Voy a la orilla a por barro. Necesito una tapa para el cuenco y que la carne no se me estropee.",
-    "accion": "extraer_arcilla",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mañana",
-    "de": 19,
-    "nombre": "Carla",
-    "texto": "Voy a por madera, que sin leña no hay fuego ni corro de piedras.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 7,
-    "nombre": "Telmo",
-    "texto": "Voy a por comida. El pescado no dura siempre.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 19,
-    "nombre": "Carla",
-    "texto": "Voy a por madera. Sin leña no hay fuego ni corro de piedras.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 13,
-    "nombre": "Xabier 2",
-    "texto": "Voy a buscar fibra y algo de comer antes de mediodía.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 15,
-    "nombre": "Roi",
-    "texto": "Voy a juntar comida y fibra antes de que caiga la tarde.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 13,
-    "nombre": "Xabier 2",
-    "texto": "Voy a buscar arcilla y fibra por la orilla antes de que anochezca.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 19,
-    "nombre": "Carla",
-    "texto": "Voy a probar a mojar la fibra al atar la piedra. Quizá así no se afloje.",
-    "accion": "inventar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 5,
-    "nombre": "Pablo",
-    "texto": "Voy a buscar raíces y alguna fibra más, que la bolsa se me queda corta.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 9,
-    "nombre": "Sabela",
-    "texto": "Estoy sin fuerzas. Me siento un rato y ya veré.",
-    "accion": "descansar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 15,
-    "nombre": "Roi",
-    "texto": "Voy a por madera. Hace falta para el ahumadero.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   }
-  ],
-  "B": [
-   {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 8,
-    "nombre": "Uxío 2",
-    "texto": "Voy a por madera. Ayer me faltó para el tronco arrastrador y no quiero quedarme corto otra vez.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 18,
-    "nombre": "Eva",
-    "texto": "Voy a por frutos y raíces, que el almacén anda justo de comida.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 16,
-    "nombre": "Xabier",
-    "texto": "Me falta madera para el hoyo. Voy al bosque a por ramas.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 14,
-    "nombre": "Iago",
-    "texto": "Voy a por comida, que el almacén está bajo y el hambre aprieta.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mañana",
     "de": 12,
     "nombre": "Rubén",
-    "texto": "Voy a por madera, que el refugio no se hace solo.",
-    "accion": "talar",
+    "texto": "Voy a probar a cocer la vasija tapada en el fuego, para que aguante más.",
+    "accion": "inventar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mañana",
-    "de": 20,
-    "nombre": "Mar",
-    "texto": "Voy a por raíces y frutos, que el almacén anda bajo de comida.",
-    "accion": "recolectar",
+    "dia": 221,
+    "fase": "tarde",
+    "de": 14,
+    "nombre": "Iago",
+    "texto": "Voy a probar a tapar bien una vasija ancha con otra del revés, atada con fibra. Así la comida de dentro aguantará mejor.",
+    "accion": "inventar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mañana",
+    "dia": 221,
+    "fase": "tarde",
+    "de": 2,
+    "nombre": "Xiana",
+    "texto": "Otra vez con las dos vasijas. Esta vez las ato bien antes de cocerlas.",
+    "accion": "inventar",
+    "a": null,
+    "a_nombre": null,
+    "a_lado": null
+   },
+   {
+    "dia": 221,
+    "fase": "tarde",
     "de": 10,
     "nombre": "Uxía",
-    "texto": "Voy a buscar raíces y frutos antes de que suba el sol.",
-    "accion": "recolectar",
+    "texto": "Voy a probar algo: dos vasijas que se pasan el agua despacio de una a otra. Así la tendré fresca y limpia.",
+    "accion": "inventar",
     "a": null,
     "a_nombre": null,
     "a_lado": null
    },
    {
-    "dia": 189,
-    "fase": "mediodía",
+    "dia": 221,
+    "fase": "tarde",
     "de": 16,
     "nombre": "Xabier",
-    "texto": "Voy a por madera, que ayer me faltó para el hoyo.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 20,
-    "nombre": "Mar",
-    "texto": "Voy a por frutos y raíces, que la comida nunca sobra.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 8,
-    "nombre": "Uxío 2",
-    "texto": "Voy a por madera, que ayer me faltó para el arrastrador.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 12,
-    "nombre": "Rubén",
-    "texto": "Voy a por madera, que sin ella no hay techo que valga.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 4,
-    "nombre": "Roi",
-    "texto": "Voy a por frutos y raíces, que el almacén anda corto de comida.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 14,
-    "nombre": "Iago",
-    "texto": "Tengo el cuerpo vacío y las piernas flojas. Cojo comida del almacén, que para eso está.",
+    "texto": "Vengo a por mi parte. Hoy la necesito de verdad.",
     "accion": "tomar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 10,
-    "nombre": "Uxía",
-    "texto": "Voy a buscar frutos y raíces antes de que oscurezca.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "mediodía",
-    "de": 18,
-    "nombre": "Eva",
-    "texto": "Voy a buscar frutos y raíces antes de que se haga tarde.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 20,
-    "nombre": "Mar",
-    "texto": "Voy a la orilla a por barro. Quiero hacer ese cuenco grande para todos.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 16,
-    "nombre": "Xabier",
-    "texto": "Voy a cavar un hoyo para guardar comida entre todos, que la madera ya la traeré del bosque.",
-    "accion": "construir",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 10,
-    "nombre": "Uxía",
-    "texto": "Voy a por raíces y frutos, que el almacén anda bajo de comida.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 8,
-    "nombre": "Uxío 2",
-    "texto": "Voy a por madera, que ayer me faltó para el tronco arrastrador.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 2,
-    "nombre": "Xiana",
-    "texto": "Voy a buscar frutos antes de que anochezca.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 189,
-    "fase": "tarde",
-    "de": 12,
-    "nombre": "Rubén",
-    "texto": "Voy a levantar el techo en pie, para todos. Necesito madera y fibra del almacén.",
-    "accion": "construir",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mañana",
-    "de": 10,
-    "nombre": "Uxía",
-    "texto": "Me hace falta madera. Quiero acabar el hoyo tapado para guardar comida.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mañana",
-    "de": 6,
-    "nombre": "Uxío",
-    "texto": "Voy a por frutos y raíces, que hay que llenar el almacén antes de que apriete el frío.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mañana",
-    "de": 16,
-    "nombre": "Xabier",
-    "texto": "Voy a por frutos y raíces. Con el hambre que llevo, algo habrá que encontrar.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 12,
-    "nombre": "Rubén",
-    "texto": "Llevo cuatro de comida al almacén. En el Nuestro nadie debe pasar hambre si hay de sobra.",
-    "accion": "depositar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 16,
-    "nombre": "Xabier",
-    "texto": "Voy a hacer otro hoyo para guardar comida entre todos.",
-    "accion": "construir",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 4,
-    "nombre": "Roi",
-    "texto": "Voy a por frutos y raíces. Con lo que saque, una parte al almacén.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 10,
-    "nombre": "Uxía",
-    "texto": "Voy a por frutos y raíces, que tengo hambre y el almacén también necesita.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 8,
-    "nombre": "Uxío 2",
-    "texto": "Necesito madera para el tronco arrastrador. Sin él no puedo llevar cargas grandes.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 2,
-    "nombre": "Xiana",
-    "texto": "Voy a buscar frutos y raíces por la orilla, que todavía hay luz.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 20,
-    "nombre": "Mar",
-    "texto": "Voy a por frutos y raíces, que el almacén anda corto de comida.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "mediodía",
-    "de": 6,
-    "nombre": "Uxío",
-    "texto": "Voy a por frutos y raíces, que la despensa común anda corta de comida.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 14,
-    "nombre": "Iago",
-    "texto": "Voy a por madera, que hace falta para todo.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 10,
-    "nombre": "Uxía",
-    "texto": "Voy a por madera. Con leña seca puedo tapar el hoyo y guardar comida para todos.",
-    "accion": "talar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 20,
-    "nombre": "Mar",
-    "texto": "Voy a por frutos y raíces; el almacén anda bajo de comida.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 16,
-    "nombre": "Xabier",
-    "texto": "Voy a por frutos y raíces antes de que se haga de noche.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 4,
-    "nombre": "Roi",
-    "texto": "Voy a por frutos y raíces, que el almacén anda bajo de comida.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 12,
-    "nombre": "Rubén",
-    "texto": "Voy a levantar el techo que ya sé hacer, pero en pie, sobre palos. Así tendremos donde meternos cuando venga el frío.",
-    "accion": "inventar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 18,
-    "nombre": "Eva",
-    "texto": "Voy a recoger frutos y raíces mientras quede luz.",
-    "accion": "recolectar",
-    "a": null,
-    "a_nombre": null,
-    "a_lado": null
-   },
-   {
-    "dia": 190,
-    "fase": "tarde",
-    "de": 8,
-    "nombre": "Uxío 2",
-    "texto": "Voy a levantar un tronco arrastrador para todos. Así cualquiera podrá llevar carga pesada sin partirse el lomo.",
-    "accion": "construir",
     "a": null,
     "a_nombre": null,
     "a_lado": null
@@ -887,7 +887,7 @@
  },
  "proyecto": "Mío vs Nuestro",
  "mundo": "pruebas",
- "dia": 190,
+ "dia": 221,
  "ano": 5,
  "epoca": "aldeas",
  "sociedades": {
@@ -897,26 +897,26 @@
    "color": "#1D9E75",
    "metricas": {
     "poblacion": 11,
-    "comida_total": 249,
-    "desigualdad_gini": 0.23,
-    "inventos": 52,
-    "inventos_propios": 52,
+    "comida_total": 343,
+    "desigualdad_gini": 0.27,
+    "inventos": 56,
+    "inventos_propios": 56,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 82,
-    "con_refugio": 7,
-    "parejas": 1,
+    "bienestar": 76,
+    "con_refugio": 9,
+    "parejas": 2,
     "intentos_invento": {
-     "intentos": 311,
-     "fallidos": 161,
-     "conseguidos": 66,
-     "sin_materiales": 71,
-     "rechazados": 3,
-     "aprendidos": 10
+     "intentos": 362,
+     "fallidos": 180,
+     "conseguidos": 70,
+     "sin_materiales": 95,
+     "rechazados": 5,
+     "aprendidos": 12
     },
-    "explorado": 711,
+    "explorado": 748,
     "territorio": 1360,
     "en_tierra_de_nadie": 0,
     "nacimientos": 0,
@@ -925,7 +925,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "En el día 190, la actividad en Los del Mío se centró en las tareas cotidianas de mantenimiento de huertos y reparación de herramientas, sin registrarse incidentes relevantes. Los turnos de vigilancia se cumplieron con normalidad y el reparto de agua se realizó según el esquema establecido. Al caer la tarde, los miembros se reunieron en torno al fuego central para compartir una cena austera antes del descanso nocturno.",
+   "cronica": "En la sociedad «Los del Mío», Carla ha diseñado un cesto trampa para peces, una herramienta que podría facilitar la captura en las aguas cercanas. Ese mismo día, Pablo entregó una ración de comida a Xabier, un gesto registrado como una transferencia directa de recursos entre miembros. El registro del día 221 deja constancia de ambos sucesos: una innovación técnica y un acto de abastecimiento interpersonal.",
    "inventos": [
     {
      "nombre": "palo con piedras atadas",
@@ -947,7 +947,9 @@
        "objetivo": "talar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:maza",
+     "descripcion": "Un palo largo con varias piedras atadas firmemente en un extremo con fibra, formando una cabeza pesada."
     },
     {
      "nombre": "piedra atada a palo",
@@ -969,7 +971,9 @@
        "objetivo": "cazar",
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo con tiras de fibra."
     },
     {
      "nombre": "refugio de palos y pieles",
@@ -991,7 +995,9 @@
        "objetivo": null,
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un cono de palos atados arriba y cubierto con ramas y pieles."
     },
     {
      "nombre": "piedra afilada con mango",
@@ -1013,7 +1019,9 @@
        "objetivo": "fabricar",
        "valor": 1.1
       }
-     ]
+     ],
+     "modelo": "objeto:cuchillo",
+     "descripcion": "Un palo corto con una piedra afilada atada en un extremo con tiras de fibra."
     },
     {
      "nombre": "palo con piedra atada",
@@ -1035,7 +1043,9 @@
        "objetivo": "cazar",
        "valor": 1.5
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra puntiaguda atada en un extremo mediante fibras enrolladas."
     },
     {
      "nombre": "piedra con mango",
@@ -1057,7 +1067,9 @@
        "objetivo": "cazar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo mediante tiras de fibra."
     },
     {
      "nombre": "piedra atada al palo",
@@ -1079,7 +1091,9 @@
        "objetivo": "picar_piedra",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo con una piedra afilada atada en un extremo mediante tiras de fibra enrolladas."
     },
     {
      "nombre": "piedra de lado en palo largo",
@@ -1101,7 +1115,9 @@
        "objetivo": "cazar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo largo con una piedra afilada atada de lado en un extremo, asegurada con vueltas de fibra."
     },
     {
      "nombre": "bolsa de piel",
@@ -1118,7 +1134,9 @@
        "objetivo": "transportar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa de piel cosida con tiras de fibra, con una abertura en la parte superior y una correa para colgarla del hombro."
     },
     {
      "nombre": "piedra atada a palo corto",
@@ -1140,7 +1158,9 @@
        "objetivo": "cazar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo corto con una piedra afilada atada en un extremo con vueltas de fibra."
     },
     {
      "nombre": "piedra afilada en palo largo",
@@ -1162,7 +1182,9 @@
        "objetivo": "cazar",
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada firmemente atada en un extremo mediante tiras de fibra."
     },
     {
      "nombre": "piedra atada a palo con cuerda",
@@ -1184,7 +1206,9 @@
        "objetivo": "cazar",
        "valor": 5.0
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo y una cuerda de fibra colgando del otro."
     },
     {
      "nombre": "cuna de ramas y fibra",
@@ -1201,7 +1225,9 @@
        "objetivo": null,
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una estructura baja de ramas gruesas con una superficie tejida de fibra en dos capas cruzadas, formando una cama elevada para un bebé."
     },
     {
      "nombre": "palo largo con piedra afilada",
@@ -1218,7 +1244,9 @@
        "objetivo": "cazar",
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo con tiras de fibra."
     },
     {
      "nombre": "piedra afilada en palo corto",
@@ -1240,7 +1268,9 @@
        "objetivo": "cazar",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:cuchillo",
+     "descripcion": "Un palo corto con una piedra afilada atada en un extremo con tiras de fibra."
     },
     {
      "nombre": "piedra con mango corto",
@@ -1262,7 +1292,9 @@
        "objetivo": "talar",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo corto con una piedra afilada atada en un extremo con fibra."
     },
     {
      "nombre": "bolsa de piel cosida",
@@ -1279,7 +1311,9 @@
        "objetivo": "transportar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa de piel con costuras de fibra y un asa para llevarla."
     },
     {
      "nombre": "piedra atada con tiras apretadas",
@@ -1301,7 +1335,9 @@
        "objetivo": "talar",
        "valor": 1.1
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo con una piedra afilada en un extremo, firmemente sujeta por tiras de fibra enrolladas y tensadas con un palito."
     },
     {
      "nombre": "red para llevar",
@@ -1318,7 +1354,9 @@
        "objetivo": "transportar",
        "valor": 1.5
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa de malla hecha de fibras entrecruzadas, con los bordes atados."
     },
     {
      "nombre": "refugio de ramas y pieles",
@@ -1340,7 +1378,9 @@
        "objetivo": null,
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un armazón de ramas atadas con fibra, cubierto con pieles y ramas menudas, formando un refugio con techo y paredes."
     },
     {
      "nombre": "piedras que hacen fuego",
@@ -1357,7 +1397,9 @@
        "objetivo": "fabricar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Dos piedras de aspecto duro, una de ellas con bordes afilados, junto a un montoncito de hierba seca."
     },
     {
      "nombre": "cesto de ramas trenzadas",
@@ -1374,7 +1416,9 @@
        "objetivo": "recolectar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto redondo de ramas entretejidas, con fondo plano y paredes que suben."
     },
     {
      "nombre": "fuego por frotación",
@@ -1391,7 +1435,9 @@
        "objetivo": "fabricar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Un palo blando girado rápidamente sobre una tabla seca con una muesca, produciendo polvo caliente que cae sobre una hoja seca y prende fuego."
     },
     {
      "nombre": "palo que hace fuego",
@@ -1408,7 +1454,9 @@
        "objetivo": "fabricar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Un palo vertical girado entre las manos sobre una base de corteza seca, con humo y una brasa incipiente."
     },
     {
      "nombre": "red de ramas",
@@ -1430,7 +1478,9 @@
        "objetivo": "pescar",
        "valor": 1.5
       }
-     ]
+     ],
+     "modelo": "objeto:red de ramas",
+     "descripcion": "Una red rectangular de ramas flexibles atadas con tiras de fibra, montada entre dos palos largos."
     },
     {
      "nombre": "bolsa de fibra trenzada",
@@ -1452,7 +1502,9 @@
        "objetivo": "recolectar",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa tejida con fibras vegetales, con un asa larga para colgarla al hombro."
     },
     {
      "nombre": "cuenco de barro cocido",
@@ -1469,7 +1521,9 @@
        "objetivo": "fabricar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:cuenco",
+     "descripcion": "Un cuenco hondo de barro cocido, de color terroso, con paredes gruesas."
     },
     {
      "nombre": "corro de piedras para el fuego",
@@ -1491,7 +1545,9 @@
        "objetivo": "fabricar",
        "valor": 1.1
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Un círculo de piedras alrededor de un hueco en la tierra, con una abertura en un lado para meter leña."
     },
     {
      "nombre": "barro cocido en forma de cuenco",
@@ -1508,7 +1564,9 @@
        "objetivo": "fabricar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:cuenco",
+     "descripcion": "Un cuenco de barro cocido, de color terroso, con forma redondeada."
     },
     {
      "nombre": "red entre palos",
@@ -1530,7 +1588,9 @@
        "objetivo": "pescar",
        "valor": 1.5
       }
-     ]
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Dos palos verticales clavados en el suelo con una red de ramas atada entre ellos, asegurada con piedras y fibra."
     },
     {
      "nombre": "tejido de ramas para techo",
@@ -1547,7 +1607,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un tejido plano de ramas finas y fibra sostenido entre dos palos verticales, formando un techo inclinado."
     },
     {
      "nombre": "piedra con mango largo",
@@ -1574,7 +1636,9 @@
        "objetivo": "recolectar",
        "valor": 1
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo mediante tiras de fibra trenzada."
     },
     {
      "nombre": "lanza con piedra que aprieta",
@@ -1591,7 +1655,9 @@
        "objetivo": "cazar",
        "valor": 1.3
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo mediante tiras de fibra, y una piedra pequeña encajada bajo el atado para mantenerlo tenso."
     },
     {
      "nombre": "red de fibra con mango",
@@ -1613,7 +1679,9 @@
        "objetivo": "cazar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Un aro de madera con una red de fibra trenzada y un mango largo."
     },
     {
      "nombre": "red de fibra entre palos cruzados",
@@ -1635,7 +1703,9 @@
        "objetivo": "pescar",
        "valor": 1.5
       }
-     ]
+     ],
+     "modelo": "objeto:red de fibra entre palos cruzados",
+     "descripcion": "Dos palos largos cruzados en forma de X con una red de fibra atada entre ellos, formando una superficie cóncava para atrapar peces."
     },
     {
      "nombre": "red con mango largo",
@@ -1657,7 +1727,9 @@
        "objetivo": null,
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Una red sujeta entre dos palos cruzados, atada firmemente a un palo largo con vueltas de fibra."
     },
     {
      "nombre": "cuenco de fibra apretada",
@@ -1674,7 +1746,9 @@
        "objetivo": "recolectar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Un cuenco hondo de fibras entrelazadas, rígido y ligero, de color pajizo."
     },
     {
      "nombre": "cuenco de ramas trenzadas",
@@ -1691,7 +1765,9 @@
        "objetivo": "transportar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cuenco hondo hecho de ramas trenzadas apretadas, con las vueltas bien juntas para que no se escape el contenido."
     },
     {
      "nombre": "bolsa de fibra trenzada con dos asas apr",
@@ -1713,7 +1789,9 @@
        "objetivo": "transportar",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa de fibra trenzada con dos asas apretadas en la parte superior, similar a un saco con dos agarraderas."
     },
     {
      "nombre": "piedra atada con tiras mojadas",
@@ -1735,7 +1813,9 @@
        "objetivo": "picar_piedra",
        "valor": 1.1
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo largo con una piedra afilada firmemente sujeta en un extremo mediante tiras de fibra enrolladas en cruz y endurecidas al secarse."
     },
     {
      "nombre": "bolsa de piel cerrada con tiras",
@@ -1757,7 +1837,9 @@
        "objetivo": "transportar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una piel grande doblada por la mitad y atada con tiras de fibra pasadas por agujeros en el borde, formando una bolsa cerrada."
     },
     {
      "nombre": "lanza con piedra en hueco y barro",
@@ -1774,7 +1856,9 @@
        "objetivo": "cazar",
        "valor": 1.3
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Una lanza con la punta de piedra encajada en un hueco del palo y asegurada con tiras de fibra y barro cocido."
     },
     {
      "nombre": "carne y pescado al humo",
@@ -1791,7 +1875,9 @@
        "objetivo": "comida",
        "valor": 0.7
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Un fuego lento con ramas verdes que produce mucho humo, y encima unos palos horizontales de los que cuelgan tiras de carne y pescado."
     },
     {
      "nombre": "cuenco con tapa",
@@ -1808,7 +1894,9 @@
        "objetivo": "comida",
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Un cuenco de barro cocido con una tapa del mismo material que encaja y tiene un asa pequeña en el centro."
     },
     {
      "nombre": "tapa de barro con hierba",
@@ -1825,7 +1913,9 @@
        "objetivo": "comida",
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una tapa circular de barro cocido con fibras visibles, que encaja sobre el cuenco."
     },
     {
      "nombre": "corral de ramas y red",
@@ -1847,7 +1937,9 @@
        "objetivo": "cazar",
        "valor": 1.1
       }
-     ]
+     ],
+     "modelo": "estructura:corral",
+     "descripcion": "Un cercado circular de palos verticales entrelazados con ramas y cubierto con una red, con una entrada pequeña."
     },
     {
      "nombre": "cesto hondo con asas",
@@ -1869,7 +1961,9 @@
        "objetivo": "transportar",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto hondo de ramas trenzadas apretadas, con dos asas de fibra en los bordes."
     },
     {
      "nombre": "pescado al humo sobre parrilla",
@@ -1886,7 +1980,9 @@
        "objetivo": "pescado",
        "valor": 0.8
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Una parrilla de palos verdes cruzados sobre dos horquetas, con un fuego pequeño debajo que produce humo denso."
     },
     {
      "nombre": "cesto con barro seco",
@@ -1903,7 +1999,9 @@
        "objetivo": "transportar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto de ramas trenzadas con una capa de barro seco por dentro, que tapa los huecos."
     },
     {
      "nombre": "cuenco con tapa para pescado",
@@ -1920,7 +2018,9 @@
        "objetivo": "pescado",
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Un cuenco de barro cocido con una tapa del mismo material, cerrado herméticamente."
     },
     {
      "nombre": "armazón colgante para ahumar",
@@ -1942,7 +2042,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Un armazón de palos y ramas atados con fibra, colgado sobre el fuego, con pescados colgando."
     },
     {
      "nombre": "refugio de palos clavados",
@@ -1964,7 +2066,100 @@
        "objetivo": null,
        "valor": 0.6
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una estructura cónica de palos gruesos clavados en el suelo, atados en la parte superior y cubiertos con ramas y pieles, con una abertura para el humo y otra para entrar."
+    },
+    {
+     "nombre": "cesto colgado entre palos",
+     "categoria": "otro",
+     "dia": 196,
+     "inventor": "Carla",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "transportar",
+       "valor": 0.3
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.2
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto de ramas trenzadas suspendido entre dos palos largos mediante tiras de fibra, formando una camilla rígida que se apoya en los hombros."
+    },
+    {
+     "nombre": "cesto doble atado",
+     "categoria": "recipiente",
+     "dia": 198,
+     "inventor": "Carla",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.5
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Dos cestos unidos por tiras de fibra apretadas, uno encima del otro, para llevar al hombro."
+    },
+    {
+     "nombre": "palo con filo de piedras",
+     "categoria": "herramienta",
+     "dia": 204,
+     "inventor": "Breogán",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "talar",
+       "valor": 1.5
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "fabricar",
+       "valor": 1.2
+      }
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo largo con varias piedras afiladas alineadas y atadas con fibra en un extremo, formando un filo ancho."
+    },
+    {
+     "nombre": "cesto trampa para peces",
+     "categoria": "herramienta",
+     "dia": 221,
+     "inventor": "Carla",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "habilita",
+       "objetivo": "pescar",
+       "valor": 1.0
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "pescar",
+       "valor": 1.5
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto alargado de ramas trenzadas con una abertura ancha que se estrecha hacia adentro formando un embudo."
     }
    ],
    "epoca": "aldeas",
@@ -1977,24 +2172,24 @@
    "color": "#D85A30",
    "metricas": {
     "poblacion": 10,
-    "comida_total": 255,
-    "desigualdad_gini": 0.21,
-    "inventos": 63,
-    "inventos_propios": 63,
+    "comida_total": 282,
+    "desigualdad_gini": 0.32,
+    "inventos": 117,
+    "inventos_propios": 117,
     "inventos_aprendidos_de_la_otra": 0,
     "emigrantes_que_se_van": 0,
     "emigrantes_que_llegan": 0,
     "fase": "separadas",
-    "bienestar": 77,
-    "con_refugio": 5,
+    "bienestar": 80,
+    "con_refugio": 6,
     "parejas": 0,
     "intentos_invento": {
-     "intentos": 337,
-     "fallidos": 155,
-     "conseguidos": 82,
-     "sin_materiales": 89,
-     "rechazados": 6,
-     "aprendidos": 5
+     "intentos": 478,
+     "fallidos": 219,
+     "conseguidos": 142,
+     "sin_materiales": 98,
+     "rechazados": 12,
+     "aprendidos": 7
     },
     "explorado": 680,
     "territorio": 1360,
@@ -2005,7 +2200,7 @@
     "conflictos": 0,
     "emigrantes": 0
    },
-   "cronica": "En el día 190, Uxío 2 completó la construcción de un tronco arrastrador destinado al uso colectivo de la comunidad. La estructura fue ensamblada con madera local y cuerdas trenzadas por varios miembros durante las jornadas previas. Al caer la tarde, un grupo de habitantes realizó la primera prueba de arrastre por la pendiente norte sin incidentes.",
+   "cronica": "En el día 221, Rubén presentó una vasija de boca estrecha con tapa atada, y poco después registró una variante del mismo recipiente, mientras Iago proponía una vasija ancha con tapa invertida sujeta con cuerdas. Uxía añadió una vasija doble colgante con caño, y Eva completó la jornada con un techo de ramas y barro montado sobre una pared baja. Los cinco objetos quedaron integrados en los registros de la comunidad sin alterar el orden de las tareas cotidianas.",
    "inventos": [
     {
      "nombre": "piedra con mango",
@@ -2027,7 +2222,9 @@
        "objetivo": "cazar",
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo con fibras."
     },
     {
      "nombre": "techo de ramas y fibra",
@@ -2044,7 +2241,9 @@
        "objetivo": null,
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un techo inclinado de ramas entretejidas con fibra, sostenido por cuatro palos clavados en el suelo."
     },
     {
      "nombre": "piedra atada a palo",
@@ -2066,7 +2265,9 @@
        "objetivo": "cazar",
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo mediante tiras de fibra trenzada."
     },
     {
      "nombre": "piedra con mango en palo largo",
@@ -2088,7 +2289,9 @@
        "objetivo": "cazar",
        "valor": 1.3
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra con mango atada firmemente en un extremo mediante fibras enrolladas."
     },
     {
      "nombre": "refugio de ramas y fibras",
@@ -2110,7 +2313,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un cono de palos atados arriba, cubierto de ramas y hojas."
     },
     {
      "nombre": "piedra con mango corto",
@@ -2132,7 +2337,9 @@
        "objetivo": "talar",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo corto con una piedra afilada atada en un extremo con fibra."
     },
     {
      "nombre": "refugio de ramas",
@@ -2154,7 +2361,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un refugio cónico hecho de ramas largas clavadas en el suelo y atadas en la parte superior, cubierto con ramas y hojas."
     },
     {
      "nombre": "ramas atadas para arrastrar",
@@ -2176,7 +2385,9 @@
        "objetivo": "transportar",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Una base plana hecha de ramas largas atadas entre sí con fibra trenzada, que se arrastra por el suelo."
     },
     {
      "nombre": "piedra atada con fibra mojada",
@@ -2198,7 +2409,9 @@
        "objetivo": "cazar",
        "valor": 1.1
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo mediante fibras secas y mojadas que se ajustan al secarse."
     },
     {
      "nombre": "hueco fresco para comida",
@@ -2215,7 +2428,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en la tierra cubierto con hojas grandes, donde se guarda la comida."
     },
     {
      "nombre": "bolsa de fibras trenzadas",
@@ -2232,7 +2447,9 @@
        "objetivo": "transportar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa tejida con tiras de fibra, con un asa larga para colgar al hombro."
     },
     {
      "nombre": "hueco fresco para guardar comida",
@@ -2249,7 +2466,9 @@
        "objetivo": "comida",
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en la tierra junto a una pared de sombra, cubierto con ramas y fibras."
     },
     {
      "nombre": "cesta con barro seco",
@@ -2266,7 +2485,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una cesta de ramas recubierta de barro seco, de color marrón claro, con la textura del barro agrietado."
     },
     {
      "nombre": "hoyo fresco",
@@ -2283,7 +2504,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en el suelo cubierto con ramas y hojas, en una zona sombreada."
     },
     {
      "nombre": "palo con piedra atada",
@@ -2305,7 +2528,9 @@
        "objetivo": "cazar",
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:lanza",
+     "descripcion": "Un palo largo con una piedra afilada atada firmemente en un extremo mediante tiras de fibra seca."
     },
     {
      "nombre": "vasija de barro secado al sol",
@@ -2327,7 +2552,9 @@
        "objetivo": "comida",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Un cuenco de barro de forma irregular, secado al sol, de color marrón claro."
     },
     {
      "nombre": "hueco fresco con hojas",
@@ -2344,7 +2571,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en la tierra con comida envuelta en hojas dentro."
     },
     {
      "nombre": "cesta con barro reforzado",
@@ -2361,7 +2590,9 @@
        "objetivo": "transportar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Una cesta de mimbre con una capa gruesa de barro fresco en la base, atada con fibras."
     },
     {
      "nombre": "hoyo fresco para comida",
@@ -2378,7 +2609,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en el suelo cubierto con ramas y hojas."
     },
     {
      "nombre": "hoyo fresco tapado",
@@ -2395,7 +2628,9 @@
        "objetivo": null,
        "valor": 0.4
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en el suelo cubierto con ramas y hojas, apenas visible."
     },
     {
      "nombre": "cesta cubierta de barro seco",
@@ -2412,7 +2647,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una cesta de fibra recubierta de barro seco, de color marrón claro y textura rugosa."
     },
     {
      "nombre": "piel de ramas y hojas",
@@ -2429,7 +2666,9 @@
        "objetivo": null,
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una gran estera tejida de ramas finas y hojas secas, flexible y tupida, que se coloca sobre la entrada del refugio."
     },
     {
      "nombre": "bolsa de fibra con cordón",
@@ -2451,7 +2690,9 @@
        "objetivo": "recolectar",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa tejida con tiras de fibra, con un cordón en la boca para cerrarla y un fondo de madera para darle forma."
     },
     {
      "nombre": "techo de ramas bien atado",
@@ -2468,7 +2709,9 @@
        "objetivo": null,
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un techo de ramas más robusto, con los palos clavados más profundo y las ramas entrecruzadas y atadas con fibra mojada."
     },
     {
      "nombre": "piedra con mango largo",
@@ -2490,7 +2733,9 @@
        "objetivo": null,
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "objeto:hacha",
+     "descripcion": "Un palo largo con una piedra afilada atada en un extremo mediante tiras de fibra seca y tensa."
     },
     {
      "nombre": "cesta firme de barro",
@@ -2512,7 +2757,9 @@
        "objetivo": null,
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Una cesta tejida de fibras con una capa de barro seco por dentro y por fuera, de color marrón claro."
     },
     {
      "nombre": "cesta con tapa de barro",
@@ -2529,7 +2776,9 @@
        "objetivo": "comida",
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Una cesta de fibras trenzadas con la boca más estrecha y una tapa de barro secado al sol."
     },
     {
      "nombre": "bolsa colgada de palo",
@@ -2546,7 +2795,9 @@
        "objetivo": "transportar",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Un palo largo con una bolsa de fibras atada en un extremo mediante tiras de fibra seca."
     },
     {
      "nombre": "ramas atadas en cruz",
@@ -2563,7 +2814,9 @@
        "objetivo": null,
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Cuatro ramas rectas atadas en los extremos formando una estructura en cruz, con nudos de fibra trenzada."
     },
     {
      "nombre": "cuenco de barro cocido",
@@ -2585,7 +2838,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:cuenco",
+     "descripcion": "Un cuenco hondo de barro cocido, de color terroso y superficie irregular."
     },
     {
      "nombre": "cruz de ramas en palo",
@@ -2602,7 +2857,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un palo largo con una cruz de ramas atada en un extremo, formando un armazón que puede cubrirse con otros materiales."
     },
     {
      "nombre": "techo de hojas",
@@ -2624,7 +2881,9 @@
        "objetivo": null,
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una estructura simple con un palo central y una cruz de ramas en la parte superior, cubierta con hojas y hierba seca atadas con fibra, formando un techo inclinado."
     },
     {
      "nombre": "cesta embarrada",
@@ -2641,7 +2900,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Una cesta de fibras trenzadas recubierta de barro seco por dentro y por fuera."
     },
     {
      "nombre": "pared de ramas y barro",
@@ -2663,7 +2924,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una pared vertical hecha de ramas largas atadas con fibra, cubierta con hojas y barro."
     },
     {
      "nombre": "pared de ramas atadas",
@@ -2685,7 +2948,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una pared hecha de ramas largas entrecruzadas y atadas con fibra, con hojas tapando los huecos."
     },
     {
      "nombre": "cuenco de barro seco",
@@ -2702,7 +2967,9 @@
        "objetivo": "transportar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "objeto:cuenco",
+     "descripcion": "Un cuenco grande de barro seco al sol, de color marrón claro, con bordes irregulares."
     },
     {
      "nombre": "refugio de estacas y hojas",
@@ -2724,7 +2991,9 @@
        "objetivo": null,
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Cuatro estacas clavadas en el suelo formando un cuadrado, con ramas atadas entre ellas y cubiertas de hojas y hierba seca."
     },
     {
      "nombre": "cesto de ramas y barro",
@@ -2741,7 +3010,9 @@
        "objetivo": "transportar",
        "valor": 1.5
       }
-     ]
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto tejido con ramas delgadas y recubierto de barro, con asa de fibra."
     },
     {
      "nombre": "montículo de barro con boca para fuego",
@@ -2763,7 +3034,9 @@
        "objetivo": "fabricar",
        "valor": 1.5
       }
-     ]
+     ],
+     "modelo": "estructura:horno",
+     "descripcion": "Un montículo de barro con forma de cúpula, con una abertura en la base para introducir leña y una chimenea pequeña en la parte superior."
     },
     {
      "nombre": "hoyo con paredes de barro",
@@ -2785,7 +3058,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en el suelo con las paredes cubiertas de barro alisado, tapado con una tapa de ramas y barro."
     },
     {
      "nombre": "palos que hacen fuego",
@@ -2802,7 +3077,9 @@
        "objetivo": "fabricar",
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Dos palos secos, uno vertical girando sobre otro horizontal, con un montoncito de fibra seca y hojas que empieza a humear."
     },
     {
      "nombre": "tronco quemado y raspado",
@@ -2824,7 +3101,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Un tronco grueso ahuecado con el interior quemado y raspado, de forma alargada y profunda."
     },
     {
      "nombre": "comida colgada al humo",
@@ -2841,7 +3120,9 @@
        "objetivo": "comida",
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Un fuego pequeño con una estructura de ramas en cruz de la que cuelga comida."
     },
     {
      "nombre": "hoyo fresco con barro y hojas",
@@ -2863,7 +3144,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Un hoyo en la tierra con las paredes cubiertas de barro y comida envuelta en hojas dentro."
     },
     {
      "nombre": "tapa de ramas y hojas",
@@ -2880,7 +3163,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Un tronco hueco con una tapa plana hecha de ramas entretejidas y hojas, atada con fibra."
     },
     {
      "nombre": "refugio de ramas y barro",
@@ -2902,7 +3187,9 @@
        "objetivo": null,
        "valor": 0.8
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una choza pequeña con paredes de ramas entretejidas cubiertas de barro y techo de ramas atadas."
     },
     {
      "nombre": "tronco arrastrador",
@@ -2924,7 +3211,9 @@
        "objetivo": "transportar",
        "valor": 0.4
       }
-     ]
+     ],
+     "modelo": "estructura:tronco arrastrador",
+     "descripcion": "Un tronco horizontal atado con fibra a dos palos largos cruzados en forma de X debajo, formando una base para arrastrar cargas."
     },
     {
      "nombre": "vasija grande de barro con boca ancha",
@@ -2941,7 +3230,9 @@
        "objetivo": "comida",
        "valor": 0.5
       }
-     ]
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande de barro cocido con boca ancha, con la textura de la cesta visible en el exterior."
     },
     {
      "nombre": "pared baja de barro y hierba",
@@ -2963,7 +3254,9 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una pared baja de barro mezclado con hierba seca y fibras, adosada a un lado del refugio para bloquear el viento y la lluvia."
     },
     {
      "nombre": "tronco quemado atado al arrastrador",
@@ -2980,7 +3273,9 @@
        "objetivo": "transportar",
        "valor": 2.0
       }
-     ]
+     ],
+     "modelo": "estructura:carro",
+     "descripcion": "Un tronco arrastrador con un tronco quemado y raspado atado encima con fibras, formando una plataforma para cargar comida."
     },
     {
      "nombre": "vasija de barro cocido al fuego",
@@ -3002,7 +3297,9 @@
        "objetivo": "comida",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro endurecida por el fuego, de color rojizo y superficie más dura."
     },
     {
      "nombre": "bolsa grande con asa larga",
@@ -3024,7 +3321,9 @@
        "objetivo": "transportar",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:saco",
+     "descripcion": "Una bolsa grande de tiras de fibra trenzada, con un asa larga que se cuelga del tronco arrastrador."
     },
     {
      "nombre": "techo movible",
@@ -3046,7 +3345,9 @@
        "objetivo": null,
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "estructura:techo movible",
+     "descripcion": "Un armazón de ramas largas atadas en cruz, cubierto con hojas y barro, que se puede transportar y colocar sobre la comida o un área pequeña."
     },
     {
      "nombre": "piedra atada a palo corto",
@@ -3068,7 +3369,9 @@
        "objetivo": "fabricar",
        "valor": 1.1
       }
-     ]
+     ],
+     "modelo": "objeto:cuchillo",
+     "descripcion": "Un palo corto con una piedra afilada atada en un extremo con fibra mojada, que se sujeta con una mano."
     },
     {
      "nombre": "techo de barro y fibra secado al sol",
@@ -3090,7 +3393,9 @@
        "objetivo": "construir",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un techo de ramas cubierto con una capa de barro mezclado con fibras, de aspecto liso y terroso."
     },
     {
      "nombre": "barro con fibra menuda",
@@ -3112,7 +3417,9 @@
        "objetivo": "construir",
        "valor": 1.2
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un techo de ramas cubierto con una capa de barro mezclado con fibras cortas, de aspecto más liso y resistente."
     },
     {
      "nombre": "pared baja de barro y fibra alrededor de",
@@ -3129,7 +3436,9 @@
        "objetivo": "comida",
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "estructura:pozo",
+     "descripcion": "Un anillo bajo de barro mezclado con fibras rodeando la abertura del hueco fresco, como un pequeño muro circular."
     },
     {
      "nombre": "tronco hueco con tapa colgante",
@@ -3146,7 +3455,9 @@
        "objetivo": "comida",
        "valor": 0.7
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Un tronco ahuecado y raspado con una tapa de ramas y hojas atada con fibra, con asas de fibra para colgarlo del tronco arrastrador."
     },
     {
      "nombre": "pared de barro y hierba",
@@ -3168,7 +3479,9 @@
        "objetivo": null,
        "valor": 1.0
       }
-     ]
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un refugio de ramas con las paredes cubiertas de una mezcla de barro y hierba seca, tapando los huecos."
     },
     {
      "nombre": "cuenco hondo con cesto",
@@ -3190,7 +3503,9 @@
        "objetivo": "comida",
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:cuenco",
+     "descripcion": "Un cuenco de barro cocido con forma honda, con marcas del cesto en el exterior."
     },
     {
      "nombre": "cuenco grande con cesto",
@@ -3212,7 +3527,9 @@
        "objetivo": null,
        "valor": 0.2
       }
-     ]
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Un cuenco grande y hondo de barro, con la forma del cesto de ramas que usó como molde, de paredes gruesas y boca ancha."
     },
     {
      "nombre": "tapa ancha de barro cocido con fibra",
@@ -3229,7 +3546,9 @@
        "objetivo": "comida",
        "valor": 0.4
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una tapa circular de barro cocido con fibras visibles, del diámetro de la boca de la vasija grande."
     },
     {
      "nombre": "barro con fibra menuda y agua",
@@ -3246,7 +3565,1165 @@
        "objetivo": null,
        "valor": 0.3
       }
-     ]
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una vasija de barro con superficie más lisa y uniforme, sin grietas visibles."
+    },
+    {
+     "nombre": "cesto en palo largo",
+     "categoria": "herramienta",
+     "dia": 191,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "recolectar",
+       "valor": 1.3
+      },
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "recolectar",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Un cesto de ramas y barro atado firmemente al extremo de un palo largo con tiras de fibra."
+    },
+    {
+     "nombre": "tapadera de barro cocido con asa",
+     "categoria": "recipiente",
+     "dia": 192,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una tapadera ancha y plana de barro cocido con un asa en el centro de la parte superior."
+    },
+    {
+     "nombre": "cuenco hondo de barro cocido",
+     "categoria": "recipiente",
+     "dia": 193,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "fabricar",
+       "valor": 1.1
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Un cuenco de barro cocido más alto que ancho, con boca estrecha y paredes gruesas."
+    },
+    {
+     "nombre": "carne colgada alta y tapada",
+     "categoria": "fuego_y_cocina",
+     "dia": 193,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      },
+      {
+       "tipo": "defensa",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "estructura:hoguera",
+     "descripcion": "Un armazón alto de ramas con carne colgada en la parte superior, cubierto con ramas y hojas para protegerlo de animales y del clima."
+    },
+    {
+     "nombre": "cesto atado al tronco arrastrador",
+     "categoria": "herramienta",
+     "dia": 194,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.5
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto grande de ramas y barro firmemente atado a un tronco arrastrador con tiras de fibra seca y tensa."
+    },
+    {
+     "nombre": "asa de fibra trenzada para cesto arrastr",
+     "categoria": "herramienta",
+     "dia": 196,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "transportar",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un asa gruesa de fibras trenzadas que se pasa por los lados del cesto grande, permitiendo que dos personas tiren de él."
+    },
+    {
+     "nombre": "tiras de fibra para tirar del tronco",
+     "categoria": "herramienta",
+     "dia": 196,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "transportar",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Dos tiras largas de fibra trenzada atadas a los lados del tronco arrastrador, cada una con un lazo en el extremo para agarrar."
+    },
+    {
+     "nombre": "refugio de ramas y pieles que se lleva",
+     "categoria": "vivienda",
+     "dia": 196,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "refugio",
+       "objetivo": null,
+       "valor": 1.0
+      },
+      {
+       "tipo": "abrigo",
+       "objetivo": null,
+       "valor": 0.3
+      }
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un armazón de ramas largas atadas en cruz, cubierto con pieles u hojas sujetas con fibra, y con palos cortos que se clavan en la tierra para fijarlo."
+    },
+    {
+     "nombre": "cesta grande con asa larga",
+     "categoria": "recipiente",
+     "dia": 196,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "recolectar",
+       "valor": 1.5
+      },
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "transportar",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Una cesta grande de fibras trenzadas recubierta de barro seco, con un asa larga de fibra trenzada para colgar del hombro o arrastrar."
+    },
+    {
+     "nombre": "vasija grande con asas de fibra",
+     "categoria": "recipiente",
+     "dia": 197,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande de barro con dos asas de fibra trenzada a los lados."
+    },
+    {
+     "nombre": "vasija grande de barro con fibra y agua",
+     "categoria": "recipiente",
+     "dia": 197,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande de barro cocido con boca ancha, reforzada con fibras, de color terroso."
+    },
+    {
+     "nombre": "tronco con brasas",
+     "categoria": "fuego_y_cocina",
+     "dia": 198,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "habilita",
+       "objetivo": "transportar",
+       "valor": 1.0
+      },
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "fabricar",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Un tronco hueco tapado con barro, con brasas y ramas secas dentro, del que sale un poco de humo."
+    },
+    {
+     "nombre": "palo doble con travesaño para cargar ref",
+     "categoria": "herramienta",
+     "dia": 198,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": true,
+     "efectos": [
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "transportar",
+       "valor": 0.4
+      },
+      {
+       "tipo": "habilita",
+       "objetivo": "transportar",
+       "valor": 1.0
+      }
+     ],
+     "modelo": "objeto:palo doble con travesano para cargar ref",
+     "descripcion": "Dos palos largos paralelos unidos por un travesaño central atado con fibra, con el refugio de pieles colocado encima."
+    },
+    {
+     "nombre": "vasija con tapa atada",
+     "categoria": "recipiente",
+     "dia": 198,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.8
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro con una tapa que se sujeta con fibras atadas alrededor del borde."
+    },
+    {
+     "nombre": "vasija grande con tapa atada y asa para ",
+     "categoria": "recipiente",
+     "dia": 198,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.7
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande de barro con boca ancha, tapa de barro que encaja y se ata con fibra, y un asa en la parte superior para colgarla."
+    },
+    {
+     "nombre": "cesto grande con tapa de barro atada",
+     "categoria": "recipiente",
+     "dia": 200,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.6
+      },
+      {
+       "tipo": "defensa",
+       "objetivo": "comida",
+       "valor": 0.4
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Un cesto grande de ramas entrelazadas, recubierto de barro seco, con una tapa de barro con asa, atada con tiras de fibra."
+    },
+    {
+     "nombre": "vasija enterrada en cesta",
+     "categoria": "recipiente",
+     "dia": 200,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande de barro con boca ancha, envuelta en una cesta de ramas apretadas y enterrada hasta la boca en un hoyo a la sombra."
+    },
+    {
+     "nombre": "vasija enterrada fresca",
+     "categoria": "almacen",
+     "dia": 200,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      }
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Una vasija grande de barro enterrada hasta la boca, con su tapadera puesta, en un rincón sombreado junto al refugio."
+    },
+    {
+     "nombre": "palo con dos cestas",
+     "categoria": "herramienta",
+     "dia": 202,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.5
+      },
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "transportar",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:herramienta",
+     "descripcion": "Un palo largo con una cesta colgada en cada extremo, que se apoya sobre el hombro."
+    },
+    {
+     "nombre": "tapa ancha de barro cocido con asa trenz",
+     "categoria": "recipiente",
+     "dia": 203,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una tapa circular de barro cocido, más ancha que la boca del cesto, con un asa de fibra trenzada en el centro."
+    },
+    {
+     "nombre": "vasija de barro con fibra para el fuego",
+     "categoria": "recipiente",
+     "dia": 203,
+     "inventor": "Uxío",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro con fibras visibles en la superficie, de color terroso y forma redondeada."
+    },
+    {
+     "nombre": "vasija grande de barro con boca ancha y ",
+     "categoria": "recipiente",
+     "dia": 204,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande de barro cocido con boca ancha y dos asas de fibra trenzada a los lados."
+    },
+    {
+     "nombre": "techo de ramas y hojas para tapar comida",
+     "categoria": "recipiente",
+     "dia": 204,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Dos ramas largas atadas en cruz con fibra, cubiertas con un montón de hojas verdes apretadas."
+    },
+    {
+     "nombre": "pared de vasijas y barro",
+     "categoria": "vivienda",
+     "dia": 206,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "refugio",
+       "objetivo": null,
+       "valor": 1.0
+      },
+      {
+       "tipo": "defensa",
+       "objetivo": null,
+       "valor": 0.3
+      }
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Una pared gruesa hecha de barro con vasijas rotas incrustadas y ramas entrelazadas como refuerzo."
+    },
+    {
+     "nombre": "cesta honda de barro con asa larga",
+     "categoria": "recipiente",
+     "dia": 208,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "habilita",
+       "objetivo": "transportar",
+       "valor": 1.0
+      },
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Una cesta honda de barro seco con un asa larga de fibra trenzada, para colgar del tronco arrastrador o de la espalda."
+    },
+    {
+     "nombre": "vasija doble unida con barro y fibra",
+     "categoria": "recipiente",
+     "dia": 209,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "fabricar",
+       "valor": 1.2
+      },
+      {
+       "tipo": "conservacion",
+       "objetivo": null,
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Dos vasijas grandes unidas por una junta de barro fresco reforzada con fibra mojada, formando un recipiente alargado con dos bocas."
+    },
+    {
+     "nombre": "cesto pequeño de barro con tapa atada",
+     "categoria": "recipiente",
+     "dia": 209,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "habilita",
+       "objetivo": "transportar",
+       "valor": 1.0
+      },
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Un cesto pequeño y hondo de barro con una tapa de barro atada con tiras de fibra, con un asa para llevarlo a la espalda."
+    },
+    {
+     "nombre": "cesta con vasijas y barro seco",
+     "categoria": "recipiente",
+     "dia": 209,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.3
+      },
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:cesta",
+     "descripcion": "Una cesta grande de fibras trenzadas con barro seco en las paredes, que contiene tres vasijas pequeñas de barro cocido separadas por barro seco compactado."
+    },
+    {
+     "nombre": "vasija doble fresca con barro y fibra",
+     "categoria": "recipiente",
+     "dia": 209,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande con otra más pequeña dentro, separadas por una capa de barro fresco mezclado con fibra."
+    },
+    {
+     "nombre": "vasija ancha de pared fina",
+     "categoria": "recipiente",
+     "dia": 210,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "agua",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro cocido, ancha y baja, con boca grande y paredes delgadas."
+    },
+    {
+     "nombre": "vasija doble con pared y dos bocas",
+     "categoria": "recipiente",
+     "dia": 210,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "transportar",
+       "valor": 1.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro con dos bocas separadas y una pared interna que divide el interior en dos compartimentos, cada uno con su tapa."
+    },
+    {
+     "nombre": "refugio de estacas y barro",
+     "categoria": "vivienda",
+     "dia": 210,
+     "inventor": "Uxío",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "refugio",
+       "objetivo": null,
+       "valor": 1.0
+      },
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      },
+      {
+       "tipo": "abrigo",
+       "objetivo": null,
+       "valor": 0.3
+      }
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un refugio con armazón de estacas y techo de hojas, cuyas paredes están cubiertas de barro mezclado con hierba seca y fibra."
+    },
+    {
+     "nombre": "vasija doble con agujero pequeño",
+     "categoria": "recipiente",
+     "dia": 210,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro con dos bocas y una pared interna con un pequeño orificio."
+    },
+    {
+     "nombre": "tapadera ancha de barro cocido con asa t",
+     "categoria": "recipiente",
+     "dia": 210,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una tapadera circular de barro cocido, más ancha que las anteriores, con un asa central de fibra trenzada gruesa."
+    },
+    {
+     "nombre": "vasija sobre fuego",
+     "categoria": "fuego_y_cocina",
+     "dia": 211,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "tecnica",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "cocinar",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "estructura:horno",
+     "descripcion": "Un montículo de barro con una abertura en la parte superior, sobre la que se asienta una vasija grande de barro; el fuego arde en la base y el calor sube hacia la vasija."
+    },
+    {
+     "nombre": "vasija alta de boca pequeña",
+     "categoria": "recipiente",
+     "dia": 212,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "agua",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro cocido más alta que ancha, con un cuello estrecho y un pequeño agujero en la boca, reforzada con fibra."
+    },
+    {
+     "nombre": "vasija coladora de agua",
+     "categoria": "recipiente",
+     "dia": 213,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "salud",
+       "objetivo": null,
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro cocido con un pequeño agujero cerca de la base y una tapa con otro agujero en el centro."
+    },
+    {
+     "nombre": "tapa de barro con borde que encaja",
+     "categoria": "recipiente",
+     "dia": 214,
+     "inventor": "Roi",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una tapa de barro cocido con un reborde interior que se introduce en la boca del cesto y un asa de fibra trenzada en el centro."
+    },
+    {
+     "nombre": "olla alta con asas de fibra",
+     "categoria": "recipiente",
+     "dia": 215,
+     "inventor": "Mar",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "habilita",
+       "objetivo": "fabricar",
+       "valor": 1.0
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "fabricar",
+       "valor": 1.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Olla alta de barro cocido con dos asas gruesas de fibra trenzada a los lados, para colgarla sobre el fuego."
+    },
+    {
+     "nombre": "techo de barro y fibra sobre pared baja",
+     "categoria": "vivienda",
+     "dia": 216,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.4
+      },
+      {
+       "tipo": "defensa",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "estructura:almacen",
+     "descripcion": "Una estructura baja con paredes de ramas y barro, cubierta por un techo inclinado de barro y fibra secado al sol."
+    },
+    {
+     "nombre": "vasija grande con molde de cesta",
+     "categoria": "recipiente",
+     "dia": 216,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "habilita",
+       "objetivo": "fabricar",
+       "valor": 1.0
+      },
+      {
+       "tipo": "rendimiento",
+       "objetivo": "fabricar",
+       "valor": 1.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija grande de boca ancha con paredes gruesas y textura de cestería en el exterior, cocida al fuego."
+    },
+    {
+     "nombre": "vasija alta de boca estrecha",
+     "categoria": "recipiente",
+     "dia": 218,
+     "inventor": "Xiana",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "agua",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro cocido más alta que ancha, con boca estrecha y borde levantado, superficie lisa."
+    },
+    {
+     "nombre": "vasija con boca apretada y cesto dentro",
+     "categoria": "recipiente",
+     "dia": 218,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.4
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro cocido con la boca más estrecha que el cuerpo, con un cesto de fibras en su interior que le da forma y refuerza las paredes."
+    },
+    {
+     "nombre": "vasija colgante con tapa agujereada",
+     "categoria": "recipiente",
+     "dia": 219,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      },
+      {
+       "tipo": "habilita",
+       "objetivo": "transportar",
+       "valor": 1.0
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro cocido con boca ancha, un asa en la parte superior para colgarla y una tapa con un pequeño agujero en el centro, atada con fibra."
+    },
+    {
+     "nombre": "vasija con agujeros para escurrir",
+     "categoria": "recipiente",
+     "dia": 220,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro con múltiples agujeros pequeños en la base y los lados, secada al sol."
+    },
+    {
+     "nombre": "vasija doble con caño y asa alta",
+     "categoria": "recipiente",
+     "dia": 220,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "agua",
+       "valor": 0.8
+      },
+      {
+       "tipo": "salud",
+       "objetivo": "beber",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro cocido con dos bocas, un asa en la parte superior para colgarla y un caño interno de barro que gotea lentamente."
+    },
+    {
+     "nombre": "vasija de cuello apretado con palo",
+     "categoria": "recipiente",
+     "dia": 220,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro con cuello alto y boca estrecha, secada al sol."
+    },
+    {
+     "nombre": "horno ancho con losa de piedra",
+     "categoria": "fuego_y_cocina",
+     "dia": 220,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "rendimiento",
+       "objetivo": "fabricar",
+       "valor": 1.5
+      },
+      {
+       "tipo": "ahorro_energia",
+       "objetivo": "fabricar",
+       "valor": 0.3
+      }
+     ],
+     "modelo": "estructura:horno",
+     "descripcion": "Un horno bajo y ancho de barro con una losa de piedra plana en la parte superior, con una boca para el fuego en un lateral."
+    },
+    {
+     "nombre": "tapa de barro cocido con asa larga para ",
+     "categoria": "recipiente",
+     "dia": 220,
+     "inventor": "Uxío 2",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      }
+     ],
+     "modelo": "objeto:recipiente",
+     "descripcion": "Una tapa circular de barro cocido con un asa larga en el centro, reforzada con fibras, que encaja sobre la boca del hoyo fresco."
+    },
+    {
+     "nombre": "vasija de boca estrecha con tapa atada",
+     "categoria": "recipiente",
+     "dia": 221,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.8
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Vasija de barro cocido con boca estrecha y una tapa de barro cocido que encaja, atada con fibra alrededor del cuello."
+    },
+    {
+     "nombre": "techo de ramas y barro sobre pared baja",
+     "categoria": "vivienda",
+     "dia": 221,
+     "inventor": "Eva",
+     "origen": null,
+     "antes": [],
+     "tipo": "estructura",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      },
+      {
+       "tipo": "refugio",
+       "objetivo": null,
+       "valor": 0.3
+      }
+     ],
+     "modelo": "estructura:casa",
+     "descripcion": "Un techo inclinado de ramas cubiertas con hojas y barro, apoyado sobre una pared baja circular de barro y fibra."
+    },
+    {
+     "nombre": "vasija de boca estrecha con tapa atada c",
+     "categoria": "recipiente",
+     "dia": 221,
+     "inventor": "Rubén",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": null,
+       "valor": 0.5
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija de barro cocido con boca estrecha y una tapa que se ata con fibra, de color rojizo y superficie endurecida."
+    },
+    {
+     "nombre": "vasija ancha con tapa invertida atada",
+     "categoria": "recipiente",
+     "dia": 221,
+     "inventor": "Iago",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "comida",
+       "valor": 0.5
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Una vasija ancha y poco honda con otra vasija invertida encima, atadas con fibra."
+    },
+    {
+     "nombre": "vasija doble colgante con caño",
+     "categoria": "recipiente",
+     "dia": 221,
+     "inventor": "Uxía",
+     "origen": null,
+     "antes": [],
+     "tipo": "objeto",
+     "inedito": false,
+     "efectos": [
+      {
+       "tipo": "conservacion",
+       "objetivo": "agua",
+       "valor": 0.3
+      },
+      {
+       "tipo": "salud",
+       "objetivo": "beber",
+       "valor": 0.2
+      }
+     ],
+     "modelo": "objeto:vasija",
+     "descripcion": "Dos vasijas de barro unidas por un caño, colgadas del techo con cuerdas de fibra, una más alta que la otra."
     }
    ],
    "epoca": "prehistoria",
@@ -3723,21 +5200,6 @@
     "invento": "tronco arrastrador"
    },
    {
-    "id": 108,
-    "tipo": "hoguera",
-    "categoria": "fuego_y_cocina",
-    "modelo": "estructura:hoguera",
-    "x": 117,
-    "y": 22,
-    "lado": "A",
-    "dueno": "comun",
-    "color": null,
-    "nombre": "palo que hace fuego",
-    "autor": 5,
-    "dia": 157,
-    "invento": "palo que hace fuego"
-   },
-   {
     "id": 112,
     "tipo": "casa",
     "categoria": "vivienda",
@@ -4051,6 +5513,246 @@
     "autor": 8,
     "dia": 190,
     "invento": "tronco arrastrador"
+   },
+   {
+    "id": 157,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 33,
+    "y": 5,
+    "lado": "B",
+    "dueno": 14,
+    "color": null,
+    "nombre": "carne colgada alta y tapada",
+    "autor": 14,
+    "dia": 193,
+    "invento": "carne colgada alta y tapada"
+   },
+   {
+    "id": 159,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 36,
+    "y": 19,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "hoyo fresco tapado",
+    "autor": 10,
+    "dia": 194,
+    "invento": "hoyo fresco tapado"
+   },
+   {
+    "id": 161,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 29,
+    "y": 13,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "hoyo fresco para comida",
+    "autor": 4,
+    "dia": 195,
+    "invento": "hoyo fresco para comida"
+   },
+   {
+    "id": 162,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 27,
+    "y": 1,
+    "lado": "B",
+    "dueno": 12,
+    "color": null,
+    "nombre": "techo de barro y fibra secado al sol",
+    "autor": 12,
+    "dia": 195,
+    "invento": ""
+   },
+   {
+    "id": 163,
+    "tipo": "monumento",
+    "categoria": "otro",
+    "modelo": "objeto:cesta",
+    "x": 130,
+    "y": 13,
+    "lado": "A",
+    "dueno": 19,
+    "color": null,
+    "nombre": "cesto colgado entre palos",
+    "autor": 19,
+    "dia": 196,
+    "invento": "cesto colgado entre palos"
+   },
+   {
+    "id": 170,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "objeto:recipiente",
+    "x": 24,
+    "y": 26,
+    "lado": "B",
+    "dueno": 18,
+    "color": null,
+    "nombre": "tronco con brasas",
+    "autor": 18,
+    "dia": 198,
+    "invento": "tronco con brasas"
+   },
+   {
+    "id": 174,
+    "tipo": "corral",
+    "categoria": "animal_domestico",
+    "modelo": "estructura:corral",
+    "x": 130,
+    "y": 10,
+    "lado": "A",
+    "dueno": 19,
+    "color": null,
+    "nombre": "corral de ramas y red",
+    "autor": 19,
+    "dia": 199,
+    "invento": "corral de ramas y red"
+   },
+   {
+    "id": 177,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 33,
+    "y": 2,
+    "lado": "B",
+    "dueno": 20,
+    "color": null,
+    "nombre": "vasija enterrada fresca",
+    "autor": 20,
+    "dia": 200,
+    "invento": "vasija enterrada fresca"
+   },
+   {
+    "id": 178,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 118,
+    "y": 5,
+    "lado": "A",
+    "dueno": 1,
+    "color": null,
+    "nombre": "refugio de palos clavados",
+    "autor": 1,
+    "dia": 200,
+    "invento": ""
+   },
+   {
+    "id": 187,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 26,
+    "y": 22,
+    "lado": "B",
+    "dueno": 6,
+    "color": null,
+    "nombre": "hoyo fresco tapado",
+    "autor": 6,
+    "dia": 205,
+    "invento": "hoyo fresco tapado"
+   },
+   {
+    "id": 189,
+    "tipo": "almacen",
+    "categoria": "almacen",
+    "modelo": "estructura:almacen",
+    "x": 36,
+    "y": 4,
+    "lado": "B",
+    "dueno": 14,
+    "color": null,
+    "nombre": "hueco fresco para guardar comida",
+    "autor": 14,
+    "dia": 206,
+    "invento": "hueco fresco para guardar comida"
+   },
+   {
+    "id": 191,
+    "tipo": "carro",
+    "categoria": "vehiculo_tierra",
+    "modelo": "estructura:carro",
+    "x": 31,
+    "y": 0,
+    "lado": "B",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "tronco quemado atado al arrastrador",
+    "autor": 8,
+    "dia": 207,
+    "invento": "tronco quemado atado al arrastrador"
+   },
+   {
+    "id": 196,
+    "tipo": "casa",
+    "categoria": "vivienda",
+    "modelo": null,
+    "x": 129,
+    "y": 21,
+    "lado": "A",
+    "dueno": 11,
+    "color": null,
+    "nombre": "refugio de ramas y pieles",
+    "autor": 11,
+    "dia": 209,
+    "invento": ""
+   },
+   {
+    "id": 204,
+    "tipo": "horno",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:horno",
+    "x": 38,
+    "y": 12,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "vasija sobre fuego",
+    "autor": 10,
+    "dia": 211,
+    "invento": "vasija sobre fuego"
+   },
+   {
+    "id": 211,
+    "tipo": "hoguera",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:hoguera",
+    "x": 113,
+    "y": 3,
+    "lado": "A",
+    "dueno": "comun",
+    "color": null,
+    "nombre": "carne y pescado al humo",
+    "autor": 15,
+    "dia": 215,
+    "invento": "carne y pescado al humo"
+   },
+   {
+    "id": 227,
+    "tipo": "horno",
+    "categoria": "fuego_y_cocina",
+    "modelo": "estructura:horno",
+    "x": 36,
+    "y": 17,
+    "lado": "B",
+    "dueno": 10,
+    "color": null,
+    "nombre": "horno ancho con losa de piedra",
+    "autor": 10,
+    "dia": 220,
+    "invento": "horno ancho con losa de piedra"
    }
   ],
   "campos": []
@@ -4059,122 +5761,67 @@
   [
    39,
    13,
-   6
+   4
   ],
   [
    37,
    1,
-   10
+   7
   ],
   [
    32,
    1,
-   4
-  ],
-  [
-   36,
-   14,
-   6
-  ],
-  [
-   39,
-   4,
-   9
-  ],
-  [
-   112,
-   18,
-   3
-  ],
-  [
-   36,
-   2,
-   1
-  ],
-  [
-   25,
-   12,
-   9
-  ],
-  [
-   36,
-   3,
    11
   ],
   [
    36,
-   15,
-   2
+   14,
+   3
   ],
   [
-   113,
-   24,
-   2
+   39,
+   4,
+   6
   ],
   [
-   22,
-   28,
+   25,
+   12,
+   6
+  ],
+  [
+   36,
+   3,
    7
   ],
   [
    22,
-   27,
-   6
+   28,
+   3
   ],
   [
    22,
-   12,
-   2
+   27,
+   3
   ],
   [
    30,
    8,
-   6
-  ],
-  [
-   20,
-   28,
    2
   ],
   [
-   34,
-   5,
-   4
-  ],
-  [
    124,
-   2,
-   4
-  ],
-  [
-   26,
-   27,
-   4
-  ],
-  [
-   132,
    2,
    1
   ],
   [
    127,
    4,
-   5
+   4
   ],
   [
    127,
    3,
-   5
-  ],
-  [
-   123,
-   0,
-   2
-  ],
-  [
-   127,
-   2,
-   2
+   1
   ],
   [
    121,
@@ -4182,57 +5829,102 @@
    1
   ],
   [
-   127,
-   19,
-   1
-  ],
-  [
    28,
    2,
-   3
-  ],
-  [
-   115,
-   30,
-   1
-  ],
-  [
-   129,
-   20,
    2
   ],
   [
    30,
    0,
-   4
+   10
   ],
   [
    35,
    8,
-   5
-  ],
-  [
-   26,
-   20,
    1
   ],
   [
    37,
    18,
-   2
+   4
   ],
   [
    128,
    18,
+   3
+  ],
+  [
+   129,
+   14,
+   2
+  ],
+  [
+   33,
+   2,
+   8
+  ],
+  [
+   117,
+   4,
+   7
+  ],
+  [
+   30,
+   2,
    4
   ],
   [
-   32,
-   4,
+   117,
+   1,
+   8
+  ],
+  [
+   26,
+   22,
+   5
+  ],
+  [
+   116,
+   2,
+   7
+  ],
+  [
+   129,
+   20,
+   4
+  ],
+  [
+   28,
+   0,
+   1
+  ],
+  [
+   26,
+   20,
+   3
+  ],
+  [
+   113,
+   2,
+   6
+  ],
+  [
+   113,
+   3,
+   4
+  ],
+  [
+   27,
+   20,
+   1
+  ],
+  [
+   34,
+   5,
    1
   ]
  ],
  "contacto": false,
- "inicio_dia": 1794950936.9766262,
+ "inicio_dia": 1795036598.365267,
  "segundos_dia": 2880.0
 }
