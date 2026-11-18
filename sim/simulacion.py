@@ -3,7 +3,7 @@ import json
 import random
 import sqlite3
 from . import config, inventos, avisos, moderacion, capacidad
-from .fabricacion import Fabricacion, CAT_OBJETO
+from .fabricacion import Fabricacion, CAT_OBJETO, slug
 from .agente import Agente, crear
 from .cerebro import CerebroIA, CerebroReglas, Gasto, llamar_llm
 from .mundo import Mundo, ACTIVIDAD_TERRENO
@@ -129,7 +129,9 @@ class Simulacion:
                                "inventos": [{"nombre": n, "categoria": d.get("categoria"), "dia": d.get("dia"),
                                              "inventor": d.get("inventor"), "origen": d.get("origen"), "antes": d.get("antes", []),
                                              "tipo": d.get("tipo_creacion", "objeto"), "inedito": bool(d.get("inedito")),
-                                             "efectos": d.get("efectos", [])}
+                                             "efectos": d.get("efectos", []), "modelo": d.get("modelo") if d.get("modelo") != "nuevo" else
+                                             ("objeto:" if d.get("categoria") in CAT_OBJETO else "estructura:") + slug(n),
+                                             "descripcion": str(d.get("descripcion_visual") or "")[:220]}
                                             for n, d in self.inventos[l].items()],
                                "epoca": self.epoca_de(l),
                                "libros_leidos": len(getattr(self, "libros_leidos", {}).get(l, ())),

@@ -211,6 +211,7 @@ function construirObras(e) {
       if (RADIO[o.tipo]) obstaculos.push({ x: p.position.x, z: p.position.z, r: radioDe(o.tipo, ep) });
     }
   }
+  if (typeof ponerMuseo === 'function') for (const l of 'AB') ponerMuseo(e, l, estiloDe(e, l));  // casa de los inventos (solo para quien visita la web)
   pueblos.add(campos(listaCampos, ocupado));
   setTimeout(() => { for (const o of obstaculos) talar(o.x, o.z, o.r + .9); for (const l of 'AB') { const pl = plazas[l]; if (pl) talar(X(pl[0]), Z(pl[1]), 2.4); } }, 0);
 }
