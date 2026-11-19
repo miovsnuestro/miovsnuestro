@@ -481,14 +481,21 @@ def _grabar_escena(nav, e, i, titular, ruta):
         ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", str(FPS), "-i", "-",
                                "-vf", f"scale={ANCHO}:{ALTO}:flags=lanczos,format=yuv420p", "-c:v", "libx264",
                                "-preset", "veryfast", "-crf", "19", ruta], stdin=subprocess.PIPE)
-        for _ in range(int(round(e["dur"] * FPS))):
+        t_paso = t_foto = 0.0
+        n = int(round(e["dur"] * FPS))
+        for _ in range(n):
+            t1 = time.time()
             pg.evaluate(f"paso({1 / FPS})")
+            t2 = time.time()
             ff.stdin.write(pg.screenshot(type="jpeg", quality=90, timeout=ESPERA_CAPTURA_MS))
+            t_paso, t_foto = t_paso + (t2 - t1), t_foto + (time.time() - t2)
         ff.stdin.close()
         if ff.wait() != 0:
             raise RuntimeError(f"ffmpeg falló al grabar la escena {i + 1}")
         ff = None
-        return carga
+        # cuánto cuesta cada fotograma: «paso» (mover el mundo) y «captura» (dibujarlo y sacar la imagen)
+        return {"carga": carga, "fotogramas": n, "paso": t_paso / max(n, 1), "captura": t_foto / max(n, 1),
+                "total": time.time() - t0}
     except Exception as err:
         if errores_js:
             raise RuntimeError(f"{err}\n    lo que dijo la página: " + " | ".join(errores_js[-5:])) from err
@@ -519,7 +526,7 @@ def grabar(escenas, titular, carpeta):
                 ruta = str(carpeta / f"clip{i}.mp4")
                 for intento in range(1, INTENTOS_ESCENA + 1):
                     try:
-                        carga = _grabar_escena(nav, e, i, titular, ruta)
+                        t = _grabar_escena(nav, e, i, titular, ruta)
                         break
                     except Exception as err:
                         print(f"  escena {i + 1}/{len(escenas)} falló (intento {intento}/{INTENTOS_ESCENA}): "
@@ -531,7 +538,9 @@ def grabar(escenas, titular, carpeta):
                         if not nav.is_connected():
                             nav = lanzar()
                 clips.append(ruta)
-                print(f"  escena {i + 1}/{len(escenas)} grabada ({e['dur']:.1f} s, cargó en {carga:.0f} s)", flush=True)
+                print(f"  escena {i + 1}/{len(escenas)} grabada ({e['dur']:.1f} s, cargó en {t['carga']:.0f} s, "
+                      f"{t['fotogramas']} fotogramas: paso {t['paso']:.2f} s + captura {t['captura']:.2f} s por fotograma, "
+                      f"{t['total'] / 60:.1f} min)", flush=True)
         finally:
             try:
                 nav.close()
@@ -641,11 +650,16 @@ def fabricar(tipo="diario", reel_id=None, instruccion="", enviar=True):
     t0 = time.time()
     with tempfile.TemporaryDirectory() as tmp:
         carpeta = Path(tmp)
+        tiempos = {}
+        t1 = time.time()
         voz_usada = voces_del_reel(g["escenas"], carpeta)  # primero la voz: la escena dura lo que dure la frase
+        tiempos["voz"] = time.time() - t1
         for i, e in enumerate(g["escenas"]):
             e["dur"] = max(seg if i else 4.5, min(10.0, duracion_wav(e["audio"]) + 0.9)) if e["audio"] else (seg if i else 4.5)
             e["hora"] = "0.62" if i == len(g["escenas"]) - 1 and tipo == "episodio" else "0.3"
+        t1 = time.time()
         clips = grabar(g["escenas"], g["titular"], carpeta)
+        tiempos["grabación"] = time.time() - t1
         bd = bd_reels()
         if reel_id is None:
             cur = bd.execute("INSERT INTO reels(creado, mundo, dia, estado) VALUES(?,?,?,?)", (time.time(), mundo, dia, "montando"))
@@ -654,8 +668,12 @@ def fabricar(tipo="diario", reel_id=None, instruccion="", enviar=True):
         else:
             version = (bd.execute("SELECT version FROM reels WHERE id=?", (reel_id,)).fetchone()[0] or 1) + 1
         salida = str(SALIDA / f"reel_{reel_id}_v{version}.mp4")
+        t1 = time.time()
         montar(g, clips, carpeta, salida)
+        tiempos["montaje"] = time.time() - t1
+    t1 = time.time()
     dur, problemas = comprobar_video(salida)
+    tiempos["comprobación"] = time.time() - t1
     if voz_usada and voz_usada != VOZ_PROVEEDOR and VOZ_PROVEEDOR != "piper":
         problemas.append(f"voz de respaldo ({voz_usada}) porque {VOZ_PROVEEDOR} no respondió")
     if not g.get("_ia"):
@@ -667,7 +685,8 @@ def fabricar(tipo="diario", reel_id=None, instruccion="", enviar=True):
     bd.execute("UPDATE reels SET ruta=?, guion=?, texto=?, estado='pendiente', version=? WHERE id=?",
                (salida, json.dumps(g, ensure_ascii=False), texto, version, reel_id))
     bd.commit()
-    print(f"Reel {reel_id} v{version}: {dur:.0f} s, montado en {(time.time() - t0) / 60:.1f} min" +
+    print(f"Reel {reel_id} v{version}: {dur:.0f} s, montado en {(time.time() - t0) / 60:.1f} min ("
+          + ", ".join(f"{k} {v / 60:.1f}" for k, v in tiempos.items()) + ")" +
           (f" · AVISO: {', '.join(problemas)}" if problemas else ""), flush=True)
     if enviar:
         aviso = f"\n\n⚠️ Revisión automática: {', '.join(problemas)}." if problemas else ""
