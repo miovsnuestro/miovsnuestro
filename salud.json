@@ -1,19 +1,16 @@
 {
-  "hora": 1795038902.0911448,
-  "dia": 221,
-  "retraso_min": 38.4,
+  "hora": 1795125302.2488747,
+  "dia": 252,
+  "retraso_min": 33.8,
   "web": "ok",
-  "saldo_ia": 3.75,
-  "disco_libre_gb": 96.6,
+  "saldo_ia": 6.58,
+  "disco_libre_gb": 96.4,
   "copia_horas": 18.9,
-  "copia_mb": 4.0,
-  "copias_guardadas": 8,
+  "copia_mb": 5.9,
+  "copias_guardadas": 9,
   "miovsnuestro-motor": "activo",
   "miovsnuestro-bot": "activo",
   "miovsnuestro-entrevistas": "activo",
-  "ultimo_reel_horas": 35.9,
-  "problemas": [
-    "Queda poco saldo en DeepSeek: 3.75 $. Recarga para que no se pare la IA.",
-    "Hace más de 30 horas que no se genera ningún reel. Mira datos/reels.log."
-  ]
+  "ultimo_reel_horas": 11.3,
+  "problemas": []
 }

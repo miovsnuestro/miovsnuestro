@@ -1,1 +1,1 @@
-d5a6f82 2026-11-18 Merge pull request #16 from miovsnuestro/reels-carga-escenas
+5e6a4ca 2026-11-19 Merge pull request #17 from miovsnuestro/reels-tiempos
