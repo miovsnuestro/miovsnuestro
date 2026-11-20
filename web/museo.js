@@ -115,8 +115,10 @@ function ajustarVitrina() { if (!vit) return; const c = $('vescena').getBounding
 // Lo que necesitaría un modelo y de momento solo tendría la pieza genérica, espera fuera hasta que se suba su modelo.
 const DIBUJA_ESTR = new Set(['casa', 'hoguera', 'corral', 'taller', 'carro', 'barco', 'almacen', 'granero', 'escuela', 'mercado', 'molino', 'torre',
   'observatorio', 'fabrica', 'camino', 'puente', 'maquina', 'globo', 'cohete', 'enfermeria', 'monumento', 'horno', 'pozo', 'muralla']);
-const DIBUJA_OBJ = new Set(['hacha', 'piedra afilada', 'pico', 'pala', 'azada', 'hoz', 'martillo', 'cuchillo', 'sierra', 'lanza', 'arco', 'honda', 'maza',
-  'escudo', 'cesta', 'saco', 'odre', 'vasija', 'jarra', 'cuenco', 'tambor', 'flauta', 'tablilla', 'libro', 'pergamino', 'escritura', 'moneda', 'concha', 'ropa']);
+// Solo los objetos cuyo dibujo de mano tiene una silueta reconocible a tamaño de vitrina (mango + hoja, punta, arco…).
+// Recipientes, sacos, instrumentos, escritos o monedas se dibujan en la mano como una bola o un bloque: en la vitrina
+// salían todos iguales («bola naranja»). Esos esperan su modelo 3D (GLB), igual que lo inédito.
+const DIBUJA_OBJ = new Set(['hacha', 'pico', 'pala', 'azada', 'hoz', 'martillo', 'cuchillo', 'sierra', 'lanza', 'arco', 'ropa']);
 const SIN_FORMA = new Set(['tecnica', 'oficio', 'organizacion', 'costumbre', 'norma_o_costumbre', 'sistema']);
 function seVeBien(i, l) {
   const m = i.modelo || '';
@@ -179,7 +181,7 @@ function abrirVitrina(l, nombre) {
   $('vtira').innerHTML = vit.lista.map((i, k) => '<button title="' + colorear(i.nombre) + '" data-k="' + k + '">' + (ICONO_CAT[i.categoria] || '💡') + '</button>').join('');
   $('vtira').querySelectorAll('button').forEach(b => b.onclick = () => irInvento(+b.dataset.k));
   ajustarVitrina();
-  if (!vit.lista.length) { while (vit.soporte.children.length) vit.soporte.remove(vit.soporte.children[0]); $('vinfo').innerHTML = '<div class="q">Todavía no han inventado nada. La casa está vacía, de momento.</div>'; $('vpos').textContent = ''; $('vant').disabled = $('vsig').disabled = true; return; }
+  if (!vit.lista.length) { while (vit.soporte.children.length) vit.soporte.remove(vit.soporte.children[0]); $('vinfo').innerHTML = '<div class="q">' + (fuera > 0 ? 'Sus ' + fuera + ' inventos esperan su modelo 3D. La casa está vacía, de momento.' : 'Todavía no han inventado nada. La casa está vacía, de momento.') + '</div>'; $('vpos').textContent = ''; $('vant').disabled = $('vsig').disabled = true; return; }
   const k = nombre ? vit.lista.findIndex(i => i.nombre === nombre) : vit.lista.length - 1;  // se abre en lo último que han inventado
   irInvento(k < 0 ? vit.lista.length - 1 : k);
 }
