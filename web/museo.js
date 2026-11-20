@@ -122,7 +122,7 @@ const DIBUJA_OBJ = new Set(['hacha', 'pico', 'pala', 'azada', 'hoz', 'martillo',
 const SIN_FORMA = new Set(['tecnica', 'oficio', 'organizacion', 'costumbre', 'norma_o_costumbre', 'sistema']);
 function seVeBien(i, l) {
   const m = i.modelo || '';
-  if (SIN_FORMA.has(i.tipo)) return true;  // una técnica, un oficio, una costumbre: no es una cosa, se enseña como idea
+  if (SIN_FORMA.has(i.tipo)) return false;  // técnicas, oficios, costumbres: no son una cosa; el atril con icono no se entendía. Siguen en la lista de inventos.
   if (m && (GLB[m] || GLB[m + '@' + estiloDe(est, l)])) return true;  // modelo 3D subido
   if (!m) return false;
   if (m.startsWith('estructura:')) return DIBUJA_ESTR.has(m.slice(11).split('@')[0]) && !i.inedito;
@@ -176,7 +176,7 @@ function abrirVitrina(l, nombre) {
   $('vitrina').classList.remove('oculto'); if (typeof chatLado !== 'undefined' && chatLado) { chatLado = null; $('charla').classList.add('oculto'); }
   document.querySelectorAll('#vitrina [data-vit]').forEach(b => b.classList.toggle('on', b.dataset.vit === l));
   $('vtit').textContent = '🏛️ Casa de los inventos de ' + est.sociedades[l].nombre + ' · ' + vit.lista.length + ' inventos';
-  const fuera = ((est.sociedades[l].inventos) || []).length - vit.lista.length;
+  const fuera = ((est.sociedades[l].inventos) || []).filter(i => !SIN_FORMA.has(i.tipo)).length - vit.lista.length;  // las técnicas no esperan modelo: no se exponen
   if (fuera > 0) $('vtit').textContent += ' · ' + fuera + ' más esperan su modelo 3D';
   $('vtira').innerHTML = vit.lista.map((i, k) => '<button title="' + colorear(i.nombre) + '" data-k="' + k + '">' + (ICONO_CAT[i.categoria] || '💡') + '</button>').join('');
   $('vtira').querySelectorAll('button').forEach(b => b.onclick = () => irInvento(+b.dataset.k));
