@@ -836,17 +836,19 @@ class Simulacion:
             for d in reg.values():
                 cats.add(d.get("categoria"))
                 habil |= {e.get("objetivo") for e in d.get("efectos", []) if e["tipo"] == "habilita"}
-        if "espacial" in cats:
-            return "espacial"
-        if cats & {"transporte_aereo", "comunicacion"}:
-            return "moderna"
-        if cats & {"fabrica", "maquina", "energia"}:
-            return "industrial"
-        if "extraer_metal" in habil or cats & {"escritura_y_conocimiento", "moneda_o_comercio"}:
-            return "metal"
-        if cats & {"cultivo", "animal_domestico"}:
-            return "aldeas"
-        return "prehistoria"
+        # Las épocas se suben de una en una: para llegar a una hay que haber cumplido también todas las anteriores.
+        # (Antes bastaba un solo invento de una categoría avanzada, mal clasificado o no, para saltarse varias épocas.)
+        pasos = [("aldeas", bool(cats & {"cultivo", "animal_domestico"})),
+                 ("metal", "extraer_metal" in habil or bool(cats & {"escritura_y_conocimiento", "moneda_o_comercio"})),
+                 ("industrial", bool(cats & {"fabrica", "maquina", "energia"})),
+                 ("moderna", bool(cats & {"transporte_aereo", "comunicacion"})),
+                 ("espacial", "espacial" in cats)]
+        ep = "prehistoria"
+        for nombre, cumple in pasos:
+            if not cumple:
+                break
+            ep = nombre
+        return ep
 
     def dias_por_ano(self):
         d = config.RITMO_POR_EPOCA.get(self.epoca(), config.DIAS_POR_ANO)
