@@ -6,6 +6,7 @@ asigna efectos de una lista CERRADA. El invento es libre; lo que puede hacer en 
 sigue unas reglas físicas iguales para todos.
 """
 import json
+import re
 from . import config
 
 # Materiales que existen en el mundo. Algunos solo se pueden obtener si un invento lo habilita.
@@ -38,6 +39,10 @@ CATEGORIAS = ["herramienta", "arma_caza", "ropa", "fuego_y_cocina", "recipiente"
               "energia", "comunicacion", "transporte_aereo", "espacial",
               # creaciones que no son cosas: también se inventan, se enseñan y cuentan
               "oficio", "organizacion", "norma_o_costumbre", "sistema", "otro"]
+PRUEBA_CATEGORIA = {
+    "transporte_aereo": r"vuel|vola|volad|globo|cometa|planead|\balas?\b|por el aire|sube al cielo|se eleva",
+    "espacial": r"espacio|cohete|[oó]rbita|sat[eé]lite|luna|planeta",
+}
 TIPOS_CREACION = ["objeto", "estructura", "tecnica", "oficio", "organizacion", "costumbre", "sistema", "otro"]
 
 REGLAS_ARBITRO = """Eres el árbitro de un experimento: decides si una idea inventada por un habitante de una sociedad primitiva
@@ -100,6 +105,11 @@ def _limpiar(res, conocidos):
         efectos.append({"tipo": e["tipo"], "objetivo": e.get("objetivo"), "valor": max(lo, min(hi, v))})
     res["efectos"] = efectos
     if res.get("categoria") not in CATEGORIAS:
+        res["categoria"] = "otro"
+    # Las categorías que cambian de época por sí solas deben verse en lo que se describe. Si no, es un error del árbitro
+    # (p. ej. «vasija atada a un tronco arrastrado» como transporte_aereo) y se deja en «otro». Igual para los dos lados.
+    texto = f"{res.get('nombre', '')} {res.get('descripcion_visual', '')}".lower()
+    if res["categoria"] in PRUEBA_CATEGORIA and not re.search(PRUEBA_CATEGORIA[res["categoria"]], texto):
         res["categoria"] = "otro"
     res["coste"] = {k: int(v) for k, v in (res.get("coste") or {}).items() if k in MATERIALES and int(v) > 0}
     res["requiere"] = [r for r in res.get("requiere", []) if r in conocidos]

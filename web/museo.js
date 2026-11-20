@@ -135,7 +135,7 @@ function listaInventos(l) {
 // Su forma: la pieza de construcción, el objeto, o (técnicas, oficios, costumbres…) una idea sobre un atril.
 function modeloDeInvento(i, l) {
   const m = SIN_FORMA.has(i.tipo) ? '' : (i.modelo || ''), ep = estiloDe(est, l);
-  if (m.startsWith('estructura:')) { const t = m.slice(11).split('@')[0]; return pieza({ tipo: t, lado: l, modelo: m, categoria: i.categoria, id: 0 }, ep); }
+  if (m.startsWith('estructura:')) { const t = m.slice(11).split('@')[0]; return pieza({ tipo: t, lado: l, modelo: m, categoria: i.categoria, nombre: i.nombre, id: 0 }, ep); }
   if (i.categoria === 'ropa' || m === 'objeto:ropa') {  // una prenda en su maniquí de palos
     const g = new THREE.Group(), c = '#9A6B42';
     g.add(CIL(.03, .03, 1, '#6E4A2C', 0, .5, 0, 4), B(.5, .04, .04, '#6E4A2C', 0, .95, 0));

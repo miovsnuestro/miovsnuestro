@@ -60,6 +60,14 @@ function casaEpoca(ep, lado) {
 function almacen(lado) { const g = new THREE.Group(); g.add(B(1.6, .9, 1.2, '#9A6B42', 0, .45, 0));
   const t = PZ(new THREE.CylinderGeometry(.62, .62, 1.62, 6, 1, false, 0, Math.PI), '#7A5232', 0, .9, 0); t.rotation.z = Math.PI / 2; g.add(t);
   g.add(B(.5, .6, .04, '#5A3A20', 0, .3, .61), B(.5, .06, .05, COLOR[lado], 0, .64, .62)); return sombra(g); }
+// Un hoyo o hueco para guardar comida (lo que el árbitro clasifica como «almacén» pero es un agujero en el suelo):
+// un aro de tierra bajo, la boca oscura y una tapa de ramas y hojas encima, con una piedra que la sujeta. Mide menos que una persona.
+const esHoyo = e => e && (e.tipo === 'almacen' || e.categoria === 'almacen') && /\b(hoyo|hueco|agujero|fosa|zanja|enterrad|bajo tierra|subterr)/i.test((e.nombre || '') + ' ' + (e.invento || ''));
+function hoyo() { const g = new THREE.Group();
+  g.add(CIL(.46, .52, .1, '#7A5A3A', 0, .05, 0, 12), CIL(.33, .33, .02, '#2A1C12', 0, .1, 0, 12));
+  const tapa = CIL(.3, .3, .03, '#6E8A3A', .1, .12, .04, 8); tapa.rotation.z = .08; g.add(tapa);
+  for (let k = 0; k < 4; k++) { const r = B(.62, .025, .03, '#6E4A2C', .1, .14, -.15 + k * .1); r.rotation.y = .15 * (k - 1.5); g.add(r); }
+  g.add(PZ(new THREE.DodecahedronGeometry(.07, 0), '#8A857C', .12, .19, .02)); return sombra(g); }
 function granero(lado) { const g = almacen(lado); g.scale.set(1, 1.25, 1); return g; }
 function escuela(lado) { const g = new THREE.Group(); g.add(B(2.2, .8, 1.1, '#C9A878', 0, .4, 0));
   const t = PZ(new THREE.ConeGeometry(1.3, .6, 4), '#9A7A4A', 0, 1.1, 0); t.rotation.y = Math.PI / 4; t.scale.set(1.25, 1, .7); g.add(t);
@@ -115,6 +123,7 @@ function pieza(e, ep) {
   const l = e.lado, t = e.tipo;
   // Primero el modelo de su época («estructura:casa@prehistoria»); la casa genérica no se usa, porque cambia con la época.
   const claveG = e.modelo && e.modelo !== 'nuevo' ? e.modelo : 'estructura:' + t;
+  if (esHoyo(e)) return hoyo();  // un agujero en el suelo, no una cabaña: va antes que el modelo genérico de almacén
   const glb = modeloGLB(claveG + '@' + ep, tamDe(t, ep)) || (t === 'casa' ? null : modeloGLB(claveG, tamDe(t, ep)));
   if (glb) return glb;
   switch (t) {
@@ -199,7 +208,7 @@ function construirObras(e) {
       if (o.tipo === 'barco') { p.position.set(X(u), NIVEL + .02, Z(v)); }
       else {
         if (altura(u, v) <= .25) [u, v] = enTierra(u, v);
-        const rr = radioDe(o.tipo, ep), libre = (u2, v2) => altura(u2, v2) > .25 && obstaculos.every(b => Math.hypot(X(u2) - b.x, Z(v2) - b.z) > (rr + b.r) * .92);
+        const rr = esHoyo(o) ? .45 : radioDe(o.tipo, ep), libre = (u2, v2) => altura(u2, v2) > .25 && obstaculos.every(b => Math.hypot(X(u2) - b.x, Z(v2) - b.z) > (rr + b.r) * .92);
         if (o.tipo !== 'camino' && !libre(u, v)) busca: for (let r = .5; r < 7; r += .45) for (let k = 0; k < 12; k++) {
           const an = k / 12 * Math.PI * 2 + r, u2 = u + Math.cos(an) * r, v2 = clamp(v + Math.sin(an) * r, 1, MH - 2); if (libre(u2, v2)) { u = u2; v = v2; break busca; } }
         p.position.set(X(u), Math.max(suelo(X(u), Z(v)), 0) - .02, Z(v));
@@ -208,7 +217,7 @@ function construirObras(e) {
       if (o.dueno === 'comun' && o.tipo !== 'casa') { const b = banderita(l); b.position.set(.5, 0, .5); p.add(b); }
       if (o.tipo === 'casa') p.userData.casa = e.agentes.filter(a => a.casa && a.casa[0] === o.x && a.casa[1] === o.y && a.edad >= 14).map(a => a.nombre);
       p.userData.obra = o; pueblos.add(p);
-      if (RADIO[o.tipo]) obstaculos.push({ x: p.position.x, z: p.position.z, r: radioDe(o.tipo, ep) });
+      if (RADIO[o.tipo]) obstaculos.push({ x: p.position.x, z: p.position.z, r: esHoyo(o) ? .45 : radioDe(o.tipo, ep) });
     }
   }
   // Casa de los inventos: solo para quien visita la web. En modo reel no se pone: no sale en ningún plano y, dibujada
