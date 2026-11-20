@@ -1,14 +1,3 @@
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/srv/miovsnuestro/.venv/lib/python3.12/site-packages/playwright/_impl/frame.py", line 1209, in wait_for_function
-    result = await self._channel.waitForFunction(
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/srv/miovsnuestro/.venv/lib/python3.12/site-packages/playwright/_impl/channel_owner.py", line 398, in _mapped
-    return mapper(await awaitable)
-                  ^^^^^^^^^^^^^^^
-  File "/srv/miovsnuestro/.venv/lib/python3.12/site-packages/playwright/_impl/channel_owner.py", line 387, in finish
-    raise e from None
-  File "/srv/miovsnuestro/.venv/lib/python3.12/site-packages/playwright/_impl/channel_owner.py", line 352, in finish
-    result = await zone.run_async(lambda: awaitable)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/srv/miovsnuestro/.venv/lib/python3.12/site-packages/playwright/_impl/utils/zones.py", line 58, in run_async
     return await func()
@@ -58,3 +47,14 @@ Guion con IA listo: «Dos mundos, un mismo valle»
   escena 5/5 grabada (8.5 s, cargó en 11 s, 203 fotogramas: paso 0.08 s + captura 10.91 s por fotograma, 37.4 min)
 Reel 13 v1: 47 s, montado en 127.1 min (voz 0.1, grabación 125.6, montaje 1.0, comprobación 0.3)
 /srv/miovsnuestro/reels/salida/reel_13_v1.mp4
+Guion con IA listo: «Dos sociedades, un mundo, valores opuestos»
+  escena 1/5 grabada (10.0 s, cargó en 16 s, 240 fotogramas: paso 0.06 s + captura 4.82 s por fotograma, 19.8 min)
+  escena 2/5 grabada (9.6 s, cargó en 5 s, 230 fotogramas: paso 0.06 s + captura 3.96 s por fotograma, 15.5 min)
+  escena 3/5 grabada (9.7 s, cargó en 12 s, 233 fotogramas: paso 0.07 s + captura 4.64 s por fotograma, 18.5 min)
+  escena 4/5 grabada (9.6 s, cargó en 9 s, 230 fotogramas: paso 0.08 s + captura 7.10 s por fotograma, 27.7 min)
+  escena 5/5 grabada (9.8 s, cargó en 7 s, 235 fotogramas: paso 0.06 s + captura 3.78 s por fotograma, 15.2 min)
+Reel 14 v1: 52 s, montado en 97.7 min (voz 0.1, grabación 96.9, montaje 0.6, comprobación 0.1)
+/srv/miovsnuestro/reels/salida/reel_14_v1.mp4
+Guion con IA listo: «Año 5: ingenio y pérdida en paralelo»
+  escena 1/11 grabada (7.7 s, cargó en 15 s, 186 fotogramas: paso 0.12 s + captura 20.76 s por fotograma, 65.0 min)
+  escena 2/11 grabada (9.6 s, cargó en 6 s, 230 fotogramas: paso 0.14 s + captura 30.04 s por fotograma, 115.8 min)
